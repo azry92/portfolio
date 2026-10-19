@@ -1,0 +1,96 @@
+<svg width="1760" height="1291" viewBox="0 0 1760 1291" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="2" y="2" width="1756" height="1287" rx="36" fill="white"/>
+<rect x="2" y="2" width="1756" height="1287" rx="36" stroke="#818181" stroke-width="4"/>
+<rect width="195" height="111.58" transform="translate(44 165.855)" fill="white"/>
+<text fill="#0A0A0A" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="bold" letter-spacing="0em"><tspan x="72" y="216.1">Main </tspan><tspan x="72" y="245.1">Navigation</tspan></text>
+<rect width="195" height="111.58" transform="translate(44 301.435)" fill="white"/>
+<rect width="195" height="111.58" transform="translate(44 301.435)" fill="#21489E"/>
+<text fill="white" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="bold" letter-spacing="0em"><tspan x="72" y="351.679">Shop by </tspan><tspan x="72" y="380.679">vehicle</tspan></text>
+<rect width="195" height="118.426" transform="translate(44 437.015)" fill="white"/>
+<rect width="195" height="118.426" transform="translate(44 437.015)" fill="black" fill-opacity="0.2"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="72" y="490.682">Shop by </tspan><tspan x="72" y="519.682">category</tspan></text>
+<rect width="195" height="118.426" transform="translate(44 579.441)" fill="white"/>
+<rect width="195" height="118.426" transform="translate(44 579.441)" fill="black" fill-opacity="0.2"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="72" y="633.108">Shop by </tspan><tspan x="72" y="662.108">brand</tspan></text>
+<rect width="195" height="118.426" transform="translate(44 721.867)" fill="white"/>
+<rect width="195" height="118.426" transform="translate(44 721.867)" fill="black" fill-opacity="0.2"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="72" y="790.034">Our Builds</tspan></text>
+<rect width="195" height="118.426" transform="translate(44 864.293)" fill="white"/>
+<rect width="195" height="118.426" transform="translate(44 864.293)" fill="black" fill-opacity="0.2"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="72" y="932.46">Promotions</tspan></text>
+<rect width="195" height="118.426" transform="translate(44 1006.72)" fill="white"/>
+<rect width="195" height="118.426" transform="translate(44 1006.72)" fill="black" fill-opacity="0.2"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="72" y="1074.89">About</tspan></text>
+<rect width="1437" height="1203" transform="translate(279 44)" fill="#003399" fill-opacity="0.2"/>
+<rect width="1437" height="595" transform="translate(279 44)" fill="white" fill-opacity="0.2"/>
+<rect width="329.333" height="65" transform="translate(319 84)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="452.612" y="125.455">Make</tspan></text>
+<path d="M677.333 116.5V117.5H748.333V116.5V115.5H677.333V116.5ZM749.041 117.207C749.431 116.817 749.431 116.183 749.041 115.793L742.677 109.429C742.286 109.038 741.653 109.038 741.262 109.429C740.872 109.819 740.872 110.453 741.262 110.843L746.919 116.5L741.262 122.157C740.872 122.547 740.872 123.181 741.262 123.571C741.653 123.962 742.286 123.962 742.677 123.571L749.041 117.207Z" fill="#2A72BA"/>
+<rect width="385.333" height="65" transform="translate(777.333 84)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="934.457" y="125.455">Model</tspan></text>
+<path d="M1191.67 116.5V117.5H1261.67V116.5V115.5H1191.67V116.5ZM1262.37 117.207C1262.76 116.817 1262.76 116.183 1262.37 115.793L1256.01 109.429C1255.62 109.038 1254.99 109.038 1254.6 109.429C1254.2 109.819 1254.2 110.453 1254.6 110.843L1260.25 116.5L1254.6 122.157C1254.2 122.547 1254.2 123.181 1254.6 123.571C1254.99 123.962 1255.62 123.962 1256.01 123.571L1262.37 117.207Z" fill="#2A72BA"/>
+<rect width="385.333" height="65" transform="translate(1290.67 84)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="1383.48" y="125.455">Generation / Year</tspan></text>
+<path d="M997.5 175L996.5 175L996.5 221L997.5 221L998.5 221L998.5 175L997.5 175ZM996.793 221.707C997.183 222.098 997.817 222.098 998.207 221.707L1004.57 215.343C1004.96 214.953 1004.96 214.319 1004.57 213.929C1004.18 213.538 1003.55 213.538 1003.16 213.929L997.5 219.586L991.843 213.929C991.453 213.538 990.819 213.538 990.429 213.929C990.038 214.319 990.038 214.953 990.429 215.343L996.793 221.707Z" fill="#2A72BA"/>
+<rect width="641.168" height="45" transform="translate(676.916 247)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="893.344" y="278.455">Select A Category</tspan></text>
+<rect width="810" height="148" transform="translate(592.5 308)" fill="white"/>
+<rect width="193" height="41" transform="translate(620.5 336)" fill="#21489E"/>
+<text fill="white" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="632.555" y="365.455">Front Bumpers </tspan></text>
+<rect width="185" height="41" transform="translate(823.5 336)" fill="#21489E"/>
+<text fill="white" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="835.609" y="365.455">Rear Bumpers</tspan></text>
+<rect width="222" height="41" transform="translate(1018.5 336)" fill="#21489E"/>
+<text fill="white" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="1065.29" y="365.455">Roof Racks</tspan></text>
+<rect width="124" height="41" transform="translate(1250.5 336)" fill="#21489E"/>
+<text fill="white" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="1270.04" y="365.455">Wheels</tspan></text>
+<rect width="193" height="41" transform="translate(620.5 387)" fill="#21489E"/>
+<text fill="white" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="650.262" y="416.455">Suspension</tspan></text>
+<rect width="185" height="41" transform="translate(823.5 387)" fill="#21489E"/>
+<text fill="white" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="884.289" y="416.455">Tyres</tspan></text>
+<rect width="222" height="41" transform="translate(1018.5 387)" fill="#21489E"/>
+<text fill="white" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="1030.97" y="416.455">Exhaust Systems</tspan></text>
+<rect width="124" height="41" transform="translate(1250.5 387)" fill="#21489E"/>
+<text fill="white" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="1262.74" y="416.455">Roll Bars</tspan></text>
+<path d="M997.5 482L996.5 482L996.5 528L997.5 528L998.5 528L998.5 482L997.5 482ZM996.793 528.707C997.183 529.098 997.817 529.098 998.207 528.707L1004.57 522.343C1004.96 521.953 1004.96 521.319 1004.57 520.929C1004.18 520.538 1003.55 520.538 1003.16 520.929L997.5 526.586L991.843 520.929C991.453 520.538 990.819 520.538 990.429 520.929C990.038 521.319 990.038 521.953 990.429 522.343L996.793 528.707Z" fill="#2A72BA"/>
+<rect width="641.168" height="45" transform="translate(676.916 554)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="876.903" y="585.455">Compatible Products</tspan></text>
+<rect width="447" height="587" transform="translate(279 660)" fill="white" fill-opacity="0.2"/>
+<rect width="367" height="45" transform="translate(319 866)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="340.945" y="897.455">custom.compatible_vehicles</tspan></text>
+<rect width="352" height="45" transform="translate(319 911)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="347.227" y="942.455">custom.product_category</tspan></text>
+<rect width="273" height="45" transform="translate(319 996)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="347.207" y="1027.45">Matching Products</tspan></text>
+<rect width="971" height="305" transform="translate(745 660)" fill="white" fill-opacity="0.2"/>
+<rect width="161" height="45" transform="translate(785 700)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="813.328" y="731.455">Diameter</tspan></text>
+<rect width="91" height="45" transform="translate(986 700)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="1014.14" y="731.455">17&#x201d;</tspan></text>
+<rect width="92" height="45" transform="translate(1117 700)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="1145.01" y="731.455">18&#x201d;</tspan></text>
+<rect width="96" height="45" transform="translate(1249 700)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="1277.16" y="731.455">20&#x201d;</tspan></text>
+<rect width="155" height="45" transform="translate(785 790)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="813.047" y="821.455">Click 18&#x201d;</tspan></text>
+<path d="M960 812.503L960 813.503L1031.5 813.497L1031.5 812.497L1031.5 811.497L960 811.503L960 812.503ZM1032.21 813.204C1032.6 812.813 1032.6 812.18 1032.21 811.789L1025.84 805.426C1025.45 805.036 1024.82 805.036 1024.43 805.426C1024.04 805.817 1024.04 806.45 1024.43 806.84L1030.09 812.497L1024.43 818.154C1024.04 818.545 1024.04 819.178 1024.43 819.568C1024.82 819.959 1025.45 819.959 1025.84 819.568L1032.21 813.204Z" fill="#2A72BA"/>
+<rect width="197" height="45" transform="translate(1051.5 790)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="1079.57" y="821.455">18&#x201d; selected</tspan></text>
+<rect width="154" height="45" transform="translate(785 880)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="813.18" y="911.455">Click 17&#x201d;</tspan></text>
+<path d="M965 902.197L964.978 903.197L992.99 903.802L993.011 902.803L993.033 901.803L965.022 901.197L965 902.197ZM993.703 903.525C994.102 903.143 994.116 902.51 993.734 902.111L987.509 895.611C987.127 895.212 986.494 895.198 986.095 895.58C985.696 895.962 985.682 896.595 986.064 896.994L991.597 902.772L985.82 908.305C985.421 908.687 985.407 909.32 985.789 909.719C986.171 910.118 986.804 910.132 987.203 909.75L993.703 903.525Z" fill="#2A72BA"/>
+<rect width="358" height="45" transform="translate(1019.01 880)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="1047.44" y="911.455">18&#x201d; deselect automatically</tspan></text>
+<path d="M1403.01 902.197L1402.99 903.197L1431 903.802L1431.02 902.803L1431.04 901.803L1403.03 901.197L1403.01 902.197ZM1431.71 903.525C1432.11 903.143 1432.13 902.51 1431.74 902.111L1425.52 895.611C1425.14 895.212 1424.5 895.198 1424.11 895.58C1423.71 895.962 1423.69 896.595 1424.08 896.994L1429.61 902.772L1423.83 908.305C1423.43 908.687 1423.42 909.32 1423.8 909.719C1424.18 910.118 1424.82 910.132 1425.21 909.75L1431.71 903.525Z" fill="#2A72BA"/>
+<rect width="196" height="45" transform="translate(1457.02 880)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="1485.23" y="911.455">17&#x201d; selected</tspan></text>
+<rect width="971" height="263" transform="translate(745 984)" fill="#D6DEEF" fill-opacity="0.2"/>
+<rect width="171" height="45" transform="translate(785 1024)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="813.266" y="1055.45">Select 18&#x201d;</tspan></text>
+<path d="M982 1046.2L981.978 1047.2L1009.99 1047.8L1010.01 1046.8L1010.03 1045.8L982.022 1045.2L982 1046.2ZM1010.7 1047.53C1011.1 1047.14 1011.12 1046.51 1010.73 1046.11L1004.51 1039.61C1004.13 1039.21 1003.49 1039.2 1003.09 1039.58C1002.7 1039.96 1002.68 1040.6 1003.06 1040.99L1008.6 1046.77L1002.82 1052.31C1002.42 1052.69 1002.41 1053.32 1002.79 1053.72C1003.17 1054.12 1003.8 1054.13 1004.2 1053.75L1010.7 1047.53Z" fill="#2A72BA"/>
+<rect width="567" height="45" transform="translate(1036.01 1024)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="1064.04" y="1055.45">Width / PCD / Offset / Colour options refresh</tspan></text>
+<rect width="445" height="45" transform="translate(785 1093)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="813.016" y="1124.45">Impossible combinations disabled</tspan></text>
+<rect width="439" height="45" transform="translate(785 1162)" fill="white"/>
+<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="813.215" y="1193.45">Selected options remain selected</tspan></text>
+</svg>
