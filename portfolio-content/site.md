@@ -1,7 +1,7 @@
 ## SEO
 - title: "Ismail Azry | Product Designer, Web & E-commerce | Shopify Design & Build"
 - description: "Ismail Azry is a product designer in Malaysia who designs and builds e-commerce storefronts, from information architecture to custom Shopify code."
-- url: "https://[CONFIRM: domain, or the vercel.app address for now]"
+- url: "https://ismailazry.vercel.app"
 - og_image: ./images/og-image.png
 ## Header
 - name: Ismail Azry
