@@ -5,16 +5,24 @@ interface Props {
 	/** Rendered width and height in CSS units. */
 	size?: string;
 	label?: string;
+	/** Hide from assistive tech when adjacent text already names the person. */
+	decorative?: boolean;
 	class?: string;
 }
 
-const { size = '4rem', label = 'Ismail Azry logo', class: className } = Astro.props;
+const { size = '4rem', label = 'Ismail Azry logo', decorative = false, class: className } = Astro.props;
 
 // Drop the fixed 72px size so CSS controls it; keep the viewBox.
 const svg = logo.replace(/\s(width|height)="\d+"/g, '');
 ---
 
-<span class:list={['logo', className]} role="img" aria-label={label} style={`--logo-size: ${size}`}>
+<span
+	class:list={['logo', className]}
+	role={decorative ? undefined : 'img'}
+	aria-label={decorative ? undefined : label}
+	aria-hidden={decorative ? 'true' : undefined}
+	style={`--logo-size: ${size}`}
+>
 	<Fragment set:html={svg} />
 </span>
 

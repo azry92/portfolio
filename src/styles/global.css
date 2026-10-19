@@ -107,6 +107,11 @@ a:active {
 	white-space: nowrap;
 }
 
+/* main takes focus from the skip link; the jump itself is the cue */
+main[tabindex='-1']:focus {
+	outline: none;
+}
+
 .skip-link {
 	position: absolute;
 	inset-block-start: var(--space-8);

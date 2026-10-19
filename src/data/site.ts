@@ -28,3 +28,10 @@ export const contact = {
 } as const;
 
 export const footerLine = 'Designed and built by Ismail Azry with Astro. © 2026';
+
+export const intro = {
+	greeting: 'Hello, I’m Azry.',
+	title: 'Product Designer, Web & E-commerce',
+	about:
+		'Product designer who designs and builds e-commerce storefronts end to end, from information architecture and product search to custom Shopify code. Interface Design graduate, formerly a medical student.',
+} as const;

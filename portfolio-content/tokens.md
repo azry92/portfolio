@@ -2,15 +2,15 @@
 ## Site colours (the portfolio itself, not the client brands)
 | Role | Hex | Used for |
 |---|---|---|
-| bg | #F0EEE9 | page background |
+| bg | #F0EEE9 | page background, footer |
 | surface | #FFFFFF | cards, panels |
-| surface-inverse | #16171A | dark sections, footer |
+| surface-inverse | #16171A | dark sections |
 | text | #000000 | body text on bg and surface |
 | text-inverse | #F0EEE9 | text on surface-inverse |
 | text-muted | #424242 | captions, metadata |
 | accent | #B51C1C | links, focus ring |
 | accent-deep | #640F0F | hover and pressed states |
-| pattern-grey | #D9D9D9 | hero glyph band background |
+| pattern-grey | #D9D9D9 | hero band, contact circles |
 | pattern-black | #000000 | hero glyph states |
 | pattern-cream | #F7F5F0 | hero glyph states |
 | border | #D6D2CA | dividers |

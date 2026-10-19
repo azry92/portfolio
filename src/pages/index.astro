@@ -1,8 +1,60 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GlyphBand from '../components/GlyphBand.astro';
+import HomeIntro from '../components/HomeIntro.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 ---
 
-<BaseLayout showHeader={false}>
+<BaseLayout showHeader={false} wrapMain={false}>
 	<GlyphBand />
+	<div class="home container">
+		<main id="main" tabindex="-1" class="home__main">
+			<HomeIntro />
+			<!-- The work grid goes here: column 2, spanning both rows from 1200px. -->
+		</main>
+		<SiteFooter variant="home" />
+	</div>
 </BaseLayout>
+
+<style>
+	.home {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+	}
+
+	.home__main {
+		flex: 1;
+	}
+
+	/* Two columns from 1200px: intro over contact on the left, work on the right.
+	   main is a subgrid so its children and the footer share one grid; the footer
+	   sits at the bottom of the left column, level with the bottom of the work. */
+	@media (min-width: 1200px) {
+		.home {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+			grid-template-rows: auto 1fr;
+			column-gap: var(--space-48);
+		}
+
+		.home__main {
+			display: grid;
+			grid-template-columns: subgrid;
+			grid-template-rows: subgrid;
+			grid-column: 1 / -1;
+			grid-row: 1 / -1;
+		}
+
+		.home__main > :global(.home-intro) {
+			grid-column: 1;
+			grid-row: 1;
+		}
+
+		.home > :global(.site-footer) {
+			grid-column: 1;
+			grid-row: 2;
+			align-self: end;
+		}
+	}
+</style>

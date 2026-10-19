@@ -11,7 +11,7 @@ interface ContactLink {
 const links: ContactLink[] = [
 	{ label: 'Email', href: `mailto:${contact.email}`, icon: 'email' },
 	{ label: 'LinkedIn', href: contact.linkedin, icon: 'linkedin' },
-	{ label: 'CV', href: site.cv, icon: 'cv', download: true },
+	{ label: 'CV (PDF)', href: site.cv, icon: 'cv', download: true },
 ];
 ---
 
@@ -21,8 +21,8 @@ const links: ContactLink[] = [
 		{
 			links.map((link) => (
 				<li>
-					<a href={link.href} download={link.download || undefined}>
-						<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+					<a class="contact__link" href={link.href} download={link.download || undefined}>
+						<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
 							{link.icon === 'email' && (
 								<>
 									<rect x="3" y="5" width="18" height="14" rx="2" />
@@ -42,7 +42,7 @@ const links: ContactLink[] = [
 								</>
 							)}
 						</svg>
-						<span>{link.label}</span>
+						<span class="visually-hidden">{link.label}</span>
 					</a>
 				</li>
 			))
@@ -51,36 +51,54 @@ const links: ContactLink[] = [
 </div>
 
 <style>
+	.contact {
+		--contact-size: 44px;
+	}
+
+	@media (min-width: 1200px) {
+		.contact {
+			--contact-size: 60px;
+		}
+	}
+
 	.contact__heading {
-		font-family: var(--font-display);
-		font-size: var(--text-18);
-		font-weight: var(--weight-bold);
-		line-height: var(--leading-heading);
+		font-size: var(--text-16);
+	}
+
+	@media (min-width: 768px) {
+		.contact__heading {
+			font-size: var(--text-18);
+		}
 	}
 
 	.contact__links {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-8) var(--space-24);
+		justify-content: var(--contact-justify, flex-start);
+		gap: var(--space-24);
 		margin-block-start: var(--space-16);
 		padding: 0;
 		list-style: none;
 	}
 
-	.contact__links a {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--space-8);
-		min-block-size: 44px;
-		font-weight: var(--weight-semibold);
-		text-decoration: none;
+	.contact__link {
+		display: grid;
+		place-items: center;
+		inline-size: var(--contact-size);
+		block-size: var(--contact-size);
+		border-radius: 50%;
+		background-color: var(--color-pattern-grey);
+		color: var(--color-text);
 	}
 
-	.contact__links a:hover span {
-		text-decoration: underline;
+	.contact__link:hover {
+		background-color: var(--color-accent);
+		color: var(--color-text-inverse);
 	}
 
-	.contact__links svg {
+	.contact__link svg {
+		inline-size: 45%;
+		block-size: 45%;
 		fill: none;
 		stroke: currentColor;
 		stroke-width: 1.75;
