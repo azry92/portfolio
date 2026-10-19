@@ -1,17 +1,12 @@
 ---
-import { Font } from 'astro:assets';
-import '../styles/global.css';
+// Temporary smoke test for the foundations. The real home page replaces this.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Logo from '../components/Logo.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<Font cssVariable="--font-sora" preload />
-		<Font cssVariable="--font-inter" preload />
-		<title>Ismail Azry</title>
-	</head>
-	<body>
+<BaseLayout>
+	<div class="container">
+		<Logo size="5rem" />
 		<h1>Product Designer, Web &amp; E-commerce</h1>
-	</body>
-</html>
+	</div>
+</BaseLayout>

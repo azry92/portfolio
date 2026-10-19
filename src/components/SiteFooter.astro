@@ -1,0 +1,23 @@
+---
+import ContactLinks from './ContactLinks.astro';
+import { footerLine } from '../data/site';
+---
+
+<footer class="site-footer inverse">
+	<div class="container site-footer__inner">
+		<ContactLinks />
+		<p class="site-footer__line">{footerLine}</p>
+	</div>
+</footer>
+
+<style>
+	.site-footer__inner {
+		display: grid;
+		gap: var(--space-32);
+		padding-block: var(--space-48);
+	}
+
+	.site-footer__line {
+		font-size: var(--text-14);
+	}
+</style>

@@ -1,0 +1,33 @@
+---
+import logo from '../../portfolio-content/brand/logo.svg?raw';
+
+interface Props {
+	/** Rendered width and height in CSS units. */
+	size?: string;
+	label?: string;
+	class?: string;
+}
+
+const { size = '4rem', label = 'Ismail Azry logo', class: className } = Astro.props;
+
+// Drop the fixed 72px size so CSS controls it; keep the viewBox.
+const svg = logo.replace(/\s(width|height)="\d+"/g, '');
+---
+
+<span class:list={['logo', className]} role="img" aria-label={label} style={`--logo-size: ${size}`}>
+	<Fragment set:html={svg} />
+</span>
+
+<style>
+	.logo {
+		display: inline-block;
+		inline-size: var(--logo-size);
+		block-size: var(--logo-size);
+		color: var(--logo-colour, var(--color-accent));
+	}
+
+	.logo :global(svg) {
+		inline-size: 100%;
+		block-size: 100%;
+	}
+</style>
