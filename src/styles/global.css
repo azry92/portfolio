@@ -1,0 +1,143 @@
+@import './tokens.css';
+
+/* Reset */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+* {
+	margin: 0;
+}
+
+html {
+	-webkit-text-size-adjust: none;
+	text-size-adjust: none;
+	overflow-x: clip;
+}
+
+img,
+picture,
+svg,
+video {
+	display: block;
+	max-inline-size: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+	font: inherit;
+}
+
+/* Base */
+body {
+	min-block-size: 100vh;
+	background-color: var(--color-bg);
+	color: var(--color-text);
+	font-family: var(--font-body);
+	font-size: var(--text-16);
+	font-weight: var(--weight-regular);
+	line-height: var(--leading-body);
+	-webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--font-display);
+	font-weight: var(--weight-bold);
+	line-height: var(--leading-heading);
+	text-wrap: balance;
+}
+
+p,
+li,
+figcaption {
+	text-wrap: pretty;
+}
+
+a {
+	color: var(--color-accent);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+}
+
+a:hover,
+a:active {
+	color: var(--color-accent-deep);
+}
+
+:focus-visible {
+	outline: 2px solid var(--color-accent);
+	outline-offset: 3px;
+}
+
+/* Inverse surfaces: accent red is too dark on #16171a, so text and focus go cream */
+.inverse {
+	background-color: var(--color-surface-inverse);
+	color: var(--color-text-inverse);
+	--logo-colour: var(--color-text-inverse);
+}
+
+.inverse a {
+	color: var(--color-text-inverse);
+}
+
+.inverse :focus-visible {
+	outline-color: var(--color-text-inverse);
+}
+
+/* Utilities */
+.container {
+	inline-size: 100%;
+	max-inline-size: calc(var(--content-max) + 2 * var(--gutter));
+	margin-inline: auto;
+	padding-inline: var(--gutter);
+}
+
+.visually-hidden:not(:focus-within, :active) {
+	position: absolute;
+	inline-size: 1px;
+	block-size: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.skip-link {
+	position: absolute;
+	inset-block-start: var(--space-8);
+	inset-inline-start: var(--space-8);
+	z-index: 100;
+	padding: var(--space-8) var(--space-16);
+	border-radius: var(--radius-sm);
+	background-color: var(--color-surface);
+	color: var(--color-text);
+	font-weight: var(--weight-semibold);
+	transform: translateY(calc(-100% - var(--space-16)));
+}
+
+.skip-link:focus-visible {
+	transform: none;
+}
+
+/* Motion */
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
