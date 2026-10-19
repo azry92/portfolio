@@ -1,51 +1,8 @@
 ---
-// Temporary smoke test for the foundations. The real home page replaces this.
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Logo from '../components/Logo.astro';
-import PhoneFrame from '../components/PhoneFrame.astro';
-import BrowserFrame from '../components/BrowserFrame.astro';
-import vehicleSelect from '../../portfolio-content/case-studies/at-auto-shoppe/images/product-finder-vehicle-select.png';
-import { getCollection, getEntry } from 'astro:content';
-
-const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
-const otherWorks = await getCollection('otherWorks');
-const atAuto = await getEntry('caseStudies', 'at-auto-shoppe');
-if (!atAuto) throw new Error('Missing at-auto-shoppe case study');
+import GlyphBand from '../components/GlyphBand.astro';
 ---
 
-<BaseLayout>
-	<div class="container smoke">
-		<Logo size="5rem" />
-		<h1>Product Designer, Web &amp; E-commerce</h1>
-		<div class="smoke__phones">
-			<PhoneFrame
-				src={vehicleSelect}
-				alt="AT Auto Shoppe product finder asking for the vehicle make"
-				style="--phone-safe-area-colour: #2a72ba"
-			/>
-			<PhoneFrame
-				src={vehicleSelect}
-				alt="The same product finder screen without the safe-area strip"
-				safeArea={0}
-			/>
-		</div>
-		<BrowserFrame src={atAuto.data.cover} alt={atAuto.data.cover_alt} aspect="16 / 10" />
-		<ul class="smoke__entries">
-			{[...caseStudies, ...otherWorks].map((entry) => <li>{entry.id}: {entry.data.title}</li>)}
-		</ul>
-	</div>
+<BaseLayout showHeader={false}>
+	<GlyphBand />
 </BaseLayout>
-
-<style>
-	.smoke {
-		display: grid;
-		gap: var(--space-32);
-		padding-block: var(--space-48);
-	}
-
-	.smoke__phones {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(10rem, 18rem));
-		gap: var(--space-24);
-	}
-</style>

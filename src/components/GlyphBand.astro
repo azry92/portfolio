@@ -1,0 +1,422 @@
+---
+// Full-bleed IA pattern band at the top of the home page. Decorative.
+// Six stacked layers, one per reference state; layer 1 is the resting state
+// and the only one that takes hover. Motion lives in ../scripts/glyph-band.ts.
+import { glyph, tileRows, viewBox } from '../lib/glyphPattern';
+
+const vb = `0 0 ${viewBox.width} ${viewBox.height}`;
+const bg = { width: viewBox.width, height: viewBox.height };
+// Back to front: slice 24 is nearest the vanishing point.
+const slices = Array.from({ length: 24 }, (_, i) => 24 - i);
+---
+
+<div
+	class="glyph-band"
+	aria-hidden="true"
+	data-glyph-band
+	style={`--band-aspect: ${viewBox.width} / ${viewBox.height}; --mid-x: ${viewBox.width / 2}px`}
+>
+	<svg class="glyph-band__layer glyph-band__layer--s1" viewBox={vb} focusable="false">
+		<defs>
+			<g id="glyph-ia">
+				<path d={glyph.I} vector-effect="non-scaling-stroke"></path>
+				<path d={glyph.A} vector-effect="non-scaling-stroke"></path>
+			</g>
+			{
+				tileRows.map((row, r) => (
+					<g id={`glyph-row-${r + 4}`}>{row.flat().map((t) => <use href="#glyph-ia" transform={t} />)}</g>
+				))
+			}
+			<g id="glyph-art">
+				{tileRows.map((_, r) => <use href={`#glyph-row-${r + 4}`} />)}
+			</g>
+		</defs>
+		{
+			tileRows.flat().map((copies) => (
+				<g class="glyph-band__tile">
+					{copies.map((t) => (
+						<use href="#glyph-ia" transform={t} />
+					))}
+				</g>
+			))
+		}
+	</svg>
+
+	<svg class="glyph-band__layer glyph-band__layer--s2" viewBox={vb} focusable="false">
+		<rect class="glyph-band__bg" {...bg}></rect>
+		<use class="glyph-band__art" href="#glyph-art"></use>
+	</svg>
+
+	<svg class="glyph-band__layer glyph-band__layer--s3" viewBox={vb} focusable="false">
+		<rect class="glyph-band__bg" {...bg}></rect>
+		<g class="glyph-band__art">
+			<!-- Stroke every copy, then fill over it: only the outer edge of the union stays visible. -->
+			<use class="glyph-band__outline" href="#glyph-art"></use>
+			<use class="glyph-band__knockout" href="#glyph-art"></use>
+		</g>
+	</svg>
+
+	<svg class="glyph-band__layer glyph-band__layer--s4" viewBox={vb} focusable="false">
+		<rect class="glyph-band__bg" {...bg}></rect>
+		{slices.map((i) => <use class="glyph-band__slice" href="#glyph-row-5" style={`--i: ${i}`} />)}
+		<use class="glyph-band__face" href="#glyph-row-5"></use>
+	</svg>
+
+	<svg class="glyph-band__layer glyph-band__layer--s5" viewBox={vb} focusable="false">
+		<rect class="glyph-band__bg" {...bg}></rect>
+		<use class="glyph-band__red" href="#glyph-art"></use>
+		<use class="glyph-band__cream" href="#glyph-art"></use>
+		<use class="glyph-band__grey" href="#glyph-art"></use>
+	</svg>
+
+	<svg class="glyph-band__layer glyph-band__layer--s6" viewBox={vb} focusable="false">
+		<rect class="glyph-band__bg" {...bg}></rect>
+		<!-- Four horizontal stripes of the same art: red, red under cream, grey, cream. -->
+		<use class="glyph-band__red" href="#glyph-art" style="--k: 0"></use>
+		<use class="glyph-band__red" href="#glyph-art" style="--k: 1"></use>
+		<use class="glyph-band__tint" href="#glyph-art" style="--k: 1"></use>
+		<use class="glyph-band__grey" href="#glyph-art" style="--k: 2"></use>
+		<use class="glyph-band__cream" href="#glyph-art" style="--k: 3"></use>
+	</svg>
+</div>
+
+<script>
+	import '../scripts/glyph-band';
+</script>
+
+<style>
+	@property --extrude {
+		syntax: '<number>';
+		inherits: true;
+		initial-value: 0;
+	}
+
+	@property --shear {
+		syntax: '<number>';
+		inherits: true;
+		initial-value: 0;
+	}
+
+	@property --stack {
+		syntax: '<number>';
+		inherits: true;
+		initial-value: 0;
+	}
+
+	.glyph-band {
+		/* Mobile shows rows 4 and 5 whole; wider screens crop into row 4 as in the reference. */
+		--band-h: 165px;
+		--band-window: 1;
+		--band-duration: 2.4s;
+
+		position: relative;
+		block-size: var(--band-h);
+		overflow: hidden;
+		background-color: var(--color-pattern-grey);
+	}
+
+	@media (min-width: 768px) {
+		.glyph-band {
+			--band-h: clamp(220px, 33svh, 400px);
+			--band-window: 1.34;
+		}
+	}
+
+	.glyph-band__layer {
+		position: absolute;
+		inset-block-end: 0;
+		inset-inline-start: 50%;
+		block-size: calc(var(--band-h) * var(--band-window));
+		inline-size: auto;
+		max-inline-size: none;
+		aspect-ratio: var(--band-aspect);
+		translate: -50% 0;
+		pointer-events: none;
+	}
+
+	.glyph-band__layer:not(.glyph-band__layer--s1) {
+		opacity: 0;
+	}
+
+	/* Only the animated wrappers: a transform-origin would also skew the tiles' transform attributes.
+	   Origins are in glyph units; --mid-x is the horizontal centre of the band. */
+	.glyph-band__layer > :not(defs, .glyph-band__tile),
+	.glyph-band__art > * {
+		transform-box: view-box;
+		transform-origin: var(--mid-x) 74px;
+	}
+
+	/* 01: solid red on grey, and the hover flip */
+	.glyph-band__layer--s1 {
+		fill: var(--color-accent);
+		stroke: var(--color-accent);
+		stroke-width: 0;
+	}
+
+	@media (hover: hover) {
+		.glyph-band__tile {
+			pointer-events: all;
+		}
+
+		.glyph-band__tile:hover {
+			fill: none;
+			stroke-width: 1.5px;
+		}
+	}
+
+	/* 02: zoomed black on grey */
+	.glyph-band__layer--s2 .glyph-band__bg {
+		fill: var(--color-pattern-grey);
+	}
+
+	.glyph-band__layer--s2 .glyph-band__art {
+		fill: var(--color-pattern-black);
+	}
+
+	/* 03: cream hairline outline on red */
+	.glyph-band__layer--s3 .glyph-band__bg,
+	.glyph-band__knockout {
+		fill: var(--color-accent);
+	}
+
+	.glyph-band__outline {
+		fill: none;
+		stroke: var(--color-pattern-cream);
+		stroke-width: 2px;
+	}
+
+	/* 04: red extruded in perspective on black */
+	.glyph-band__layer--s4 .glyph-band__bg,
+	.glyph-band__layer--s5 .glyph-band__bg,
+	.glyph-band__layer--s6 .glyph-band__bg {
+		fill: var(--color-pattern-black);
+	}
+
+	.glyph-band__slice,
+	.glyph-band__face {
+		fill: var(--color-accent);
+		stroke: var(--color-pattern-black);
+		stroke-width: 1px;
+	}
+
+	/* Only row 5 is extruded, so the trails have black around them. The face slides
+	   down and right; slice i sits i/25 of the way from it towards a vanishing point
+	   up and to the left, shrinking as it goes. Layer-qualified to beat the default
+	   origin above. */
+	.glyph-band__layer--s4 .glyph-band__slice,
+	.glyph-band__layer--s4 .glyph-band__face {
+		--t: calc(var(--i, 0) / 25);
+		transform-origin: calc(var(--mid-x) - 130px) 28px;
+		transform: translate(calc(var(--extrude) * (1 - var(--t)) * 96px), calc(var(--extrude) * (1 - var(--t)) * 40px))
+			scale(calc(1 - var(--extrude) * var(--t) * 0.94));
+	}
+
+	/* 05 and 06: layered red, grey and cream on black */
+	.glyph-band__red {
+		fill: var(--color-accent);
+	}
+
+	.glyph-band__cream {
+		fill: var(--color-pattern-cream);
+	}
+
+	.glyph-band__grey {
+		fill: var(--color-pattern-grey);
+		opacity: 0.6;
+	}
+
+	.glyph-band__tint {
+		fill: var(--color-pattern-cream);
+		opacity: 0.5;
+	}
+
+	/* 05: red rows above, sheared cream below, stretched grey over both */
+	.glyph-band__layer--s5 .glyph-band__red {
+		clip-path: inset(0 0 calc(var(--shear) * 50%) 0);
+		transform: translateY(calc(var(--shear) * -10px));
+	}
+
+	.glyph-band__layer--s5 .glyph-band__cream {
+		clip-path: inset(calc(var(--shear) * 45%) 0 0 0);
+		transform: skewX(calc(var(--shear) * -28deg));
+	}
+
+	.glyph-band__layer--s5 .glyph-band__grey {
+		transform: scale(1, calc(1 + var(--shear) * 0.7));
+	}
+
+	/* 06: four stripes that slide apart vertically */
+	.glyph-band__layer--s6 use {
+		clip-path: inset(calc(var(--k) * 25%) 0 calc((3 - var(--k)) * 25%) 0);
+		transform: translateY(calc((var(--k) - 1.5) * var(--stack) * 6px));
+	}
+
+	/* Motion. Only runs once the script sets data-motion, and never with reduced motion. */
+	@media (prefers-reduced-motion: no-preference) {
+		.glyph-band[data-motion] .glyph-band__layer,
+		.glyph-band[data-motion] .glyph-band__art {
+			animation-duration: var(--band-duration);
+			animation-timing-function: linear;
+			animation-fill-mode: both;
+		}
+
+		.glyph-band[data-motion='scrub'] .glyph-band__layer,
+		.glyph-band[data-motion='scrub'] .glyph-band__art {
+			animation-play-state: paused;
+		}
+
+		.glyph-band[data-motion] .glyph-band__layer--s2 {
+			animation-name: glyph-band-s2;
+		}
+
+		.glyph-band[data-motion] .glyph-band__layer--s2 .glyph-band__art {
+			animation-name: glyph-band-zoom-in;
+		}
+
+		.glyph-band[data-motion] .glyph-band__layer--s3 {
+			animation-name: glyph-band-s3;
+		}
+
+		.glyph-band[data-motion] .glyph-band__layer--s3 .glyph-band__art {
+			animation-name: glyph-band-zoom-out;
+		}
+
+		.glyph-band[data-motion] .glyph-band__layer--s4 {
+			animation-name: glyph-band-s4;
+		}
+
+		.glyph-band[data-motion] .glyph-band__layer--s5 {
+			animation-name: glyph-band-s5;
+		}
+
+		.glyph-band[data-motion] .glyph-band__layer--s6 {
+			animation-name: glyph-band-s6;
+		}
+	}
+
+	/* Timeline: 02 at 14%, 03 at 30%, 04 at 46%, 05 at 62%, 06 at 78%, back to 01 by 96%.
+	   Each layer covers the one before, so earlier layers can stay opaque until 06 is up. */
+	@keyframes glyph-band-s2 {
+		0%,
+		6% {
+			opacity: 0;
+		}
+		10%,
+		80% {
+			opacity: 1;
+		}
+		80.1%,
+		100% {
+			opacity: 0;
+		}
+	}
+
+	@keyframes glyph-band-zoom-in {
+		0%,
+		6% {
+			transform: scale(1);
+			animation-timing-function: cubic-bezier(0.5, 0, 0.2, 1);
+		}
+		16%,
+		100% {
+			transform: scale(3.4);
+		}
+	}
+
+	@keyframes glyph-band-s3 {
+		0%,
+		22% {
+			opacity: 0;
+		}
+		26%,
+		80% {
+			opacity: 1;
+		}
+		80.1%,
+		100% {
+			opacity: 0;
+		}
+	}
+
+	@keyframes glyph-band-zoom-out {
+		0%,
+		22% {
+			transform: scale(3.4);
+			animation-timing-function: cubic-bezier(0.5, 0, 0.2, 1);
+		}
+		31%,
+		100% {
+			transform: scale(1);
+		}
+	}
+
+	@keyframes glyph-band-s4 {
+		0%,
+		38% {
+			opacity: 0;
+			--extrude: 0;
+		}
+		41% {
+			opacity: 1;
+			--extrude: 0;
+			animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1);
+		}
+		48%,
+		80% {
+			opacity: 1;
+			--extrude: 1;
+		}
+		80.1%,
+		100% {
+			opacity: 0;
+			--extrude: 1;
+		}
+	}
+
+	@keyframes glyph-band-s5 {
+		0%,
+		54% {
+			opacity: 0;
+			--shear: 0;
+		}
+		57% {
+			opacity: 1;
+			--shear: 0;
+			animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1);
+		}
+		64%,
+		80% {
+			opacity: 1;
+			--shear: 1;
+		}
+		80.1%,
+		100% {
+			opacity: 0;
+			--shear: 1;
+		}
+	}
+
+	@keyframes glyph-band-s6 {
+		0%,
+		70% {
+			opacity: 0;
+			--stack: 0;
+		}
+		73% {
+			opacity: 1;
+			--stack: 0;
+			animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1);
+		}
+		78%,
+		86% {
+			opacity: 1;
+			--stack: 1;
+			animation-timing-function: ease-in-out;
+		}
+		96%,
+		100% {
+			opacity: 0;
+			--stack: 0;
+		}
+	}
+</style>
