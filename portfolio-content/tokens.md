@@ -9,11 +9,13 @@
 | text-inverse | #F0EEE9 | text on surface-inverse |
 | text-muted | #424242 | captions, metadata |
 | accent | #B51C1C | links, focus ring |
-| accent-deep | #640F0F | links, focus ring |
-| pattern colours: grey #D9D9D9, black, cream #F7F5F0.
+| accent-deep | #640F0F | hover and pressed states |
+| pattern-grey | #D9D9D9 | hero glyph band background |
+| pattern-black | #000000 | hero glyph states |
+| pattern-cream | #F7F5F0 | hero glyph states |
 | border | #D6D2CA | dividers |
 ## Type
-- Display: Sora, weight 700, 48px
+- Display: Sora, weights 300 and 700, 48px
 - Body: Inter, weights 400 and 600
 - Scale (px): 14 / 16 / 18 / 24 / 32 / 48 / 64
 - Line height: body 1.6, headings 1.15

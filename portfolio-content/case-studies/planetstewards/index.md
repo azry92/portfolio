@@ -8,7 +8,7 @@ platform: "Wix"
 tools: ["Wix", "Adobe Illustrator", "CapCut"]
 live_url: "https://www.planetstewards.eu/"
 order: 2
-cover: ./images/page-hero-mobile.png
+cover: ./images/page-hero-phone.png
 cover_alt: "PLANETSTEWARDS homepage on mobile showing the project's mission statement"
 ---
 ## Overview

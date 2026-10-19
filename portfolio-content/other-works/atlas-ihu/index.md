@@ -2,12 +2,12 @@
 title: "ATLAS IHU Theme"
 summary: "A head-unit theme for Proton cars that won Best Theme in the ACO Tech × MMU ATLAS brief, designed for the 10.25-inch display within strict system-UI constraints."
 project: "Final year project MMU University"
-team: "solo"
+team: "Solo"
 timeline: "2021"
 platform: "Proton head unit (10.25\", 1920×720)"
 tools: [ "Adobe Illustrator"]
 order: 5
-cover: ./images/page-hero-atlaspng
+cover: ./images/page-hero-atlas.png
 cover_alt: "Atlas concept application on existing IHU"
 ---
 ## Overview

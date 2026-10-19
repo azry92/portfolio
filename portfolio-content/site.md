@@ -16,13 +16,13 @@ nav:
 - Height: about one third of the viewport on desktop (≈360px at 1080 tall), about 165px on mobile. The pattern runs edge to edge and may crop at the sides.
 - Colours: glyphs in accent red on a #D9D9D9 band; the page below is the bg token.
 - Motion:
-  - On load, play once through the states in references/home-hero-state-01.png to -06.png (outline on red, solid red on grey, layered red/grey/cream, sheared and extruded), then settle on the solid red on grey state.
+  - On load, play once through the states in references/home-state-01.png to -06.png (outline on red, solid red on grey, layered red/grey/cream, sheared and extruded), then settle on the solid red on grey state.
   - After that, page scroll scrubs through the same states while the band is in view.
   - On hover, a glyph under the cursor flips from fill to outline (fill: none; stroke: currentColor) and back.
   - prefers-reduced-motion: no animation, show the solid red on grey state only.
 - Decorative: aria-hidden="true", no focusable elements inside.
 ### 2. Intro (desktop: left column, about one third width; mobile: full width, stacked)
-- Logo mark (references/logo.svg), about 80px desktop, 60px mobile.
+- Logo mark (portfolio-content/brand/logo.svg), about 80px desktop, 60px mobile.
 - "Hello, I'm Azry." (Sora, light weight, same size as the title line below on desktop; smaller on mobile)
 - Title, the h1: "Product Designer, Web & E-commerce" (Sora, about 48px desktop, at least 32px mobile). This is the largest text on the page.
 - About paragraph from site.md, Inter 400, max width about 36ch, left-aligned at every breakpoint.
