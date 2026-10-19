@@ -18,8 +18,8 @@
 	--color-border: #d6d2ca;
 
 	/* Type */
-	--font-display: var(--font-sora), system-ui, sans-serif;
-	--font-body: var(--font-inter), system-ui, sans-serif;
+	--font-display: var(--font-sora);
+	--font-body: var(--font-inter);
 	--weight-light: 300;
 	--weight-regular: 400;
 	--weight-semibold: 600;
