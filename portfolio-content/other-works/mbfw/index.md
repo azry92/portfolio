@@ -51,8 +51,7 @@ Dates, hours and last entry sit in the first screen on mobile. The FAQ answers f
 <!-- layout: FULL banner largest, schedule card and menu beside it -->
 The schedule card listed day one's programme hour by hour. When opening-day seats filled, the banner switched to "25 July: Full. 26–27 July: Walk-ins open", so late visitors were redirected rather than turned away.
 ![Registration banner reading 25 July: Full, 26–27 July: Walk-ins open](./images/page-walk-in-open-section.png)
-![Hour-by-hour schedule card for day one](./images/rsvp-schedule-card.png)
-![Mobile menu with the Register link](./images/rsvp-menu.png)
+![Hour-by-hour schedule card for day one](./images/rsvp-schedule-day-01.png)
 *Day one sold out; the banner sent late visitors to the walk-in days.*
 ## 23 designer pages, one template
 <!-- layout: brand page grid, then search result screenshot -->
