@@ -5,7 +5,12 @@ import Logo from '../components/Logo.astro';
 import PhoneFrame from '../components/PhoneFrame.astro';
 import BrowserFrame from '../components/BrowserFrame.astro';
 import vehicleSelect from '../../portfolio-content/case-studies/at-auto-shoppe/images/product-finder-vehicle-select.png';
-import homeHero from '../../portfolio-content/case-studies/at-auto-shoppe/images/page-hero.png';
+import { getCollection, getEntry } from 'astro:content';
+
+const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
+const otherWorks = await getCollection('otherWorks');
+const atAuto = await getEntry('caseStudies', 'at-auto-shoppe');
+if (!atAuto) throw new Error('Missing at-auto-shoppe case study');
 ---
 
 <BaseLayout>
@@ -20,11 +25,10 @@ import homeHero from '../../portfolio-content/case-studies/at-auto-shoppe/images
 				safeArea={0}
 			/>
 		</div>
-		<BrowserFrame
-			src={homeHero}
-			alt="AT Auto Shoppe homepage with a before-and-after slider showing a modified 4x4"
-			aspect="16 / 10"
-		/>
+		<BrowserFrame src={atAuto.data.cover} alt={atAuto.data.cover_alt} aspect="16 / 10" />
+		<ul class="smoke__entries">
+			{[...caseStudies, ...otherWorks].map((entry) => <li>{entry.id}: {entry.data.title}</li>)}
+		</ul>
 	</div>
 </BaseLayout>
 

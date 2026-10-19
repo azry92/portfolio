@@ -5,7 +5,7 @@ Personal portfolio for "Product Designer, Web & E-commerce | Shopify Design & Bu
 ## Stack
 - Astro + TypeScript, static output.
 - Plain CSS with custom properties. Tokens live in `src/styles/tokens.css`, generated from `portfolio-content/tokens.md`. No Tailwind, no UI kits.
-- Content collections for case studies, other works and fun. Markdown/MDX in `src/content/`.
+- Content collections for case studies, other works and fun. Loaded from `portfolio-content/` via glob loaders in `src/content.config.ts`; the folder name is the slug.
 - Images through `astro:assets` (`<Image>`/`<Picture>`), AVIF/WebP with responsive `srcset`.
 - Deploy: Vercel, auto-deploy from `main`.
 
