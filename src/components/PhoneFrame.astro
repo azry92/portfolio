@@ -13,6 +13,8 @@ interface Props {
 	sizes?: string;
 	loading?: 'lazy' | 'eager';
 	class?: string;
+	/** Inline styles, e.g. "--phone-safe-area-colour: #2a72ba" to match a screenshot's header. */
+	style?: string;
 }
 
 const {
@@ -23,12 +25,13 @@ const {
 	sizes = '(min-width: 1200px) 360px, (min-width: 600px) 30vw, 85vw',
 	loading = 'lazy',
 	class: className,
+	style,
 } = Astro.props;
 
 const hasSlot = Astro.slots.has('default');
 ---
 
-<div class:list={['phone', className]} style={`--safe-area: ${safeArea}`}>
+<div class:list={['phone', className]} style={[`--safe-area: ${safeArea}`, style].filter(Boolean).join('; ')}>
 	<div class="phone__body">
 		<div class="phone__screen">
 			<span class="phone__island" aria-hidden="true"></span>
@@ -100,21 +103,16 @@ const hasSlot = Astro.slots.has('default');
 		background-color: var(--phone-safe-area-colour, #000);
 	}
 
+	/* Screenshots span the screen width exactly and start at the top; anything taller clips at the bottom. */
 	.phone__content {
 		flex: 1;
 		min-block-size: 0;
+		overflow: hidden;
 	}
 
-	.phone__content :global(picture),
 	.phone__content :global(img),
 	.phone__content :global(video) {
 		inline-size: 100%;
-		block-size: 100%;
-	}
-
-	.phone__content :global(img),
-	.phone__content :global(video) {
-		object-fit: cover;
-		object-position: top;
+		block-size: auto;
 	}
 </style>

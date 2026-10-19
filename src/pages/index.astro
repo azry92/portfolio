@@ -18,7 +18,11 @@ if (!atAuto) throw new Error('Missing at-auto-shoppe case study');
 		<Logo size="5rem" />
 		<h1>Product Designer, Web &amp; E-commerce</h1>
 		<div class="smoke__phones">
-			<PhoneFrame src={vehicleSelect} alt="AT Auto Shoppe product finder asking for the vehicle make" />
+			<PhoneFrame
+				src={vehicleSelect}
+				alt="AT Auto Shoppe product finder asking for the vehicle make"
+				style="--phone-safe-area-colour: #2a72ba"
+			/>
 			<PhoneFrame
 				src={vehicleSelect}
 				alt="The same product finder screen without the safe-area strip"
