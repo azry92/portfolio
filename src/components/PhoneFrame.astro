@@ -1,0 +1,120 @@
+---
+// iPhone 17 Pro frame, drawn in CSS. Pass a screenshot (`src` + `alt`)
+// or slot in a <video>. All geometry scales with the frame's width.
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+	src?: ImageMetadata;
+	alt?: string;
+	/** Height of the empty band behind the Dynamic Island, as a fraction of screen height. 0 removes it. */
+	safeArea?: number;
+	widths?: number[];
+	sizes?: string;
+	loading?: 'lazy' | 'eager';
+	class?: string;
+}
+
+const {
+	src,
+	alt = '',
+	safeArea = 0.06,
+	widths = [360, 540, 720, 1080],
+	sizes = '(min-width: 1200px) 360px, (min-width: 600px) 30vw, 85vw',
+	loading = 'lazy',
+	class: className,
+} = Astro.props;
+
+const hasSlot = Astro.slots.has('default');
+---
+
+<div class:list={['phone', className]} style={`--safe-area: ${safeArea}`}>
+	<div class="phone__body">
+		<div class="phone__screen">
+			<span class="phone__island" aria-hidden="true"></span>
+			{safeArea > 0 && <span class="phone__safe-area" aria-hidden="true"></span>}
+			<div class="phone__content">
+				{
+					hasSlot ? (
+						<slot />
+					) : (
+						src && (
+							<Picture
+								src={src}
+								alt={alt}
+								formats={['avif', 'webp']}
+								widths={widths.filter((w) => w <= src.width)}
+								sizes={sizes}
+								loading={loading}
+							/>
+						)
+					)
+				}
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	.phone {
+		--phone-edge: #a1a1a6;
+		--phone-bezel: 2.5cqi;
+		--phone-radius: 13cqi;
+
+		container-type: inline-size;
+		inline-size: 100%;
+		filter: drop-shadow(0 0.75rem 1.5rem rgb(0 0 0 / 0.16));
+	}
+
+	.phone__body {
+		padding: var(--phone-bezel);
+		border: 1.5px solid var(--phone-edge);
+		border-radius: var(--phone-radius);
+		background-color: #000;
+	}
+
+	.phone__screen {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		aspect-ratio: 1206 / 2622;
+		overflow: hidden;
+		border-radius: calc(var(--phone-radius) - var(--phone-bezel));
+		background-color: #000;
+	}
+
+	.phone__island {
+		position: absolute;
+		inset-block-start: 1.6%;
+		inset-inline-start: 50%;
+		z-index: 1;
+		inline-size: 30%;
+		block-size: 3%;
+		border-radius: 999px;
+		background-color: #000;
+		transform: translateX(-50%);
+	}
+
+	.phone__safe-area {
+		flex: 0 0 calc(var(--safe-area) * 100%);
+		background-color: var(--phone-safe-area-colour, #000);
+	}
+
+	.phone__content {
+		flex: 1;
+		min-block-size: 0;
+	}
+
+	.phone__content :global(picture),
+	.phone__content :global(img),
+	.phone__content :global(video) {
+		inline-size: 100%;
+		block-size: 100%;
+	}
+
+	.phone__content :global(img),
+	.phone__content :global(video) {
+		object-fit: cover;
+		object-position: top;
+	}
+</style>

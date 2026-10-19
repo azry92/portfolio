@@ -2,11 +2,42 @@
 // Temporary smoke test for the foundations. The real home page replaces this.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Logo from '../components/Logo.astro';
+import PhoneFrame from '../components/PhoneFrame.astro';
+import BrowserFrame from '../components/BrowserFrame.astro';
+import vehicleSelect from '../../portfolio-content/case-studies/at-auto-shoppe/images/product-finder-vehicle-select.png';
+import homeHero from '../../portfolio-content/case-studies/at-auto-shoppe/images/page-hero.png';
 ---
 
 <BaseLayout>
-	<div class="container">
+	<div class="container smoke">
 		<Logo size="5rem" />
 		<h1>Product Designer, Web &amp; E-commerce</h1>
+		<div class="smoke__phones">
+			<PhoneFrame src={vehicleSelect} alt="AT Auto Shoppe product finder asking for the vehicle make" />
+			<PhoneFrame
+				src={vehicleSelect}
+				alt="The same product finder screen without the safe-area strip"
+				safeArea={0}
+			/>
+		</div>
+		<BrowserFrame
+			src={homeHero}
+			alt="AT Auto Shoppe homepage with a before-and-after slider showing a modified 4x4"
+			aspect="16 / 10"
+		/>
 	</div>
 </BaseLayout>
+
+<style>
+	.smoke {
+		display: grid;
+		gap: var(--space-32);
+		padding-block: var(--space-48);
+	}
+
+	.smoke__phones {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(10rem, 18rem));
+		gap: var(--space-24);
+	}
+</style>
