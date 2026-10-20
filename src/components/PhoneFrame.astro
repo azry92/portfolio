@@ -17,6 +17,11 @@ interface Props {
 	class?: string;
 	/** Inline styles, e.g. "--phone-safe-area-colour: #2a72ba" to match a screenshot's header. */
 	style?: string;
+	/**
+	 * The screenshot to fit: the screen takes its height (plus the safe area) instead of the
+	 * iPhone's, so a short screenshot leaves no empty band. The island keeps its size.
+	 */
+	fitTo?: { width: number; height: number };
 }
 
 const {
@@ -29,12 +34,26 @@ const {
 	fetchpriority,
 	class: className,
 	style,
+	fitTo,
 } = Astro.props;
 
 const hasSlot = Astro.slots.has('default');
+
+// iPhone geometry is set against the screen's height; a fitted screen keeps it at the
+// iPhone's scale by working in screen widths (h = height per unit of width).
+const IPHONE_H = 2622 / 1206;
+const fitted = fitTo && fitTo.height / fitTo.width + safeArea * IPHONE_H;
+const geometry = fitted
+	? [
+			`--screen-ratio: 1 / ${fitted.toFixed(4)}`,
+			`--safe-area: ${((safeArea * IPHONE_H) / fitted).toFixed(4)}`,
+			`--island-top: ${((1.6 * IPHONE_H) / fitted).toFixed(3)}%`,
+			`--island-height: ${((3 * IPHONE_H) / fitted).toFixed(3)}%`,
+		]
+	: [`--safe-area: ${safeArea}`];
 ---
 
-<div class:list={['phone', className]} style={[`--safe-area: ${safeArea}`, style].filter(Boolean).join('; ')}>
+<div class:list={['phone', className]} style={[...geometry, style].filter(Boolean).join('; ')}>
 	<div class="phone__body">
 		<div class="phone__screen">
 			<span class="phone__island" aria-hidden="true"></span>
@@ -84,7 +103,7 @@ const hasSlot = Astro.slots.has('default');
 		position: relative;
 		display: flex;
 		flex-direction: column;
-		aspect-ratio: 1206 / 2622;
+		aspect-ratio: var(--screen-ratio, 1206 / 2622);
 		overflow: hidden;
 		border-radius: calc(var(--phone-radius) - var(--phone-bezel));
 		background-color: #000;
@@ -92,11 +111,11 @@ const hasSlot = Astro.slots.has('default');
 
 	.phone__island {
 		position: absolute;
-		inset-block-start: 1.6%;
+		inset-block-start: var(--island-top, 1.6%);
 		inset-inline-start: 50%;
 		z-index: 1;
 		inline-size: 30%;
-		block-size: 3%;
+		block-size: var(--island-height, 3%);
 		border-radius: 999px;
 		background-color: #000;
 		transform: translateX(-50%);

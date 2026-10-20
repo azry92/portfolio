@@ -17,9 +17,11 @@ interface Props {
 	frames: Frame[];
 	/** The media column's share of 12. */
 	span: number;
+	/** Phone screens take their screenshot's height, so a short one leaves no empty band. */
+	fitPhones?: boolean;
 }
 
-const { blocks, subsections, items, caption, frames, span } = Astro.props;
+const { blocks, subsections, items, caption, frames, span, fitPhones = false } = Astro.props;
 if (items.length !== frames.length) {
 	throw new Error(`MediaAside: ${frames.length} frames for ${items.length} images`);
 }
@@ -43,7 +45,7 @@ const Tag = caption ? 'figure' : 'div';
 	</div>
 	<Tag class="aside__media">
 		<div class:list={['aside__figures', { 'aside__figures--mixed': mixed }]}>
-			{items.map((figure, i) => <Figure figure={figure} frame={frames[i]} sizes={sizeFor(frames[i])} />)}
+			{items.map((figure, i) => <Figure figure={figure} frame={frames[i]} sizes={sizeFor(frames[i])} fitPhone={fitPhones} />)}
 		</div>
 		{caption && <figcaption class="aside__caption" set:html={caption} />}
 	</Tag>

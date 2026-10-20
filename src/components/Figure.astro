@@ -12,9 +12,11 @@ interface Props {
 	figure: Figure;
 	frame?: Frame;
 	sizes: string;
+	/** In a phone frame, fit the screen to the screenshot's height instead of the iPhone's. */
+	fitPhone?: boolean;
 }
 
-const { figure, frame = 'none', sizes } = Astro.props;
+const { figure, frame = 'none', sizes, fitPhone = false } = Astro.props;
 const { image, alt, caption } = figure;
 const widths = (frame === 'phone' ? [240, 360, 540, 720] : [480, 960, 1440, 1920]).filter((w) => w <= image.width);
 // SVG diagrams go out as they are; there is nothing to gain from rasterising them.
@@ -24,7 +26,7 @@ const isSvg = image.format === 'svg';
 <figure class:list={['figure', `figure--${frame}`]}>
 	{
 		frame === 'phone' ? (
-			<PhoneFrame>
+			<PhoneFrame fitTo={fitPhone ? image : undefined}>
 				<ZoomLink image={image}>
 					<Picture src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
 				</ZoomLink>
