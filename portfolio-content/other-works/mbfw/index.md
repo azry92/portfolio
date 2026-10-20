@@ -57,7 +57,7 @@ The schedule card listed day one's programme hour by hour. When opening-day seat
 <!-- layout: brand page grid, then search result screenshot -->
 Each designer got a page from the same template (name, collection imagery, profile), so adding a brand during the run-up was a content task rather than a design task. The site ranked first on Google for "bridal fashion week" in Malaysia (checked September 2026).
 ![Designer pages built from one template](./images/brands-pages.png)
-![Invited brands page on mobile, listing the designers with a link to each page.](./images/mobile-view-invited-brands.png)
+![One designer page and the invited brands list.](./images/mobile-view-invited-brands.png)
 *The invited brands list and one designer page.*
 ## Built to be reused: MBFW 2.0
 <!-- layout: two images side by side -->
