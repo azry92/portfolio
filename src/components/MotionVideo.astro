@@ -17,10 +17,10 @@ const { src, poster, alt } = Astro.props;
 const still = await getImage({ src: poster, width: poster.width, format: 'webp' });
 ---
 
-<div class="motion-video" data-motion-video style={`--video-width: ${poster.width}px`}>
+<figure class="motion-video" data-motion-video style={`--video-width: ${poster.width}px`}>
 	<video src={src} poster={still.src} width={poster.width} height={poster.height} aria-label={alt} muted loop playsinline preload="none"></video>
 	<button class="motion-video__toggle" type="button" data-motion-video-toggle hidden>Play</button>
-</div>
+</figure>
 
 <script>
 	import '../scripts/motion-video';
