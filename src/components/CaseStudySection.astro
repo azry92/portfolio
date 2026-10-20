@@ -1,14 +1,20 @@
 ---
 // One ## section of a case study, laid out by its layout note.
 import CaseStudyBlocks from './CaseStudyBlocks.astro';
+import Figure from './Figure.astro';
+import FigureGrid from './FigureGrid.astro';
+import LabelledStack from './LabelledStack.astro';
 import PhonesThenBrowser from './PhonesThenBrowser.astro';
+import SplitBlocks from './SplitBlocks.astro';
 import StageRows from './StageRows.astro';
 import type { Frame, Layout } from '../lib/case-study/layouts';
-import type { Section, Subsection } from '../lib/case-study/parse';
+import type { Block, Section, Subsection } from '../lib/case-study/parse';
 
 interface Props {
 	section: Section;
 }
+
+type Run = Extract<Block, { kind: 'figures' }>;
 
 const { section } = Astro.props;
 const layout: Layout = section.layout ?? { kind: 'stack' };
@@ -16,12 +22,37 @@ const layout: Layout = section.layout ?? { kind: 'stack' };
 const frameFor = (own: Layout | undefined, fallback: Frame): Frame =>
 	own?.kind === 'row' ? own.frame : fallback;
 const sectionFrame: Frame = layout.kind === 'headline-row' ? 'phone' : frameFor(layout, 'none');
+const uniform = (own: Layout | undefined) => own?.kind === 'row' && own.uniform;
 
 const prose = section.blocks.filter((block) => block.kind !== 'figures');
-const figures = section.blocks.filter((block) => block.kind === 'figures');
-if (layout.kind === 'phones-then-browser' && figures.length !== 1) {
-	throw new Error(`"${section.heading}": "row of phones, then full-width browser screenshot" needs exactly one run of images`);
+const figures = section.blocks.filter((block): block is Run => block.kind === 'figures');
+const needsOneRun = (note: string, min: number): Run => {
+	if (figures.length !== 1 || figures[0].items.length < min) {
+		throw new Error(`"${section.heading}": "${note}" needs exactly one run of at least ${min} images`);
+	}
+	return figures[0];
+};
+
+const run =
+	layout.kind === 'phones-then-browser'
+		? needsOneRun('row of phones, then full-width browser screenshot', 2)
+		: layout.kind === 'headline-desktop-phones'
+			? needsOneRun('desktop view next to body and a row of phones under', 2)
+			: layout.kind === 'two-column'
+				? needsOneRun('two columns', 2)
+				: undefined;
+const [lead, ...others] = run?.items ?? [];
+
+// The sitemap layout draws its subsection (the shipped navigation) in its own right-hand column.
+if (layout.kind === 'sitemap-nav' && (figures.length !== 1 || section.subsections.length !== 1)) {
+	throw new Error(`"${section.heading}": the sitemap layout needs one sitemap image and one navigation subsection`);
 }
+
+const subsectionRuns = (sub: Subsection): Run => {
+	const runs = sub.blocks.filter((block): block is Run => block.kind === 'figures');
+	if (runs.length !== 1) throw new Error(`"${sub.heading}": a labelled stack needs exactly one run of images`);
+	return runs[0];
+};
 
 const subsectionClass = (sub: Subsection) => [
 	'cs-subsection',
@@ -39,30 +70,80 @@ const subsectionClass = (sub: Subsection) => [
 				{section.heading}
 			</h2>
 			{layout.kind === 'split' ? (
-				<div class="cs-split">
-					<div class="cs-split__copy">
-						<CaseStudyBlocks blocks={prose} />
-					</div>
-					<div class="cs-split__media">
-						<CaseStudyBlocks blocks={figures} columns={1} />
-					</div>
-				</div>
-			) : layout.kind === 'phones-then-browser' ? (
+				<SplitBlocks blocks={section.blocks} frame={layout.frame} />
+			) : layout.kind === 'phones-then-browser' && run ? (
 				<>
 					<CaseStudyBlocks blocks={prose} />
-					<PhonesThenBrowser run={figures[0]} />
+					<PhonesThenBrowser run={run} />
+				</>
+			) : layout.kind === 'headline-desktop-phones' && run ? (
+				<>
+					<div class="cs-desktop">
+						<CaseStudyBlocks blocks={prose} />
+						<Figure figure={lead} frame="browser" sizes="(min-width: 1248px) 700px, 100vw" />
+					</div>
+					<FigureGrid items={others} frame="phone" />
+				</>
+			) : layout.kind === 'two-column' && run ? (
+				<div class="cs-columns">
+					<div class="cs-columns__column">
+						<CaseStudyBlocks blocks={prose} />
+						<Figure figure={lead} frame="browser" sizes="(min-width: 1248px) 576px, 100vw" />
+					</div>
+					<div class="cs-columns__column">
+						{others.map((figure) => (
+							<Figure figure={figure} frame="browser" sizes="(min-width: 1248px) 576px, 100vw" />
+						))}
+					</div>
+				</div>
+			) : layout.kind === 'stats' ? (
+				<>
+					<div class="cs-stats__source">
+						<CaseStudyBlocks blocks={prose.filter((block) => block.kind === 'prose')} />
+					</div>
+					<CaseStudyBlocks blocks={prose.filter((block) => block.kind !== 'prose')} />
+				</>
+			) : layout.kind === 'sitemap-nav' ? (
+				<>
+					<CaseStudyBlocks blocks={prose} />
+					<div class="cs-sitemap">
+						<CaseStudyBlocks blocks={figures} columns={1} />
+						{section.subsections.map((sub) => (
+							<section class="cs-subsection" aria-labelledby={sub.id}>
+								<h3 id={sub.id} class="cs-subsection__title">
+									{sub.heading}
+								</h3>
+								<CaseStudyBlocks blocks={sub.blocks} />
+							</section>
+						))}
+					</div>
 				</>
 			) : (
-				<CaseStudyBlocks blocks={section.blocks} frame={sectionFrame} columns={layout.kind === 'full' ? 1 : undefined} />
+				<CaseStudyBlocks
+					blocks={section.blocks}
+					frame={sectionFrame}
+					columns={layout.kind === 'full' ? 1 : undefined}
+					uniform={uniform(layout)}
+				/>
 			)}
-			{section.subsections.map((sub) => (
-				<section class:list={subsectionClass(sub)} aria-labelledby={sub.id}>
-					<h3 id={sub.id} class="cs-subsection__title">
-						{sub.heading}
-					</h3>
-					<CaseStudyBlocks blocks={sub.blocks} frame={frameFor(sub.layout, sectionFrame)} />
-				</section>
-			))}
+			{layout.kind !== 'sitemap-nav' &&
+				section.subsections.map((sub) => (
+					<section class:list={subsectionClass(sub)} aria-labelledby={sub.id}>
+						<h3 id={sub.id} class="cs-subsection__title">
+							{sub.heading}
+						</h3>
+						{sub.layout?.kind === 'split' ? (
+							<SplitBlocks blocks={sub.blocks} frame={sub.layout.frame} />
+						) : sub.layout?.kind === 'labelled-stack' ? (
+							<>
+								<CaseStudyBlocks blocks={sub.blocks.filter((block) => block.kind !== 'figures')} />
+								<LabelledStack labels={sub.layout.labels} run={subsectionRuns(sub)} />
+							</>
+						) : (
+							<CaseStudyBlocks blocks={sub.blocks} frame={frameFor(sub.layout, sectionFrame)} uniform={uniform(sub.layout)} />
+						)}
+					</section>
+				))}
 		</section>
 	)
 }
@@ -104,9 +185,23 @@ const subsectionClass = (sub: Subsection) => [
 		font-size: var(--text-24);
 	}
 
-	.cs-split {
+	/* Logo and other uniform rows stay small: a mark doesn't need the full width. */
+	.cs-subsection :global(.figure-grid--uniform) {
+		max-inline-size: 48rem;
+	}
+
+	.cs-desktop,
+	.cs-columns,
+	.cs-columns__column,
+	.cs-sitemap {
 		display: grid;
 		gap: var(--space-32);
+		align-content: start;
+	}
+
+	.cs-stats__source :global(.prose) {
+		color: var(--color-text-muted);
+		font-size: var(--text-14);
 	}
 
 	@media (min-width: 1200px) {
@@ -118,15 +213,26 @@ const subsectionClass = (sub: Subsection) => [
 			font-size: var(--text-40);
 		}
 
-		.cs-split {
+		.cs-section--headline-desktop-phones .cs-section__title {
+			font-size: var(--text-48);
+		}
+
+		.cs-desktop {
 			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
 			gap: var(--space-48);
 			align-items: start;
 		}
 
-		.cs-split__media {
-			display: grid;
-			gap: var(--space-32);
+		.cs-columns {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: var(--space-48);
+			align-items: start;
+		}
+
+		.cs-sitemap {
+			grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+			gap: var(--space-48);
+			align-items: start;
 		}
 	}
 </style>

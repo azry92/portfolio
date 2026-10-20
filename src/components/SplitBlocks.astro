@@ -1,0 +1,45 @@
+---
+// "Copy left, … right": prose in one column, figures in the other. Website
+// screenshots stack; phones keep their row. Stacks below 1200px.
+import CaseStudyBlocks from './CaseStudyBlocks.astro';
+import type { Frame } from '../lib/case-study/layouts';
+import type { Block } from '../lib/case-study/parse';
+
+interface Props {
+	blocks: Block[];
+	frame: Frame;
+}
+
+const { blocks, frame } = Astro.props;
+const copy = blocks.filter((block) => block.kind !== 'figures');
+const figures = blocks.filter((block) => block.kind === 'figures');
+---
+
+<div class="cs-split">
+	<div class="cs-split__copy">
+		<CaseStudyBlocks blocks={copy} />
+	</div>
+	<div class="cs-split__media">
+		<CaseStudyBlocks blocks={figures} frame={frame} columns={frame === 'phone' ? undefined : 1} />
+	</div>
+</div>
+
+<style>
+	.cs-split {
+		display: grid;
+		gap: var(--space-32);
+	}
+
+	@media (min-width: 1200px) {
+		.cs-split {
+			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+			gap: var(--space-48);
+			align-items: start;
+		}
+
+		.cs-split__media {
+			display: grid;
+			gap: var(--space-32);
+		}
+	}
+</style>

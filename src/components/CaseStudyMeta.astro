@@ -1,6 +1,7 @@
 ---
-// Project facts under the case study title: role, team, timeline, platform, tools, live site.
+// Project facts under the case study title: client, role, team, timeline, platform, tools, live site.
 interface Props {
+	client?: string;
 	role: string;
 	team: string;
 	timeline: string;
@@ -9,11 +10,19 @@ interface Props {
 	liveUrl?: string;
 }
 
-const { role, team, timeline, platform, tools, liveUrl } = Astro.props;
+const { client, role, team, timeline, platform, tools, liveUrl } = Astro.props;
 const host = liveUrl ? new URL(liveUrl).host.replace(/^www\./, '') : undefined;
 ---
 
 <dl class="meta">
+	{
+		client && (
+			<div>
+				<dt>Client</dt>
+				<dd>{client}</dd>
+			</div>
+		)
+	}
 	<div>
 		<dt>Role</dt>
 		<dd>{role}</dd>

@@ -14,9 +14,11 @@ interface Props {
 	caption?: string;
 	/** Force a column count: 1 stacks figures in a narrow column; stage rows share their longest row's count. */
 	columns?: number;
+	/** Box every image in the same square, so marks of different proportions read at one size. */
+	uniform?: boolean;
 }
 
-const { items, frame = 'none', caption, columns = items.length } = Astro.props;
+const { items, frame = 'none', caption, columns = items.length, uniform = false } = Astro.props;
 const across = Math.min(columns, 5);
 
 const sizes =
@@ -29,7 +31,7 @@ const sizes =
 const Tag = caption ? 'figure' : 'div';
 ---
 
-<Tag class:list={['figure-grid', `figure-grid--${frame}`]} style={`--across: ${across}; --count: ${columns}`}>
+<Tag class:list={['figure-grid', `figure-grid--${frame}`, { 'figure-grid--uniform': uniform }]} style={`--across: ${across}; --count: ${columns}`}>
 	<div class="figure-grid__items" data-across={across}>
 		{items.map((figure) => <Figure figure={figure} frame={frame} sizes={sizes} />)}
 	</div>
@@ -105,6 +107,11 @@ const Tag = caption ? 'figure' : 'div';
 		.figure-grid__items:not([data-across='1']) {
 			--columns: var(--across);
 		}
+	}
+
+	.figure-grid--uniform .figure-grid__items :global(.figure__image) {
+		aspect-ratio: 1;
+		object-fit: contain;
 	}
 
 	.figure-grid__caption {

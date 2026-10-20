@@ -1,0 +1,89 @@
+---
+// Figures as cards, the first one largest: one column, two from 600px with the
+// first across both, and from 1200px the first beside the others stacked.
+import type { Stat } from '../lib/case-study/parse';
+
+interface Props {
+	items: Stat[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="stat-cards" role="list" style={`--rest: ${Math.max(items.length - 1, 1)}`}>
+	{
+		items.map((stat) => (
+			<li class="stat-card">
+				<p class="stat-card__value">{stat.value}</p>
+				<p class="stat-card__label" set:html={stat.label} />
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.stat-cards {
+		display: grid;
+		gap: var(--space-16);
+		padding: 0;
+		list-style: none;
+	}
+
+	.stat-card {
+		display: grid;
+		gap: var(--space-8);
+		align-content: start;
+		padding: var(--space-24);
+		border: var(--border-width) solid var(--color-border);
+		border-radius: var(--radius-lg);
+		background-color: var(--color-surface);
+	}
+
+	.stat-card__value {
+		font-family: var(--font-display);
+		font-size: var(--text-40);
+		font-weight: var(--weight-bold);
+		line-height: 1;
+	}
+
+	.stat-card__label {
+		max-inline-size: 32ch;
+	}
+
+	.stat-card:first-child .stat-card__value {
+		font-size: var(--text-48);
+	}
+
+	@media (min-width: 600px) {
+		.stat-cards {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.stat-card:first-child {
+			grid-column: 1 / -1;
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.stat-cards {
+			grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+			gap: var(--space-24);
+		}
+
+		/* The lead card takes the left column, as tall as the others stacked on the right. */
+		.stat-card:first-child {
+			grid-column: 1;
+			grid-row: 1 / span var(--rest);
+			align-content: center;
+			padding: var(--space-48);
+		}
+
+		.stat-card:first-child .stat-card__value {
+			font-size: var(--text-64);
+		}
+
+		.stat-card:first-child .stat-card__label {
+			font-size: var(--text-18);
+		}
+	}
+</style>

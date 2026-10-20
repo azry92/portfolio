@@ -12,7 +12,7 @@ import { parseCaseStudy } from '../../lib/case-study/parse';
 export async function getStaticPaths() {
 	// Case studies whose layout notes the template can draw. The others join as
 	// their own steps add the layouts they need. (getStaticPaths is hoisted, so this lives inside it.)
-	const READY = new Set(['at-auto-shoppe']);
+	const READY = new Set(['at-auto-shoppe', 'planetstewards']);
 	const entries = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
 	// Neighbours come from every case study, so the pager already points at the full set.
 	const at = (i: number) => entries[(i + entries.length) % entries.length];

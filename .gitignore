@@ -23,5 +23,5 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 portfolio-content/references/
-# Case study videos: none are used on the site yet
-portfolio-content/case-studies/*/videos/
+# AT Auto Shoppe videos are source material, not used on the site
+portfolio-content/case-studies/at-auto-shoppe/videos/

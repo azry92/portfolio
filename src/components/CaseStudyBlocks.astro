@@ -2,7 +2,10 @@
 // Renders a run of parsed blocks with the component for each kind.
 import DataTable from './DataTable.astro';
 import FigureGrid from './FigureGrid.astro';
+import MenuTree from './MenuTree.astro';
+import MotionVideo from './MotionVideo.astro';
 import Prose from './Prose.astro';
+import StatCards from './StatCards.astro';
 import SwatchRow from './SwatchRow.astro';
 import type { Frame } from '../lib/case-study/layouts';
 import type { Block } from '../lib/case-study/parse';
@@ -12,9 +15,11 @@ interface Props {
 	frame?: Frame;
 	/** Passed to every figure row, e.g. 1 to stack figures in a narrow column. */
 	columns?: number;
+	/** Passed to every figure row: box each image at one size. */
+	uniform?: boolean;
 }
 
-const { blocks, frame, columns } = Astro.props;
+const { blocks, frame, columns, uniform } = Astro.props;
 ---
 
 {
@@ -25,8 +30,14 @@ const { blocks, frame, columns } = Astro.props;
 			<DataTable head={block.head} rows={block.rows} />
 		) : block.kind === 'swatches' ? (
 			<SwatchRow items={block.items} />
+		) : block.kind === 'tree' ? (
+			<MenuTree items={block.items} />
+		) : block.kind === 'stats' ? (
+			<StatCards items={block.items} />
+		) : block.kind === 'video' ? (
+			<MotionVideo src={block.src} poster={block.poster} alt={block.alt} />
 		) : (
-			<FigureGrid items={block.items} caption={block.caption} frame={frame} columns={columns} />
+			<FigureGrid items={block.items} caption={block.caption} frame={frame} columns={columns} uniform={uniform} />
 		),
 	)
 }

@@ -2,12 +2,14 @@
 title: "PLANETSTEWARDS: identity and website design"
 summary: "A visual identity and website for an academic space-governance project, redesigned to put human activity in orbit, on the Moon and on Mars at the centre of the story while staying credible to academic partners."
 role: "Product Designer"
+client: "Utrecht University"
 team: "With September Khu, Project Coordinator"
 timeline: "Apr 2024 – Jul 2024"
 platform: "Wix"
 tools: ["Wix", "Adobe Illustrator", "CapCut"]
 live_url: "https://www.planetstewards.eu/"
 order: 2
+accent: "#003399"
 cover: ./images/page-hero-phone.png
 cover_alt: "PLANETSTEWARDS homepage on mobile showing the project's mission statement"
 ---
@@ -94,7 +96,7 @@ The symposium needed a route from first visit to submitted abstract. The menu hi
 *Each homepage section pairs a planetary body with a strip of human activity there: Earth, then the Moon, then Mars.*
 ### Space debris motion piece
 <!-- layout: full-width video, body below -->
-<!-- video: ./images/space-debris-motion-piece-01-homepage.mp4 | autoplay, muted, loop, playsinline, show a still frame when reduced motion is on -->
+<!-- video: ./videos/space-debris-motion-piece-01-homepage.mp4 | autoplay, muted, loop, playsinline, show a still frame when reduced motion is on | alt: Earth seen from space, ringed by drifting debris -->
 A reviewer asked where the human activity was. The imagery showed planets, not what people have put around them. I produced a short loop of Earth surrounded by orbital debris. The footage was sourced from Freepik and composited and animated in CapCut. It is illustrative, not data-driven. Used on the homepage.
 ## Built to be maintained by researchers
 <!-- layout: two columns; left: copy then publications screenshot; right: news screenshots -->

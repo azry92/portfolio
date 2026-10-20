@@ -1,0 +1,60 @@
+---
+// A site menu drawn as live HTML from a Markdown list: top-level items as tiles,
+// sub-pages indented under their parent. A list, not a <nav>: it shows a menu, it isn't one.
+import type { TreeItem } from '../lib/case-study/parse';
+
+interface Props {
+	items: TreeItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="menu-tree" role="list">
+	{
+		items.map((item) => (
+			<li>
+				<span class="menu-tree__item" set:html={item.label} />
+				{item.children.length > 0 && (
+					<ul class="menu-tree__children" role="list">
+						{item.children.map((child) => (
+							<li>
+								<span class="menu-tree__item" set:html={child.label} />
+							</li>
+						))}
+					</ul>
+				)}
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.menu-tree,
+	.menu-tree__children {
+		display: grid;
+		gap: var(--space-8);
+		padding: 0;
+		list-style: none;
+	}
+
+	.menu-tree__children {
+		margin-block-start: var(--space-8);
+		padding-inline-start: var(--space-24);
+		border-inline-start: 2px solid var(--accent, var(--color-border));
+		margin-inline-start: var(--space-12);
+	}
+
+	.menu-tree__item {
+		display: block;
+		padding: var(--space-12) var(--space-16);
+		border: var(--border-width) solid var(--color-border);
+		border-radius: var(--radius-sm);
+		background-color: var(--color-surface);
+		line-height: var(--leading-heading);
+	}
+
+	.menu-tree > li > .menu-tree__item {
+		font-weight: var(--weight-semibold);
+	}
+</style>

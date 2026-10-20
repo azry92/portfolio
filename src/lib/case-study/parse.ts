@@ -12,7 +12,7 @@ import { gfmFromMarkdown } from 'mdast-util-gfm';
 import { toHast } from 'mdast-util-to-hast';
 import { toHtml } from 'hast-util-to-html';
 import { gfm } from 'micromark-extension-gfm';
-import { resolveImage } from './images';
+import { resolveImage, resolveVideo } from './images';
 import { layoutNote, parseLayout, type Layout } from './layouts';
 
 export interface Figure {
@@ -28,12 +28,30 @@ export interface Swatch {
 	use: string;
 }
 
+/** One menu item and the items under it. */
+export interface TreeItem {
+	/** Label HTML (inline only). */
+	label: string;
+	children: TreeItem[];
+}
+
+export interface Stat {
+	/** The figure, from the bold text that opens the list item. */
+	value: string;
+	/** The rest of the item, as inline HTML. */
+	label: string;
+}
+
 export type Block =
 	| { kind: 'prose'; html: string }
 	| { kind: 'table'; head: string[]; rows: string[][] }
 	| { kind: 'swatches'; items: Swatch[] }
 	/** A run of images; `caption` is set when one caption covers the whole run. */
-	| { kind: 'figures'; items: Figure[]; caption?: string };
+	| { kind: 'figures'; items: Figure[]; caption?: string }
+	| { kind: 'tree'; items: TreeItem[] }
+	| { kind: 'stats'; items: Stat[] }
+	/** A muted, looping motion piece; the poster stands in for it under reduced motion. */
+	| { kind: 'video'; src: string; poster: ImageMetadata; alt: string };
 
 export interface Subsection {
 	id: string;
@@ -113,6 +131,44 @@ function swatches(list: List, source: string): Swatch[] {
 	});
 }
 
+function menuItems(list: List): TreeItem[] {
+	return list.children.map((item: ListItem) => {
+		const [label, nested] = item.children;
+		return {
+			label: label?.type === 'paragraph' ? inlineHtml(label.children) : '',
+			children: nested?.type === 'list' ? menuItems(nested) : [],
+		};
+	});
+}
+
+function stats(list: List, source: string): Stat[] {
+	return list.children.map((item: ListItem) => {
+		const [paragraph] = item.children;
+		const [first, ...rest] = paragraph?.type === 'paragraph' ? paragraph.children : [];
+		if (first?.type !== 'strong') {
+			throw new Error(`${source}: a stat card must open with its figure in bold, got "${text(item).trim()}"`);
+		}
+		if (rest[0]?.type === 'text') rest[0].value = rest[0].value.trimStart();
+		return { value: text(first), label: inlineHtml(rest) };
+	});
+}
+
+// The only behaviour the template draws: muted, autoplaying, looping, inline, with the poster under reduced motion.
+const videoFlags = 'autoplay, muted, loop, playsinline, show a still frame when reduced motion is on';
+
+/** Reads a <!-- video: path | flags | alt: text --> note, or returns undefined for any other comment. */
+function videoNote(html: string, slug: string, source: string): Extract<Block, { kind: 'video' }> | undefined {
+	const note = html.match(/^<!--\s*video:\s*([\s\S]*?)\s*-->$/)?.[1];
+	if (note === undefined) return undefined;
+	const match = note.match(/^(\S+\.mp4) \| (.+) \| alt: (.+)$/);
+	if (!match) throw new Error(`${source}: video note must read "path.mp4 | flags | alt: text", got "${note}"`);
+	const [, path, flags, alt] = match;
+	if (flags !== videoFlags) throw new Error(`${source}: video flags must read "${videoFlags}", got "${flags}"`);
+	// The poster sits with the images, named after the video.
+	const name = path.match(/([^/]+)\.mp4$/)![1];
+	return { kind: 'video', src: resolveVideo(slug, path), poster: resolveImage(slug, `./images/${name}-poster.png`), alt };
+}
+
 function table(node: Table): Block {
 	const [head, ...rows] = node.children.map((row) => row.children.map((cell) => inlineHtml(cell.children)));
 	return { kind: 'table', head, rows };
@@ -188,6 +244,12 @@ export function parseCaseStudy(slug: string, body: string): Section[] {
 				return;
 			}
 			case 'html': {
+				const video = videoNote(node.value.trim(), slug, source);
+				if (video) {
+					flush();
+					push(video);
+					return;
+				}
 				const note = layoutNote(node.value.trim());
 				if (note === undefined) return;
 				const section = target();
@@ -211,6 +273,10 @@ export function parseCaseStudy(slug: string, body: string): Section[] {
 			case 'list':
 				flush();
 				if (target().layout?.kind === 'swatches') push({ kind: 'swatches', items: swatches(node, source) });
+				else if (target().layout?.kind === 'stats') push({ kind: 'stats', items: stats(node, source) });
+				// Under "shipped navigation", a subsection's list is the menu itself.
+				else if (current !== sections[sections.length - 1] && sections[sections.length - 1].layout?.kind === 'sitemap-nav')
+					push({ kind: 'tree', items: menuItems(node) });
 				else push({ kind: 'prose', html: toHtml(toHast(node)) });
 				return;
 			case 'table':

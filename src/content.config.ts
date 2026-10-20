@@ -31,6 +31,8 @@ const caseStudies = defineCollection({
 	schema: (context) =>
 		workBase(context).extend({
 			role: z.string(),
+			/** Who the work was for, when that isn't the project itself. */
+			client: z.string().optional(),
 			/** Brand colour for the hero, stage band and pager. The site palette is used without it. */
 			accent: z
 				.string()
