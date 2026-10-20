@@ -9,13 +9,27 @@ interface Props {
 }
 
 const { items } = Astro.props;
+
+// Screen readers can read "6m 2s" as metres; spell out durations for them.
+const units: Record<string, string> = { h: 'hour', m: 'minute', s: 'second' };
+const spoken = (value: string) =>
+	value.replace(/(\d+)([hms])\b/g, (_, n: string, unit: string) => `${n} ${units[unit]}${n === '1' ? '' : 's'}`);
 ---
 
 <ul class="stat-cards" role="list" style={`--rest: ${Math.max(items.length - 1, 1)}`}>
 	{
 		items.map((stat) => (
 			<li class="stat-card">
-				<p class="stat-card__value">{stat.value}</p>
+				<p class="stat-card__value">
+					{spoken(stat.value) === stat.value ? (
+						stat.value
+					) : (
+						<>
+							<span aria-hidden="true">{stat.value}</span>
+							<span class="visually-hidden">{spoken(stat.value)}</span>
+						</>
+					)}
+				</p>
 				<p class="stat-card__label" set:html={stat.label} />
 			</li>
 		))
