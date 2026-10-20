@@ -2,9 +2,9 @@
 title: "Precious Wedding: fair landing pages and RSVP flow"
 summary: "A reusable Wix landing-page kit for a bridal studio's wedding fairs that turned each new campaign into a content swap and routed visitors into WhatsApp enquiries sales could trace to the website."
 glance:
-  problem: "Every fair’s landing page started from scratch, and leads couldn’t be traced to the site."
-  did: "Built a reusable Wix section kit and made WhatsApp the main enquiry route."
-  outcome: "82 RSVP responses for Fair 4.0, April 2025."
+  problem: "Every fair page started from scratch."
+  did: "Built a reusable Wix kit, WhatsApp first."
+  outcome: "82 RSVPs for Fair 4.0"
 role: "Marketing Executive (Web & Design)"
 team: "With the marketing team"
 timeline: "May 2024 – Jul 2025"

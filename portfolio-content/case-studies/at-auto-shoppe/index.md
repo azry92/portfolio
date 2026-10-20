@@ -2,9 +2,9 @@
 title: "AT Auto Shoppe: catalogue and webstore design"
 summary: "A Shopify store for a 4x4 parts dealer, built around vehicle-first search so customers find parts that fit their make and model, and the sales team updates products without a developer."
 glance:
-  problem: "The old template catalogue had no way to search by vehicle."
-  did: "Designed and built the Shopify store around a make, model and year finder."
-  outcome: "Shipped a custom vehicle finder that replaced a paid make, model and year app."
+  problem: "No way to search by vehicle."
+  did: "Built a Shopify store around a vehicle finder."
+  outcome: "A custom finder replaced a paid app."
 role: "Product Designer & Shopify Developer"
 team: "Solo, with the sales team"
 timeline: "Apr 2026 – Present"
@@ -18,7 +18,7 @@ cover_alt: "AT Auto Shoppe homepage with a before-and-after slider showing a mod
 ---
 ## Overview
 <!-- layout: hero, title and overview left, browser mockup right -->
-The old site was a template catalogue with no way to search by vehicle. 4×4 customers shop by vehicle first (make, model, year) and only then by category, so the store had to work the same way.
+ 4×4 customers shop by vehicle first (make, model, year) and only then by category, so the store had to work the same way.
 ## Requirements and process
 <!-- layout: requirements list, then palette swatches, then reference images in a row -->
 - Move the brand from a template catalogue to its own Shopify store.

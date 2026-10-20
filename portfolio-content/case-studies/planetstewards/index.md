@@ -2,9 +2,9 @@
 title: "PLANETSTEWARDS: identity and website design"
 summary: "A visual identity and website for an academic space-governance project, redesigned to put human activity in orbit, on the Moon and on Mars at the centre of the story while staying credible to academic partners."
 glance:
-  problem: "The first imagery read as astronomy, with no human activity in it."
-  did: "Co-designed the identity and website, and produced the space-debris motion piece."
-  outcome: "1,679 unique visitors in a year, 61% from outside the Netherlands."
+  problem: "The imagery showed no human activity."
+  did: "Co-designed the identity, site and motion piece."
+  outcome: "1,679 visitors, 61% from abroad."
 role: "Product Designer"
 client: "Utrecht University"
 team: "September Khu, Project Coordinator"

@@ -137,17 +137,19 @@ const { title, glance, client, role, team, timeline, platform, tools, live_url, 
 			padding-block-end: var(--space-64);
 		}
 
-		/* Fill the band's height and run out to the right edge of the viewport. */
+		/* Fill the band's height, centred against the copy, and run out to the right
+		   edge of the viewport. */
 		.hero__cover {
 			display: flex;
-			align-items: flex-end;
+			align-items: center;
 			margin-block-start: calc(var(--space-64) * -1);
 			margin-inline: 0 calc((100vw - min(100vw, var(--content-max) + 2 * var(--gutter))) / -2 - var(--gutter));
 		}
 
 		.hero__cover :global(picture) {
 			inline-size: 100%;
-			mask-image: linear-gradient(to right, transparent, #000 25%), linear-gradient(to bottom, transparent, #000 25%);
+			/* Centred, the bottom edge sits inside the band too, so it fades like the top. */
+			mask-image: linear-gradient(to right, transparent, #000 25%), linear-gradient(to bottom, transparent, #000 25%, #000 75%, transparent);
 			mask-composite: intersect;
 		}
 

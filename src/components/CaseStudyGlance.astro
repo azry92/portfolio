@@ -33,7 +33,7 @@ const { problem, did, outcome, resultsId } = Astro.props;
 <style>
 	.glance {
 		display: grid;
-		gap: var(--space-16);
+		gap: var(--space-8);
 		padding-block-start: var(--space-16);
 		border-block-start: var(--border-width) solid color-mix(in srgb, currentColor 40%, transparent);
 	}
@@ -42,15 +42,8 @@ const { problem, did, outcome, resultsId } = Astro.props;
 		font-size: var(--text-14);
 	}
 
-	dd {
-		font-size: var(--text-18);
-		font-weight: var(--weight-semibold);
-		line-height: 1.4;
-	}
-
 	.glance__results {
 		margin-inline-start: var(--space-4);
-		font-weight: var(--weight-regular);
 		white-space: nowrap;
 	}
 </style>
