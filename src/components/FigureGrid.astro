@@ -3,6 +3,7 @@
 // Phones: from 600px, one column per phone at its max width, 48px apart and centred;
 // 2 per row below that, with an odd last phone centred.
 // Other images: rows of 2–3 stack below 600px; rows of 4–5 go 2, then 3, then all across from 1200px.
+// Below 600px a row of three or more becomes a snap row instead (see global.css).
 // Uniform rows stay one row at every width.
 import Figure from './Figure.astro';
 import type { Frame } from '../lib/case-study/layouts';
@@ -21,19 +22,20 @@ interface Props {
 
 const { items, frame = 'none', caption, columns = items.length, uniform = false } = Astro.props;
 const across = Math.min(columns, 5);
+const snap = items.length >= 3 && across > 1 && !uniform;
 
 const sizes =
 	frame === 'phone'
-		? `(min-width: 1200px) 240px, (min-width: 600px) ${Math.round(100 / columns)}vw, 45vw`
+		? `(min-width: 1200px) 240px, (min-width: 600px) ${Math.round(100 / columns)}vw, ${snap ? 40 : 45}vw`
 		: across === 1
 			? '(min-width: 1248px) 1200px, 100vw'
-			: `(min-width: 1248px) ${Math.round(1200 / across)}px, (min-width: 600px) ${Math.round(100 / across)}vw, 100vw`;
+			: `(min-width: 1248px) ${Math.round(1200 / across)}px, (min-width: 600px) ${Math.round(100 / across)}vw, ${snap ? 84 : 100}vw`;
 
 const Tag = caption ? 'figure' : 'div';
 ---
 
 <Tag class:list={['figure-grid', `figure-grid--${frame}`, { 'figure-grid--uniform': uniform }]} style={`--across: ${across}; --count: ${columns}`}>
-	<div class="figure-grid__items" data-across={across}>
+	<div class:list={['figure-grid__items', { 'snap-row': snap }]} data-across={across}>
 		{items.map((figure) => <Figure figure={figure} frame={frame} sizes={sizes} />)}
 	</div>
 	{caption && <figcaption class="figure-grid__caption" set:html={caption} />}
@@ -84,6 +86,34 @@ const Tag = caption ? 'figure' : 'div';
 		grid-row: span 2;
 		grid-template-rows: subgrid;
 		row-gap: var(--space-12);
+	}
+
+	/* Snap row: two phones and a peek, or one image and a peek. Every figure spans
+	   an image row and a caption row, so captions still start on one line. */
+	@media (max-width: 599.98px) {
+		.figure-grid__items.snap-row {
+			grid-template-columns: none;
+			grid-template-rows: auto auto;
+			gap: 0 var(--space-16);
+		}
+
+		.figure-grid:not(.figure-grid--phone) .figure-grid__items.snap-row > :global(.figure) {
+			grid-row: span 2;
+			grid-template-rows: subgrid;
+			row-gap: var(--space-12);
+		}
+
+		.figure-grid--phone .figure-grid__items.snap-row {
+			--slide: calc((100% - var(--space-16)) / 2.3);
+
+			grid-template-columns: none;
+			grid-template-rows: auto;
+		}
+
+		.figure-grid--phone .figure-grid__items.snap-row > :global(.figure:last-child:nth-child(odd)) {
+			grid-column: auto;
+			inline-size: 100%;
+		}
 	}
 
 	@media (min-width: 600px) {

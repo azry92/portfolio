@@ -1,9 +1,9 @@
 ---
 // "Three phones in a row with numbered step labels and arrows": one run of figures
 // as an ordered list, each caption its step label. From 600px the figures sit in one
-// row like a phone row, an arrow in each gap; below that they go 2 per row and the
-// arrows drop out, since a wrapped row would point them the wrong way. The list and
-// the numbered captions carry the order either way.
+// row like a phone row, an arrow in each gap. Below that three or more steps become a
+// snap row (see global.css) and two go 2 per row; the arrows drop out either way, and
+// the list and the numbered captions carry the order.
 import Figure from './Figure.astro';
 import type { Frame } from '../lib/case-study/layouts';
 import type { Block } from '../lib/case-study/parse';
@@ -15,15 +15,16 @@ interface Props {
 
 const { run, frame } = Astro.props;
 const count = run.items.length;
+const snap = count >= 3;
 const sizes =
 	frame === 'phone'
-		? `(min-width: 1200px) 240px, (min-width: 600px) ${Math.round(100 / count)}vw, 45vw`
-		: `(min-width: 1248px) ${Math.round(1200 / count)}px, (min-width: 600px) ${Math.round(100 / count)}vw, 45vw`;
+		? `(min-width: 1200px) 240px, (min-width: 600px) ${Math.round(100 / count)}vw, ${snap ? 40 : 45}vw`
+		: `(min-width: 1248px) ${Math.round(1200 / count)}px, (min-width: 600px) ${Math.round(100 / count)}vw, ${snap ? 84 : 45}vw`;
 const Tag = run.caption ? 'figure' : 'div';
 ---
 
 <Tag class:list={['step-row', `step-row--${frame}`]} style={`--count: ${count}`}>
-	<ol class="step-row__list" role="list">
+	<ol class:list={['step-row__list', { 'snap-row': snap }]} role="list">
 		{
 			run.items.map((item) => (
 				<li class="step-row__step">
@@ -79,6 +80,25 @@ const Tag = run.caption ? 'figure' : 'div';
 		color: var(--color-text-muted);
 		font-size: var(--text-14);
 		text-align: center;
+	}
+
+	/* Snap row: two phones and a peek, or one figure and a peek. */
+	@media (max-width: 599.98px) {
+		.step-row__list.snap-row {
+			grid-template-columns: none;
+			column-gap: var(--space-16);
+			/* The list reset above outranks the utility's padding; put it back. */
+			padding: var(--space-8) var(--gutter) var(--space-16);
+		}
+
+		.step-row--phone .step-row__list.snap-row {
+			--slide: calc((100% - var(--space-16)) / 2.3);
+		}
+
+		.snap-row > .step-row__step:last-child:nth-child(odd) {
+			grid-column: auto;
+			inline-size: 100%;
+		}
 	}
 
 	@media (min-width: 600px) {

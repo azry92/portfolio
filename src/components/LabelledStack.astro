@@ -1,7 +1,9 @@
 ---
 // "Vertical stack of homepage sections, labelled …": one run of screenshots split
 // evenly, in order, under the labels. Each screenshot sits in its own browser
-// window; a label's windows go two across from 768px, one column below.
+// window; a label's windows go two across from 768px, one column below. Below
+// 600px three or more labels become a snap row, one label and its windows per
+// slide (see global.css).
 import Figure from './Figure.astro';
 import type { Block } from '../lib/case-study/parse';
 
@@ -16,18 +18,19 @@ if (!Number.isInteger(per)) {
 	throw new Error(`"labelled ${labels.join(' / ')}" needs a multiple of ${labels.length} images, got ${run.items.length}`);
 }
 const groups = labels.map((label, i) => ({ label, items: run.items.slice(i * per, (i + 1) * per) }));
+const snap = groups.length >= 3;
 const Tag = run.caption ? 'figure' : 'div';
 ---
 
 <Tag class="labelled-stack">
-	<ol class="labelled-stack__list" role="list">
+	<ol class:list={['labelled-stack__list', { 'snap-row': snap }]} role="list">
 		{
 			groups.map((group) => (
 				<li class="labelled-stack__item">
 					<h4 class="labelled-stack__label">{group.label}</h4>
 					<div class="labelled-stack__figures">
 						{group.items.map((item) => (
-							<Figure figure={item} frame="browser" sizes="(min-width: 1248px) 588px, (min-width: 768px) 50vw, 100vw" />
+							<Figure figure={item} frame="browser" sizes={`(min-width: 1248px) 588px, (min-width: 768px) 50vw, (min-width: 600px) 100vw, ${snap ? 84 : 100}vw`} />
 						))}
 					</div>
 				</li>
@@ -68,6 +71,14 @@ const Tag = run.caption ? 'figure' : 'div';
 	.labelled-stack__caption {
 		color: var(--color-text-muted);
 		font-size: var(--text-14);
+	}
+
+	@media (max-width: 599.98px) {
+		.labelled-stack__list.snap-row {
+			column-gap: var(--space-16);
+			/* The list reset above outranks the utility's padding; put it back. */
+			padding: var(--space-8) var(--gutter) var(--space-16);
+		}
 	}
 
 	@media (min-width: 768px) {

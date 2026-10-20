@@ -150,6 +150,33 @@ main[tabindex='-1']:focus {
 	}
 }
 
+/* Snap rows: below 600px a run of three or more figures becomes one row that
+   scrolls sideways, one slide (or two phones) on screen and the next peeking in.
+   The row runs out to the screen edges, so the cut slide reads as more to see.
+   Its component sets columns to none, the gaps, and --slide if not 84%. */
+@media (max-width: 599.98px) {
+	.snap-row {
+		grid-auto-flow: column;
+		grid-auto-columns: var(--slide, 84%);
+		/* Block padding keeps a slide's focus ring inside the scroller's clip. */
+		margin-block: calc(var(--space-8) * -1) 0;
+		margin-inline: calc(var(--gutter) * -1);
+		padding: var(--space-8) var(--gutter) var(--space-16);
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x mandatory;
+		scroll-padding-inline: var(--gutter);
+		scrollbar-width: thin;
+		scrollbar-color: currentColor transparent;
+	}
+
+	/* Positioned, so a slide's visually hidden text stays inside the scroller's clip. */
+	.snap-row > * {
+		position: relative;
+		scroll-snap-align: start;
+	}
+}
+
 /* Case study accent: the page sets --accent and picks --on-accent for contrast */
 .accent-band {
 	background-color: var(--accent, var(--color-surface-inverse));
