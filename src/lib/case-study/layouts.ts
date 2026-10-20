@@ -2,7 +2,8 @@
 // template knows how to draw. The patterns are deliberately narrow: a note that
 // matches none of them stops the build instead of falling back to a guess.
 
-export type Frame = 'phone' | 'browser' | 'none';
+/** `display` is a car head unit (other works). */
+export type Frame = 'phone' | 'browser' | 'display' | 'none';
 
 export type Layout =
 	/** Title, overview and project facts beside the cover. */

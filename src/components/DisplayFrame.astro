@@ -1,0 +1,85 @@
+---
+// Car head-unit display, drawn in CSS: a thin even black bezel with an aluminium
+// edge, like PhoneFrame. Pass a screenshot (`src` + `alt`) or slot in a picture.
+// The screenshot spans the screen width exactly; the frame takes its height.
+// All geometry scales with the frame's width.
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+	src?: ImageMetadata;
+	alt?: string;
+	widths?: number[];
+	sizes?: string;
+	loading?: 'lazy' | 'eager';
+	/** For a frame that holds the page's largest image, e.g. a hero. */
+	fetchpriority?: 'high' | 'low' | 'auto';
+	class?: string;
+}
+
+const {
+	src,
+	alt = '',
+	widths = [640, 960, 1280, 1920],
+	sizes = '(min-width: 1248px) 1200px, 100vw',
+	loading = 'lazy',
+	fetchpriority,
+	class: className,
+} = Astro.props;
+
+const hasSlot = Astro.slots.has('default');
+---
+
+<div class:list={['display', className]}>
+	<div class="display__body">
+		<div class="display__screen">
+			{
+				hasSlot ? (
+					<slot />
+				) : (
+					src && (
+						<Picture
+							src={src}
+							alt={alt}
+							formats={['avif', 'webp']}
+							widths={widths.filter((w) => w <= src.width)}
+							sizes={sizes}
+							loading={loading}
+							fetchpriority={fetchpriority}
+						/>
+					)
+				)
+			}
+		</div>
+	</div>
+</div>
+
+<style>
+	.display {
+		--display-edge: #a1a1a6;
+		--display-bezel: 1.2cqi;
+		--display-radius: 2.4cqi;
+
+		container-type: inline-size;
+		inline-size: 100%;
+		filter: drop-shadow(0 0.75rem 1.5rem rgb(0 0 0 / 0.24));
+	}
+
+	.display__body {
+		padding: var(--display-bezel);
+		border: 1.5px solid var(--display-edge);
+		border-radius: var(--display-radius);
+		background-color: #000;
+	}
+
+	.display__screen {
+		overflow: hidden;
+		border-radius: calc(var(--display-radius) - var(--display-bezel));
+		background-color: #000;
+	}
+
+	.display__screen :global(img) {
+		inline-size: 100%;
+		block-size: auto;
+	}
+</style>

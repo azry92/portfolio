@@ -1,7 +1,8 @@
 ---
-// One image from a case study, in a phone or browser frame or on its own, with an optional caption.
+// One image from a project, in a phone, browser or head-unit frame or on its own, with an optional caption.
 import { Picture } from 'astro:assets';
 import BrowserFrame from './BrowserFrame.astro';
+import DisplayFrame from './DisplayFrame.astro';
 import PhoneFrame from './PhoneFrame.astro';
 import ZoomLink from './ZoomLink.astro';
 import type { Frame } from '../lib/case-study/layouts';
@@ -34,6 +35,12 @@ const isSvg = image.format === 'svg';
 					<Picture src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
 				</ZoomLink>
 			</BrowserFrame>
+		) : frame === 'display' ? (
+			<DisplayFrame>
+				<ZoomLink image={image}>
+					<Picture src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
+				</ZoomLink>
+			</DisplayFrame>
 		) : isSvg ? (
 			<ZoomLink image={image}>
 				<img class="figure__image" src={image.src} width={image.width} height={image.height} alt={alt} loading="lazy" decoding="async" />
