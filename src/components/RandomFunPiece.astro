@@ -11,15 +11,19 @@ interface Props {
 
 const { items } = Astro.props;
 
-// The piece is at most 480px (or half the viewport) tall, inside the 16px gutters.
+// Stacked, the piece is at most 480px (or half the viewport) tall inside the 16px gutters.
+// From 900px it sits in the right half of the 1200px column (64px gap, 24px gutters), up to 560px tall.
 const pieces = items.map((item) => {
 	const ratio = Number((item.image.width / item.image.height).toFixed(4));
-	const widths = [320, 480, 720, 960].filter((w) => w <= item.image.width);
+	const widths = [320, 480, 720, 960, 1120].filter((w) => w <= item.image.width);
 	return {
 		...item,
 		ratio,
 		widths: widths.length ? widths : [item.image.width],
-		sizes: `min(calc(min(480px, 50vh) * ${ratio}), calc(100vw - 32px), 1200px)`,
+		sizes: [
+			`(min-width: 900px) min(calc(560px * ${ratio}), calc((min(100vw, 1248px) - 112px) / 2))`,
+			`min(calc(min(480px, 50vh) * ${ratio}), calc(100vw - 32px))`,
+		].join(', '),
 	};
 });
 ---
@@ -44,6 +48,9 @@ const pieces = items.map((item) => {
 							<span class="fun-piece__group">{piece.group}</span>
 						</figcaption>
 					</figure>
+					<span class="fun-piece__more">
+						More on the Fun page <span aria-hidden="true">→</span>
+					</span>
 				</a>
 			</li>
 		))
@@ -60,12 +67,21 @@ const pieces = items.map((item) => {
 
 <style>
 	.fun-piece {
+		--piece-max: min(480px, 50vh);
+
 		padding: 0;
 		list-style: none;
 	}
 
+	@media (min-width: 900px) {
+		.fun-piece {
+			--piece-max: 560px;
+		}
+	}
+
 	.fun-piece__link {
-		display: inline-block;
+		display: inline-grid;
+		gap: var(--space-12);
 		color: var(--color-text);
 		text-decoration: none;
 	}
@@ -76,7 +92,7 @@ const pieces = items.map((item) => {
 	}
 
 	.fun-piece :global(img) {
-		inline-size: min(100%, calc(min(480px, 50vh) * var(--ratio)));
+		inline-size: min(100%, calc(var(--piece-max) * var(--ratio)));
 		block-size: auto;
 	}
 
@@ -92,13 +108,24 @@ const pieces = items.map((item) => {
 		line-height: var(--leading-heading);
 	}
 
-	.fun-piece__link:hover .fun-piece__title {
-		color: var(--color-accent);
-		text-decoration: underline;
-	}
-
 	.fun-piece__group {
 		color: var(--color-text-muted);
 		font-size: var(--text-14);
+	}
+
+	/* Underlined so the piece reads as a link; red like Back to top. */
+	.fun-piece__more {
+		color: var(--color-accent);
+		font-size: var(--text-14);
+		font-weight: var(--weight-semibold);
+		text-decoration: underline;
+		text-underline-offset: 0.2em;
+	}
+
+	@media (hover: hover) {
+		.fun-piece__link:hover .fun-piece__title {
+			color: var(--color-accent);
+			text-decoration: underline;
+		}
 	}
 </style>
