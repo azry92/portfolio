@@ -19,7 +19,7 @@ ACO Tech, the joint venture behind Proton's infotainment systems, asked MMU stud
 ![Proton stock theme homepage on the 10.25-inch head unit, flat icons on a zebra-textured grey](./images/before-stock-theme.png)
 ![ATLAS theme homepage with the same four cards in chrome on a copper-and-silver wallpaper](./images/home-page-widgets.png)
 *Same screen, same four-card homepage. Flat icons on a zebra-textured grey became chrome objects on a copper-and-silver field. Stock image: ACO Tech.*
-The stock homepage runs Weather, Member QR, Nav and Radio. Mine runs Music, Weather, Clean Up and Nav.Login is a one-time action and doesn't earn permanent homepage space.
+The stock homepage runs Weather, Member QR, Nav and Radio. Mine runs Music, Weather, Clean Up and  Nav Login is a one-time action and doesn't earn permanent homepage space.
 ## The brief
 <!-- layout: three short text blocks in a row: The ask, The rules, The move -->
 ### The ask
@@ -27,7 +27,7 @@ Proton drivers aged 18 to 40 were calling the stock head-unit theme dull and out
 ### The rules
 Every entry had to work inside the live system. The status-bar text stays white, so nothing light. Two fixed bars cover the top and bottom of the screen. Icons have a set size and grid, and partner logos like JOOX can't be touched. Entries were judged on usability, not looks alone.
 ### The move
-I changed the material, not the layout. The homepage keeps its four cards and the app list keeps its grid, so the theme drops into the existing system without new engineering. Everything else became one idea: a tiger'sunmissable colour traits that read as premium on a dark dashboard. ACO Tech named it Best Theme from 12 entries.
+I changed the material, not the layout. The homepage keeps its four cards and the app list keeps its grid, so the theme drops into the existing system without new engineering. Everything else became one idea: a tiger's unmissable colour traits that read as premium on a dark dashboard. ACO Tech named it Best Theme from 12 entries.
 ## Lock screen
 <!-- layout: full-width screen, copy below -->
 ![ATLAS lock screen showing the time, date and a tap-to-unlock prompt over a dim wireframe](./images/lock-screen.png)
@@ -64,4 +64,4 @@ Every icon shares a brushed-chrome finish and a single light source, drawn to AC
 *Best Theme, chosen by the client.*
 ACO Tech awarded the theme Best Theme, the top prize in the 2021 ATLAS brief, with a certificate signed by CEO Li Pu.
 ## Reflection
-The brief judged entries on four usability heuristics, and I designed to the aesthetic one first. Looking back at the submission, the gaps are in the details a driver depends on: the lock-screen clock is too dim, the navigation card shows a turn with no distance or road name, "Clean Up" and the weather values have no labels, and the clock format and climate bar change between screens. If I did it again, I'd test the screens in daylight and audit every label against the brief's app list before choosing colours, because a car screen is read at arm's length in full sun.
+The brief judged entries on four usability heuristics, and I designed to the aesthetic one first. Looking back at the submission, the gaps are in the details a driver depends on: the lock-screen clock is too dim, the navigation card shows a turn with no distance or road name, "Cleanup" and the weather values have no labels, and the clock format and climate bar change between screens. If I did it again, I'd test the screens in daylight and audit every label against the brief's app list before choosing colours, because a car screen is read at arm's length in full sun.
