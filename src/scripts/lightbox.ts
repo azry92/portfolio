@@ -1,0 +1,71 @@
+// Image lightbox for case study figures. Any a[data-zoom] opens the dialog;
+// previous and next step through the zoom links in the same section.
+
+function init(dialog: HTMLDialogElement) {
+	const image = dialog.querySelector<HTMLImageElement>('[data-lightbox-image]')!;
+	const caption = dialog.querySelector<HTMLElement>('[data-lightbox-caption]')!;
+	const count = dialog.querySelector<HTMLElement>('[data-lightbox-count]')!;
+	const prev = dialog.querySelector<HTMLButtonElement>('[data-lightbox-prev]')!;
+	const next = dialog.querySelector<HTMLButtonElement>('[data-lightbox-next]')!;
+	const close = dialog.querySelector<HTMLButtonElement>('[data-lightbox-close]')!;
+
+	let group: HTMLAnchorElement[] = [];
+	let index = 0;
+	let opener: HTMLElement | null = null;
+
+	// A figure's own caption, else the caption shared by its row.
+	const captionFor = (link: HTMLAnchorElement) =>
+		link.closest('figure')?.querySelector(':scope > figcaption')?.textContent?.trim() ||
+		link.closest('.figure-grid')?.querySelector(':scope > figcaption')?.textContent?.trim() ||
+		'';
+
+	const show = (i: number) => {
+		index = (i + group.length) % group.length;
+		const link = group[index];
+		image.src = link.href;
+		image.alt = link.querySelector('img')?.alt ?? '';
+		image.width = Number(link.dataset.width);
+		image.height = Number(link.dataset.height);
+		const text = captionFor(link);
+		caption.textContent = text;
+		caption.hidden = !text;
+		const several = group.length > 1;
+		prev.hidden = next.hidden = count.hidden = !several;
+		count.textContent = several ? `${index + 1} of ${group.length}` : '';
+	};
+
+	document.addEventListener('click', (event) => {
+		const link = (event.target as Element).closest<HTMLAnchorElement>('a[data-zoom]');
+		if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+		event.preventDefault();
+		const scope = link.closest('section') ?? document;
+		group = [...scope.querySelectorAll<HTMLAnchorElement>('a[data-zoom]')];
+		opener = link;
+		show(group.indexOf(link));
+		dialog.showModal();
+		close.focus();
+	});
+
+	prev.addEventListener('click', () => show(index - 1));
+	next.addEventListener('click', () => show(index + 1));
+	close.addEventListener('click', () => dialog.close());
+
+	dialog.addEventListener('keydown', (event) => {
+		if (group.length < 2) return;
+		if (event.key === 'ArrowLeft') show(index - 1);
+		else if (event.key === 'ArrowRight') show(index + 1);
+	});
+
+	// A click on the backdrop, outside the image and controls, closes the viewer.
+	dialog.addEventListener('click', (event) => {
+		if (event.target === dialog) dialog.close();
+	});
+
+	dialog.addEventListener('close', () => {
+		image.removeAttribute('src');
+		opener?.focus();
+	});
+}
+
+const dialog = document.querySelector<HTMLDialogElement>('[data-lightbox]');
+if (dialog) init(dialog);

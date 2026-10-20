@@ -3,6 +3,7 @@
 import { Picture } from 'astro:assets';
 import BrowserFrame from './BrowserFrame.astro';
 import PhoneFrame from './PhoneFrame.astro';
+import ZoomLink from './ZoomLink.astro';
 import type { Frame } from '../lib/case-study/layouts';
 import type { Figure } from '../lib/case-study/parse';
 
@@ -23,16 +24,24 @@ const isSvg = image.format === 'svg';
 	{
 		frame === 'phone' ? (
 			<PhoneFrame>
-				<Picture src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
+				<ZoomLink image={image}>
+					<Picture src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
+				</ZoomLink>
 			</PhoneFrame>
 		) : frame === 'browser' ? (
 			<BrowserFrame>
-				<Picture src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
+				<ZoomLink image={image}>
+					<Picture src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
+				</ZoomLink>
 			</BrowserFrame>
 		) : isSvg ? (
-			<img class="figure__image" src={image.src} width={image.width} height={image.height} alt={alt} loading="lazy" decoding="async" />
+			<ZoomLink image={image}>
+				<img class="figure__image" src={image.src} width={image.width} height={image.height} alt={alt} loading="lazy" decoding="async" />
+			</ZoomLink>
 		) : (
-			<Picture class="figure__image" src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
+			<ZoomLink image={image}>
+				<Picture class="figure__image" src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
+			</ZoomLink>
 		)
 	}
 	{caption && <figcaption class="figure__caption" set:html={caption} />}

@@ -1,0 +1,135 @@
+---
+// One image viewer per page, opened by any ZoomLink. Esc closes it (native <dialog>).
+---
+
+<dialog class="lightbox" data-lightbox aria-label="Image viewer">
+	<figure class="lightbox__figure">
+		<img class="lightbox__image" data-lightbox-image alt="" decoding="async" />
+		<figcaption class="lightbox__caption" data-lightbox-caption></figcaption>
+	</figure>
+	<div class="lightbox__controls">
+		<button class="lightbox__button" type="button" data-lightbox-prev>
+			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>
+			<span class="visually-hidden">Previous image</span>
+		</button>
+		<p class="lightbox__count" data-lightbox-count aria-live="polite"></p>
+		<button class="lightbox__button" type="button" data-lightbox-next>
+			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"></path></svg>
+			<span class="visually-hidden">Next image</span>
+		</button>
+		<button class="lightbox__button lightbox__close" type="button" data-lightbox-close>
+			<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+			<span class="visually-hidden">Close</span>
+		</button>
+	</div>
+</dialog>
+
+<script>
+	import '../scripts/lightbox';
+</script>
+
+<style>
+	.lightbox {
+		inline-size: 100%;
+		max-inline-size: none;
+		block-size: 100%;
+		max-block-size: none;
+		padding: var(--space-16);
+		border: 0;
+		background-color: var(--color-surface-inverse);
+		color: var(--color-text-inverse);
+	}
+
+	.lightbox[open] {
+		display: grid;
+		grid-template-rows: minmax(0, 1fr) auto;
+		gap: var(--space-16);
+	}
+
+	.lightbox::backdrop {
+		background-color: var(--color-surface-inverse);
+	}
+
+	.lightbox :focus-visible {
+		outline-color: var(--color-text-inverse);
+	}
+
+	.lightbox__figure {
+		display: grid;
+		grid-template-rows: minmax(0, 1fr) auto;
+		gap: var(--space-12);
+		justify-items: center;
+		min-block-size: 0;
+	}
+
+	.lightbox__image {
+		inline-size: auto;
+		max-inline-size: 100%;
+		block-size: 100%;
+		max-block-size: 100%;
+		object-fit: contain;
+		background-color: var(--color-surface);
+	}
+
+	.lightbox__caption {
+		max-inline-size: 60ch;
+		font-size: var(--text-14);
+		text-align: center;
+	}
+
+	.lightbox__controls {
+		display: flex;
+		gap: var(--space-8);
+		align-items: center;
+		justify-content: center;
+	}
+
+	.lightbox__count {
+		min-inline-size: 5rem;
+		font-size: var(--text-14);
+		font-variant-numeric: tabular-nums;
+		text-align: center;
+	}
+
+	.lightbox__button {
+		display: grid;
+		place-items: center;
+		inline-size: 2.75rem;
+		block-size: 2.75rem;
+		padding: 0;
+		border: var(--border-width) solid currentColor;
+		border-radius: 50%;
+		background: none;
+		color: inherit;
+		cursor: pointer;
+	}
+
+	.lightbox__button svg {
+		inline-size: 1.25rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.lightbox__close {
+		margin-inline-start: var(--space-24);
+	}
+
+	[hidden] {
+		display: none;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.lightbox[open] {
+			animation: lightbox-in 150ms ease-out;
+		}
+	}
+
+	@keyframes lightbox-in {
+		from {
+			opacity: 0;
+		}
+	}
+</style>

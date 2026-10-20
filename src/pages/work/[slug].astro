@@ -3,6 +3,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CaseStudyHero from '../../components/CaseStudyHero.astro';
 import CaseStudySection from '../../components/CaseStudySection.astro';
+import Lightbox from '../../components/Lightbox.astro';
 import { readableOn } from '../../lib/case-study/contrast';
 import { parseCaseStudy } from '../../lib/case-study/parse';
 
@@ -40,4 +41,5 @@ const accentStyle = accent ? `--accent: ${accent}; --on-accent: var(${onAccent})
 		<CaseStudyHero entry={entry} overview={overview} />
 		{sections.map((section) => <CaseStudySection section={section} />)}
 	</article>
+	<Lightbox />
 </BaseLayout>
