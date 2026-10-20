@@ -9,7 +9,7 @@ const fallbacks = ['system-ui', 'sans-serif'];
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://ismailazry.vercel.app',
+	site: 'https://ismailazry.com',
 	vite: {
 		plugins: [projectImages(), caseStudyVideos()],
 	},

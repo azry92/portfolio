@@ -2,7 +2,7 @@
 
 The portfolio of Ismail Azry, a product designer in Malaysia who designs and builds e-commerce storefronts.
 
-Live: https://ismailazry.vercel.app
+Live: https://ismailazry.com
 
 ## Stack
 
