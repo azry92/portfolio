@@ -1,0 +1,50 @@
+---
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArtworkShuffler from '../components/ArtworkShuffler.astro';
+import Lightbox from '../components/Lightbox.astro';
+
+const fun = await getEntry('fun', 'index');
+if (!fun) throw new Error('portfolio-content/fun/index.md is missing');
+const { title, summary, intro, items } = fun.data;
+---
+
+<BaseLayout title={`${title} | Ismail Azry`} description={summary}>
+	<div class="fun container">
+		<header class="fun__header">
+			<h1 class="fun__title">{title}</h1>
+			<p class="fun__intro">{intro}</p>
+		</header>
+		<ArtworkShuffler items={items} />
+	</div>
+	<Lightbox />
+</BaseLayout>
+
+<style>
+	.fun {
+		display: grid;
+		gap: var(--space-32);
+		padding-block: var(--space-48) var(--space-32);
+	}
+
+	.fun__header {
+		display: grid;
+		gap: var(--space-12);
+	}
+
+	.fun__title {
+		font-size: var(--text-display);
+	}
+
+	.fun__intro {
+		max-inline-size: 60ch;
+		color: var(--color-text-muted);
+	}
+
+	@media (min-width: 600px) {
+		.fun {
+			gap: var(--space-48);
+			padding-block-start: var(--space-64);
+		}
+	}
+</style>

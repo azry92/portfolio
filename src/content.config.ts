@@ -70,22 +70,27 @@ const otherWorks = defineCollection({
 		}),
 });
 
-// One ordered list of illustrations and concepts, in the frontmatter of fun/index.md.
+// The Fun page: its own copy and one list of artwork, shuffled on the page, in the frontmatter of fun/index.md.
 const fun = defineCollection({
 	loader: glob({ base: './portfolio-content/fun', pattern: 'index.md' }),
 	schema: ({ image }) =>
 		z.object({
+			title: z.string(),
+			/** The meta description. */
+			summary: z.string(),
+			/** The paragraph under the h1. */
+			intro: z.string(),
 			items: z
 				.array(
 					z.object({
 						image: image(),
-						alt: z.string().min(1),
 						title: z.string(),
-						kind: z.enum(['illustration', 'concept']),
-						year: z.number().int().optional(),
+						/** Where the piece comes from, e.g. "Concept · Baskbear". */
+						group: z.string(),
+						alt: z.string().min(1),
 					}),
 				)
-				.default([]),
+				.min(1),
 		}),
 });
 

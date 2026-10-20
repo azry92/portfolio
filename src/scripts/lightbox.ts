@@ -1,5 +1,6 @@
 // Image lightbox for case study figures. Any a[data-zoom] opens the dialog;
-// previous and next step through the zoom links in the same section.
+// previous and next step through the zoom links in the same section, or in the
+// nearest [data-zoom-group] when a piece should open on its own.
 
 function init(dialog: HTMLDialogElement) {
 	const image = dialog.querySelector<HTMLImageElement>('[data-lightbox-image]')!;
@@ -41,7 +42,7 @@ function init(dialog: HTMLDialogElement) {
 		const link = (event.target as Element).closest<HTMLAnchorElement>('a[data-zoom]');
 		if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
 		event.preventDefault();
-		const scope = link.closest('section') ?? document;
+		const scope = link.closest('[data-zoom-group], section') ?? document;
 		group = [...scope.querySelectorAll<HTMLAnchorElement>('a[data-zoom]')];
 		opener = link;
 		show(group.indexOf(link));

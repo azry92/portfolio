@@ -1,0 +1,233 @@
+---
+// One piece of artwork at a time on a fixed stage, with a Shuffle pill under it.
+// The markup is the full list; without JS it shows as a grid. An inline bootstrap
+// picks a random piece before first paint, so the grid never flashes.
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import ZoomLink from './ZoomLink.astro';
+
+interface Props {
+	items: { image: ImageMetadata; title: string; group: string; alt: string }[];
+}
+
+const { items } = Astro.props;
+
+// The piece fills the stage height unless the column is narrower: 60vh below 600px, 70vh from 600px,
+// inside the gutters (16px, 24px from 768px) and the 1200px content width.
+const sizesFor = (ratio: number) =>
+	[
+		`(min-width: 768px) min(${70 * ratio}vh, calc(100vw - 48px), 1200px)`,
+		`(min-width: 600px) min(${70 * ratio}vh, calc(100vw - 32px))`,
+		`min(${60 * ratio}vh, calc(100vw - 32px))`,
+	].join(', ');
+
+const pieces = items.map((item) => {
+	const ratio = Number((item.image.width / item.image.height).toFixed(4));
+	const widths = [480, 720, 960, 1280, 1600].filter((w) => w <= item.image.width);
+	return { ...item, ratio, widths: widths.length ? widths : [item.image.width], sizes: sizesFor(ratio) };
+});
+---
+
+<section class="shuffler" data-shuffler aria-label="Artwork">
+	<ul class="shuffler__list" role="list">
+		{
+			pieces.map((piece) => (
+				<li class="shuffler__item" data-shuffler-item data-zoom-group style={`--ratio: ${piece.ratio}`}>
+					<figure class="shuffler__figure">
+						<div class="shuffler__stage">
+							<ZoomLink image={piece.image}>
+								<Picture
+									src={piece.image}
+									alt={piece.alt}
+									formats={['avif', 'webp']}
+									widths={piece.widths}
+									sizes={piece.sizes}
+									loading="lazy"
+								/>
+							</ZoomLink>
+						</div>
+						<figcaption class="shuffler__caption">
+							<span class="shuffler__title" data-shuffler-title>
+								{piece.title}
+							</span>
+							<span class="visually-hidden">, </span>
+							<span class="shuffler__group">{piece.group}</span>
+						</figcaption>
+					</figure>
+				</li>
+			))
+		}
+	</ul>
+	<button class="pill-outline shuffler__button" type="button" data-shuffle hidden>Shuffle</button>
+	<p class="visually-hidden" aria-live="polite" data-shuffle-status></p>
+	<script is:inline>
+		(() => {
+			const root = document.currentScript.parentElement;
+			const items = root.querySelectorAll('[data-shuffler-item]');
+			const item = items[Math.floor(Math.random() * items.length)];
+			const image = item.querySelector('img');
+			image.loading = 'eager';
+			image.fetchPriority = 'high';
+			item.setAttribute('data-current', '');
+			root.querySelector('[data-shuffle]').hidden = false;
+			root.classList.add('is-enhanced');
+		})();
+	</script>
+</section>
+
+<script>
+	import '../scripts/artwork-shuffler';
+</script>
+
+<style>
+	.shuffler {
+		--stage: 60vh;
+		--stage: 60svh;
+
+		display: grid;
+	}
+
+	.shuffler__list {
+		display: grid;
+		padding: 0;
+		list-style: none;
+	}
+
+	.shuffler__figure {
+		display: grid;
+		gap: var(--space-16);
+		align-content: start;
+	}
+
+	.shuffler__stage :global(picture) {
+		display: block;
+	}
+
+	.shuffler__stage :global(img) {
+		inline-size: 100%;
+		block-size: auto;
+	}
+
+	.shuffler__caption {
+		display: grid;
+		gap: var(--space-4);
+	}
+
+	.shuffler__title {
+		font-family: var(--font-display);
+		font-size: var(--text-18);
+		font-weight: var(--weight-semibold);
+		line-height: var(--leading-heading);
+	}
+
+	.shuffler__group {
+		color: var(--color-text-muted);
+		font-size: var(--text-14);
+	}
+
+	/* .pill-outline sets display, which would beat the hidden attribute. */
+	.shuffler__button[hidden] {
+		display: none;
+	}
+
+	/* Without JS: every piece in a grid, at its own ratio. */
+	.shuffler:not(.is-enhanced) .shuffler__list {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-32) var(--space-16);
+		align-items: start;
+	}
+
+	/* With JS: the pieces share one cell and only the current one shows. Hidden pieces keep
+	   their caption in layout, so the cell is as tall as the longest caption and the pill and
+	   footer never move. Their pictures are not rendered, so they load only when preloaded. */
+	.is-enhanced .shuffler__list,
+	.is-enhanced .shuffler__button {
+		grid-area: 1 / 1;
+	}
+
+	.is-enhanced .shuffler__item {
+		grid-area: 1 / 1;
+		visibility: hidden;
+	}
+
+	.is-enhanced .shuffler__item:is([data-current], [data-leaving]) {
+		visibility: visible;
+	}
+
+	.is-enhanced .shuffler__item:not([data-current], [data-leaving]) :global(picture) {
+		display: none;
+	}
+
+	.is-enhanced .shuffler__item[data-leaving] {
+		pointer-events: none;
+	}
+
+	.is-enhanced .shuffler__stage {
+		display: grid;
+		block-size: var(--stage);
+		container-type: size;
+	}
+
+	/* The link is exactly the artwork's box, so only the artwork opens the lightbox. */
+	.is-enhanced .shuffler__stage :global(.zoom) {
+		inline-size: min(100cqi, 100cqb * var(--ratio));
+		block-size: min(100cqb, 100cqi / var(--ratio));
+		margin: auto;
+	}
+
+	.is-enhanced .shuffler__stage :global(picture),
+	.is-enhanced .shuffler__stage :global(img) {
+		inline-size: 100%;
+		block-size: 100%;
+	}
+
+	.is-enhanced .shuffler__stage :global(img) {
+		object-fit: contain;
+	}
+
+	/* Room for the pill, which sits at the end of the caption row. */
+	.is-enhanced .shuffler__caption {
+		padding-inline-end: calc(7rem + var(--space-16));
+	}
+
+	.is-enhanced .shuffler__button {
+		align-self: start;
+		justify-self: end;
+		margin-block-start: calc(var(--stage) + var(--space-16));
+	}
+
+	@media (min-width: 600px) {
+		.shuffler {
+			--stage: 70vh;
+			--stage: 70svh;
+		}
+
+		.shuffler:not(.is-enhanced) .shuffler__list {
+			grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+			gap: var(--space-48) var(--space-24);
+		}
+	}
+
+	/* Crossfade on Shuffle; the script sets these only when motion is allowed. */
+	@media (prefers-reduced-motion: no-preference) {
+		.is-enhanced .shuffler__item[data-entering] {
+			animation: shuffler-in 200ms ease-out both;
+		}
+
+		.is-enhanced .shuffler__item[data-leaving] {
+			animation: shuffler-out 200ms ease-out both;
+		}
+	}
+
+	@keyframes shuffler-in {
+		from {
+			opacity: 0;
+		}
+	}
+
+	@keyframes shuffler-out {
+		to {
+			opacity: 0;
+		}
+	}
+</style>
