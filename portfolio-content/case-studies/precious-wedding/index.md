@@ -41,7 +41,7 @@ Precious Wedding's website worked, but its fair landing pages didn't carry the w
 *Wireframe of the section kit: hero, services, reviews, photo grid, CTA.*
 ## The Solution
 <!-- layout: one headline, body below, desktop view next to body and a row of phones under -->
-Each fair used to start from scratch. On Wix, I built a reusable kit: Cormorant Garamond for display, Futura for body text, and a crimson-led palette with crimson reserved for the main CTA. Pages were assembled from fixed sections (hero, services, reviews, photo grid, CTA) and re-skinned per campaign, so a new fair page meant swapping imagery, dates and offers, not redesigning. Every page was designed for desktop and mobile and shipped with titles, meta descriptions and keywords set for search.
+Each fair used to start from scratch. On Wix, I built a reusable kit: Cormorant Garamond for display, Futura for body text, a beige and taupe palette with crimson reserved for the main CTA. Pages were assembled from fixed sections (hero, services, reviews, photo grid, CTA) and re-skinned per campaign, so a new fair page meant swapping imagery, dates and offers, not redesigning. Every page was designed for desktop and mobile and shipped with titles, meta descriptions and keywords set for search.
 ![Event highlights page on desktop](./images/solution-image-01-laptop-view.png)
 *Event highlights on desktop.*
 ![A Wedding Fair with a Twist landing page, June 2024](./images/wedding-fair-june.png)
@@ -74,23 +74,14 @@ Visitors preferred the RSVP button, but a form click told sales nothing. I made 
 *3. RSVP form sent by sales. Editor view: 82 responses, Precious Wedding Fair 4.0, April 2025.*
 ## In-house wedding fair
 <!-- layout: body, then three photos in a row -->
-The fairs brought couples to Precious Wedding Emporium at IOI Mall Damansara (formerly Tropicana Gardens Mall) for gown trials, gown-rental promotions and offers. For each fair I designed the landing page, the RSVP flow and the campaign posters, including the mall's LED-screen event poster. The April 2025 Precious Wedding Fair 4.0 (25–27 April) promoted a lucky draw, a first look, destination weddings and an all-in-one-place offer.
+The fairs brought couples to Precious Wedding Emporium at IOI Mall Damansara (formerly Tropicana Gardens Mall) for gown trials, gown-rental promotions and offers. For each fair I designed the landing page and the RSVP flow, along with the print and screen campaign. The April 2025 Precious Wedding Fair 4.0 (25–27 April) promoted a lucky draw, a first look, destination weddings and an all-in-one-place offer.
 ![Couples browsing gowns during the fair](./images/page-event-blog-01.png)
 ![Bridal makeup class in session](./images/page-event-blog-02.png)
 ![Audience in the emporium venue](./images/page-event-blog-03.png)
 *Photos: Zach Photography Team, Precious Wedding.*
-### Deliverables
-<!-- layout: three posters in a row, then two LED screens in a row -->
-![Gown rental promotional poster](./images/illustration-poster-promo-01.png)
-![Event highlights poster for the fair period](./images/illustration-poster-promo-02.png)
-![Classic Chinese bridal promotion poster](./images/illustration-poster-promo-03.png)
-*Campaign posters.*
-![LED screen display for the June 2024 fair](./images/illustration-lcd-display-01.png)
-![LED screen display for Precious Wedding Fair 4.0](./images/illustration-lcd-display-02.png)
-*Mall LED-screen displays.*
 ## Results
 <!-- layout: stat cards, RSVP card first -->
-June 2024 - July 2025 · Wix Analytics RSVP from Google Forms
+June 2024 - July 2025 · Wix Analytics; RSVP from Google Forms
 - **82** RSVP form responses, Precious Wedding Fair 4.0, April 2025
 - **55,728** site sessions
 - **68%** of March 2025 sessions included the fair landing page (2,578 of 3,793)
