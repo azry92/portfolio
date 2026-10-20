@@ -14,7 +14,9 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 						<li>
 							<a
 								href={item.href}
-								download={item.download || undefined}
+								target={item.newTab ? '_blank' : undefined}
+								rel={item.newTab ? 'noopener' : undefined}
+								aria-label={item.ariaLabel}
 								aria-current={item.href === path ? 'page' : undefined}
 							>
 								{item.label}

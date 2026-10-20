@@ -7,7 +7,7 @@
 - name: Ismail Azry
 nav:
   - Work: /#work
-  - CV: /cv/ismail-azry-cv.pdf
+  - CV: /ismail-azry-cv.pdf
 ## Home layout
 <!-- layout: home page. Reference: references/brand/glyph-ia.svg and references/brand/logo.svg -->
 ### 1. Pattern band (full width, top of page)

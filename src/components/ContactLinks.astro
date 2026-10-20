@@ -1,17 +1,18 @@
 ---
-import { contact, site } from '../data/site';
+import { contact, cvLabel, site } from '../data/site';
 
 interface ContactLink {
 	label: string;
 	href: string;
 	icon: 'email' | 'linkedin' | 'cv';
-	download?: boolean;
+	/** Opens in a new tab with rel="noopener" (the CV PDF). */
+	newTab?: boolean;
 }
 
 const links: ContactLink[] = [
 	{ label: 'Email', href: `mailto:${contact.email}`, icon: 'email' },
 	{ label: 'LinkedIn', href: contact.linkedin, icon: 'linkedin' },
-	{ label: 'CV (PDF)', href: site.cv, icon: 'cv', download: true },
+	{ label: cvLabel, href: site.cv, icon: 'cv', newTab: true },
 ];
 ---
 
@@ -21,7 +22,13 @@ const links: ContactLink[] = [
 		{
 			links.map((link) => (
 				<li>
-					<a class="contact__link" href={link.href} download={link.download || undefined}>
+					<a
+						class="contact__link"
+						href={link.href}
+						target={link.newTab ? '_blank' : undefined}
+						rel={link.newTab ? 'noopener' : undefined}
+						aria-label={link.newTab ? link.label : undefined}
+					>
 						<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
 							{link.icon === 'email' && (
 								<>

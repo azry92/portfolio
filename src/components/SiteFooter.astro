@@ -23,7 +23,12 @@ const { variant = 'site' } = Astro.props;
 						<ul class="site-footer__nav" role="list">
 							{nav.map((item) => (
 								<li>
-									<a href={item.href} download={item.download || undefined}>
+									<a
+										href={item.href}
+										target={item.newTab ? '_blank' : undefined}
+										rel={item.newTab ? 'noopener' : undefined}
+										aria-label={item.ariaLabel}
+									>
 										{item.label}
 									</a>
 								</li>
