@@ -29,7 +29,7 @@ export type Layout =
 	| { kind: 'headline-desktop-phones' }
 	/** One run of screenshots split evenly, in order, under the given labels. */
 	| { kind: 'labelled-stack'; labels: string[] }
-	/** A video at its own width, centred, with the body below. */
+	/** A video at its own width, aligned left, with the body below. */
 	| { kind: 'video-then-body' }
 	/** Copy and the first image on the left; the other images on the right. */
 	| { kind: 'two-column' }

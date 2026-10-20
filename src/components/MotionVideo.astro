@@ -1,5 +1,6 @@
 ---
-// A short, muted, looping motion piece, shown at no more than its own width.
+// A short, muted, looping motion piece, shown at no more than its own width and
+// aligned to the start of the column like every other figure.
 // It starts only when the viewer allows motion; otherwise the poster stays.
 // The Pause/Play button appears once the script runs.
 import { getImage } from 'astro:assets';
@@ -30,7 +31,6 @@ const still = await getImage({ src: poster, width: poster.width, format: 'webp' 
 		position: relative;
 		inline-size: 100%;
 		max-inline-size: var(--video-width);
-		margin-inline: auto;
 	}
 
 	video {
