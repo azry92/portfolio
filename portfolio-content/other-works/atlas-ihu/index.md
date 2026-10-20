@@ -19,7 +19,7 @@ ACO Tech, the joint venture behind Proton's infotainment systems, asked MMU stud
 ![Proton stock theme homepage on the 10.25-inch head unit, flat icons on a zebra-textured grey](./images/before-stock-theme.png)
 ![ATLAS theme homepage with the same four cards in chrome on a copper-and-silver wallpaper](./images/home-page-widgets.png)
 *Same screen, same four-card homepage. Flat icons on a zebra-textured grey became chrome objects on a copper-and-silver field. Stock image: ACO Tech.*
-The stock homepage runs Weather, Member QR, Nav and Radio. Mine runs Music, Weather, Clean Up and  Nav Login is a one-time action and doesn't earn permanent homepage space.
+The stock homepage runs Weather, Member QR, Nav and Radio. Mine runs Music, Weather, Clean Up and Nav. Login is a one-time action action and doesn't earn permanent homepage space.
 ## The brief
 <!-- layout: three short text blocks in a row: The ask, The rules, The move -->
 ### The ask
@@ -64,4 +64,4 @@ Every icon shares a brushed-chrome finish and a single light source, drawn to AC
 *Best Theme, chosen by the client.*
 ACO Tech awarded the theme Best Theme, the top prize in the 2021 ATLAS brief, with a certificate signed by CEO Li Pu.
 ## Reflection
-The brief judged entries on four usability heuristics, and I designed to the aesthetic one first. Looking back at the submission, the gaps are in the details a driver depends on: the lock-screen clock is too dim, the navigation card shows a turn with no distance or road name, "Cleanup" and the weather values have no labels, and the clock format and climate bar change between screens. If I did it again, I'd test the screens in daylight and audit every label against the brief's app list before choosing colours, because a car screen is read at arm's length in full sun.
+The brief judged entries on four usability heuristics, and I designed to the aesthetic one first. Looking back at the submission, the gaps are in the details a driver depends on: the lock-screen clock is too dim, the navigation card shows a turn with no distance or road name, "Clean Up" and the weather values have no labels, and the clock format and climate bar change between screens. If I did it again, I'd test the screens in daylight and audit every label against the brief's app list before choosing colours, because a car screen is read at arm's length in full sun.
