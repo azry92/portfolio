@@ -48,7 +48,8 @@ body {
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
 	font-family: var(--font-display);
 	font-weight: var(--weight-bold);
 	line-height: var(--leading-heading);
