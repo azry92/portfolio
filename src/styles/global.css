@@ -137,7 +137,7 @@ main[tabindex='-1']:focus {
 }
 
 /* Outline pill: a secondary button or button-styled link (Other Works and Fun on home,
-   Back to top, Shuffle). */
+   Shuffle, a live site link). */
 .pill-outline {
 	display: inline-flex;
 	align-items: center;
@@ -166,9 +166,25 @@ main[tabindex='-1']:focus {
 	}
 }
 
+/* Other Works and Fun fill with the accent red instead, as the contact circles do. */
+.pill-outline--accent:focus-visible {
+	border-color: var(--color-accent);
+	background-color: var(--color-accent);
+	color: var(--color-text-inverse);
+}
+
+@media (hover: hover) {
+	.pill-outline--accent:hover {
+		border-color: var(--color-accent);
+		background-color: var(--color-accent);
+		color: var(--color-text-inverse);
+	}
+}
+
 @media (prefers-reduced-motion: no-preference) {
 	.pill-outline {
 		transition:
+			border-color 150ms ease-out,
 			background-color 150ms ease-out,
 			color 150ms ease-out;
 	}

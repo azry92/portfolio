@@ -16,7 +16,6 @@ export const site = {
 
 export const nav: NavItem[] = [
 	{ label: 'Work', href: '/#work' },
-	{ label: 'About', href: '/about' },
 	{ label: 'CV', href: site.cv, download: true },
 ];
 

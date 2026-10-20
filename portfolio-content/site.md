@@ -7,7 +7,6 @@
 - name: Ismail Azry
 nav:
   - Work: /#work
-  - About: /about
   - CV: /cv/ismail-azry-cv.pdf
 ## Home layout
 <!-- layout: home page. Reference: references/brand/glyph-ia.svg and references/brand/logo.svg -->

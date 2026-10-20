@@ -1,9 +1,9 @@
 ---
-// Home intro: logo, greeting, the page h1 and the short about, ending in a link to /about.
+// Home intro: logo, greeting, the page h1 and the short about.
 import Logo from './Logo.astro';
 import { intro } from '../data/site';
 
-// Keep "e-commerce" (and the link after it) whole: browsers otherwise break inside.
+// Keep "e-commerce" whole: browsers otherwise break inside.
 const aboutParts = intro.about.split(/(e-commerce)/);
 ---
 
@@ -16,8 +16,7 @@ const aboutParts = intro.about.split(/(e-commerce)/);
 		<h1 id="home-title" class="home-intro__title">{intro.title}</h1>
 	</hgroup>
 	<p class="home-intro__about">
-		{aboutParts.map((part) => (part === 'e-commerce' ? <span class="home-intro__nowrap">{part}</span> : part))}{' '}
-		<a class="home-intro__nowrap" href="/about">More about me</a>
+		{aboutParts.map((part) => (part === 'e-commerce' ? <span class="home-intro__nowrap">{part}</span> : part))}
 	</p>
 </section>
 

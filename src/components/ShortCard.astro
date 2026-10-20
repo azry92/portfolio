@@ -1,6 +1,7 @@
 ---
 // A label-only link on home, set as an outline pill under the case study cards:
-// Other Works and Fun. The pill style is shared (.pill-outline in global.css).
+// Other Works and Fun. The pill style is shared (.pill-outline in global.css); these two
+// fill with the accent red on hover and focus (.pill-outline--accent).
 interface Props {
 	label: string;
 	href: string;
@@ -9,4 +10,4 @@ interface Props {
 const { label, href } = Astro.props;
 ---
 
-<a class="pill-outline" href={href}>{label}</a>
+<a class="pill-outline pill-outline--accent" href={href}>{label}</a>

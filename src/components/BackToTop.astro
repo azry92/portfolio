@@ -1,15 +1,38 @@
 ---
-// "Back to top" pill at the end of every page but home, 32px below the last section and
-// above the footer. Same outline pill as Other Works and Fun (.pill-outline in global.css).
-// The jump is smooth only when motion is allowed (see the scroll-behavior rule there).
+// "Back to top" text link with a small up arrow at the end of every page but home, 32px below
+// the last section and above the footer. Accent red, as the contact circles' hover (5.75:1 on
+// the page background). The jump is smooth only when motion is allowed (see the scroll-behavior
+// rule in global.css).
 ---
 
 <div class="back-to-top container">
-	<a class="pill-outline" href="#top">Back to top</a>
+	<a class="back-to-top__link" href="#top">
+		<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"></path></svg>
+		Back to top
+	</a>
 </div>
 
 <style>
 	.back-to-top {
 		padding-block-start: var(--space-32);
+	}
+
+	/* Padded for a 24px-plus tap target; the global focus ring and hover colour apply. */
+	.back-to-top__link {
+		display: inline-flex;
+		gap: var(--space-8);
+		align-items: center;
+		padding-block: var(--space-8);
+		font-weight: var(--weight-semibold);
+	}
+
+	.back-to-top__link svg {
+		inline-size: 1em;
+		block-size: 1em;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
 	}
 </style>
