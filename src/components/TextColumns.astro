@@ -1,0 +1,56 @@
+---
+// A section's ### subsections as columns of text: stacked on small screens, side by
+// side from 900px, each under a hairline.
+import CaseStudyBlocks from './CaseStudyBlocks.astro';
+import type { Subsection } from '../lib/case-study/parse';
+
+interface Props {
+	subsections: Subsection[];
+}
+
+const { subsections } = Astro.props;
+---
+
+<div class="text-columns" style={`--count: ${subsections.length}`}>
+	{
+		subsections.map((sub) => (
+			<section class="text-columns__column" aria-labelledby={sub.id}>
+				<h3 id={sub.id} class="text-columns__title">
+					{sub.heading}
+				</h3>
+				<CaseStudyBlocks blocks={sub.blocks} />
+			</section>
+		))
+	}
+</div>
+
+<style>
+	.text-columns {
+		display: grid;
+		gap: var(--space-32);
+	}
+
+	.text-columns__column {
+		display: grid;
+		gap: var(--space-12);
+		align-content: start;
+		padding-block-start: var(--space-16);
+		border-block-start: var(--border-width) solid var(--color-border);
+	}
+
+	.text-columns__title {
+		font-size: var(--text-24);
+	}
+
+	/* Columns are narrow, so the body stays at 16px. */
+	.text-columns__column :global(.prose) {
+		font-size: var(--text-16);
+	}
+
+	@media (min-width: 900px) {
+		.text-columns {
+			grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+			gap: var(--space-48);
+		}
+	}
+</style>

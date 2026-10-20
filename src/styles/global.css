@@ -78,8 +78,12 @@ a:active {
 	outline-offset: 3px;
 }
 
-/* Inverse surfaces: accent red is too dark on #16171a, so text and focus go cream */
+/* Inverse surfaces: accent red is too dark on #16171a, so text and focus go cream.
+   Muted text and dividers are remixed from the cream, so they keep their contrast. */
 .inverse {
+	--color-text-muted: color-mix(in srgb, var(--color-text-inverse) 72%, var(--color-surface-inverse));
+	--color-border: color-mix(in srgb, var(--color-text-inverse) 22%, var(--color-surface-inverse));
+
 	background-color: var(--color-surface-inverse);
 	color: var(--color-text-inverse);
 	--logo-colour: var(--color-text-inverse);

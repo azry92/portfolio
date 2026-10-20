@@ -1,0 +1,111 @@
+---
+// One ## section of an Other Works page, laid out by its entry in compositions.ts.
+// Each layout checks the section has the images it needs and stops the build if not.
+import CaseStudyBlocks from './CaseStudyBlocks.astro';
+import LabelledScreens from './LabelledScreens.astro';
+import MediaAside from './MediaAside.astro';
+import ScreenSheet from './ScreenSheet.astro';
+import TextColumns from './TextColumns.astro';
+import type { Block, Section } from '../lib/case-study/parse';
+import type { SectionLayout } from '../lib/other-works/compositions';
+
+interface Props {
+	section: Section;
+	layout: SectionLayout;
+}
+
+type Run = Extract<Block, { kind: 'figures' }>;
+
+const { section, layout } = Astro.props;
+const fail = (message: string) => {
+	throw new Error(`Other Works "${section.heading}" (${layout.kind}): ${message}`);
+};
+
+const runs = section.blocks.filter((block): block is Run => block.kind === 'figures');
+const prose = section.blocks.filter((block) => block.kind !== 'figures');
+const run = runs[0];
+const count = run?.items.length ?? 0;
+
+if (layout.kind === 'text' && runs.length) fail('a text section has no images');
+if (layout.kind !== 'text' && layout.kind !== 'columns' && runs.length !== 1) fail('needs exactly one run of images');
+if (layout.kind === 'sheet' && (count !== 1 || !run.items[0].caption)) fail('needs one captioned image');
+if (layout.kind === 'labelled' && count !== layout.labels.length) fail(`needs ${layout.labels.length} images`);
+if (layout.kind === 'aside' && count !== layout.frames.length) fail(`needs ${layout.frames.length} images`);
+if (section.subsections.length && layout.kind !== 'columns' && layout.kind !== 'aside') fail('has no place for ### subsections');
+---
+
+<section class:list={['ow-section', 'container', `ow-section--${layout.kind}`]} aria-labelledby={section.id}>
+	<h2 id={section.id} class="ow-section__title">
+		{section.heading}
+	</h2>
+	{
+		layout.kind === 'sheet' ? (
+			<ScreenSheet figure={run.items[0]} frame={layout.frame} bleed={layout.bleed} blocks={prose} />
+		) : layout.kind === 'aside' ? (
+			<MediaAside
+				blocks={prose}
+				subsections={section.subsections}
+				items={run.items}
+				caption={run.caption}
+				frames={layout.frames}
+				span={layout.span}
+				lead={layout.lead}
+			/>
+		) : layout.kind === 'columns' ? (
+			<>
+				<CaseStudyBlocks blocks={section.blocks} />
+				<TextColumns subsections={section.subsections} />
+			</>
+		) : (
+			section.blocks.map((block) =>
+				block.kind !== 'figures' ? (
+					<CaseStudyBlocks blocks={[block]} />
+				) : layout.kind === 'labelled' ? (
+					<LabelledScreens items={block.items} labels={layout.labels} frame={layout.frame} caption={block.caption} />
+				) : (
+					<CaseStudyBlocks blocks={[block]} />
+				),
+			)
+		)
+	}
+</section>
+
+<style>
+	/* The case study rhythm: 32px sections and 24px blocks on phones, 48 and 32 from
+	   600px, 64px sections from 1200px. */
+	.ow-section {
+		--section-gap: var(--space-24);
+
+		display: grid;
+		gap: var(--section-gap);
+		padding-block: var(--space-32);
+	}
+
+	.ow-section__title {
+		margin-block-end: calc(var(--space-16) - var(--section-gap));
+		font-size: var(--text-32);
+	}
+
+	/* Text sections keep to a reading measure. */
+	.ow-section--text :global(.prose) {
+		max-inline-size: 65ch;
+	}
+
+	@media (min-width: 600px) {
+		.ow-section {
+			--section-gap: var(--space-32);
+
+			padding-block: var(--space-48);
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.ow-section {
+			padding-block: var(--space-64);
+		}
+
+		.ow-section__title {
+			font-size: var(--text-40);
+		}
+	}
+</style>

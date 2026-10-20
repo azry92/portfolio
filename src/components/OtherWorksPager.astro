@@ -1,0 +1,77 @@
+---
+// The end of an Other Works page: back to the index, and on to the next project by
+// `order`. Text links, not a band: there are only a few of these pages.
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	next: CollectionEntry<'otherWorks'>;
+}
+
+const { next } = Astro.props;
+---
+
+<nav class="ow-pager container" aria-label="Other works">
+	<ul class="ow-pager__list" role="list">
+		<li>
+			<a href="/other-works">All other works</a>
+		</li>
+		<li class="ow-pager__next">
+			<a href={`/other-works/${next.id}`} rel="next">
+				<span class="ow-pager__small">Next:</span>
+				{next.data.title}
+				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg>
+			</a>
+		</li>
+	</ul>
+</nav>
+
+<style>
+	.ow-pager {
+		padding-block: var(--space-32) var(--space-48);
+	}
+
+	.ow-pager__list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-16) var(--space-48);
+		justify-content: space-between;
+		padding-block-start: var(--space-24);
+		padding-inline: 0;
+		list-style: none;
+		border-block-start: var(--border-width) solid var(--color-border);
+	}
+
+	.ow-pager a {
+		display: inline-flex;
+		gap: var(--space-8);
+		align-items: center;
+		min-block-size: var(--space-48);
+		font-weight: var(--weight-semibold);
+	}
+
+	.ow-pager__small {
+		font-weight: var(--weight-regular);
+	}
+
+	.ow-pager svg {
+		inline-size: 1.25em;
+		block-size: 1.25em;
+		fill: none;
+		stroke: currentColor;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		stroke-width: 2;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.ow-pager svg {
+			transition: transform 150ms ease-out;
+		}
+	}
+
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+		.ow-pager__next a:hover svg {
+			transform: translateX(var(--space-4));
+		}
+	}
+</style>

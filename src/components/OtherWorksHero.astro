@@ -1,0 +1,219 @@
+---
+// An Other Works page opens with its title, the project label, the overview and one
+// row of project facts, beside or above the cover. `photo` sets the cover as it is,
+// running out to the right edge from 1200px (Atlas). `browser` puts it in a browser
+// frame that crosses into a black band, with the live site as a pill (MBFW).
+// Below 600px the cover sits under the title, so the first screen shows the work.
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BrowserFrame from './BrowserFrame.astro';
+import CaseStudyMeta from './CaseStudyMeta.astro';
+import Prose from './Prose.astro';
+import type { Section } from '../lib/case-study/parse';
+
+interface Props {
+	entry: CollectionEntry<'otherWorks'>;
+	overview: Section;
+	variant: 'photo' | 'browser';
+}
+
+const { entry, overview, variant } = Astro.props;
+const { title, client, project, role, team, timeline, platform, tools, live_url, cover, cover_alt } = entry.data;
+---
+
+<header class:list={['ow-hero', `ow-hero--${variant}`]}>
+	<div class="ow-hero__inner container">
+		<div class="ow-hero__lead">
+			<h1 class="ow-hero__title">{title}</h1>
+			{overview.label && <p class="ow-hero__label">{overview.label}</p>}
+		</div>
+		{
+			variant === 'photo' ? (
+				<div class="ow-hero__media">
+					<Picture
+						src={cover}
+						alt={cover_alt}
+						formats={['avif', 'webp']}
+						widths={[480, 720, 960, 1400].filter((w) => w <= cover.width)}
+						sizes="(min-width: 1200px) 60vw, 100vw"
+						loading="eager"
+						fetchpriority="high"
+					/>
+				</div>
+			) : (
+				<div class="ow-hero__media ow-hero__stage">
+					<BrowserFrame
+						src={cover}
+						alt={cover_alt}
+						widths={[480, 720, 960, 1440, 1920]}
+						sizes="(min-width: 1248px) 1000px, (min-width: 1200px) 83vw, 100vw"
+						loading="eager"
+						fetchpriority="high"
+					/>
+				</div>
+			)
+		}
+		<section class="ow-hero__overview" aria-labelledby={overview.id}>
+			<h2 id={overview.id}>{overview.heading}</h2>
+			{overview.blocks.map((block) => block.kind === 'prose' && <Prose html={block.html} />)}
+			{
+				live_url && (
+					<p class="ow-hero__live">
+						<a class="pill-outline" href={live_url}>
+							Visit the live site
+						</a>
+					</p>
+				)
+			}
+		</section>
+		<div class="ow-hero__meta">
+			<CaseStudyMeta
+				client={client}
+				project={project}
+				role={role}
+				team={team}
+				timeline={timeline}
+				platform={platform}
+				tools={tools}
+				layout="row"
+			/>
+		</div>
+	</div>
+</header>
+
+<style>
+	.ow-hero__inner {
+		display: grid;
+		grid-template-areas: 'lead' 'media' 'overview' 'meta';
+		gap: var(--space-32);
+		padding-block: var(--space-48) var(--space-32);
+	}
+
+	.ow-hero__lead {
+		grid-area: lead;
+		display: grid;
+		gap: var(--space-12);
+	}
+
+	.ow-hero__title {
+		font-size: var(--text-display);
+	}
+
+	.ow-hero__label {
+		color: var(--color-text-muted);
+		font-weight: var(--weight-semibold);
+	}
+
+	.ow-hero__media {
+		grid-area: media;
+	}
+
+	.ow-hero__overview {
+		grid-area: overview;
+		display: grid;
+		gap: var(--space-16);
+		align-content: start;
+	}
+
+	.ow-hero__overview h2 {
+		font-size: var(--text-24);
+	}
+
+	.ow-hero__live {
+		padding-block-start: var(--space-8);
+	}
+
+	.ow-hero__meta {
+		grid-area: meta;
+	}
+
+	/* Photo: the cover bleeds to the screen edges on small screens. */
+	.ow-hero--photo .ow-hero__media {
+		margin-inline: calc(var(--gutter) * -1);
+	}
+
+	.ow-hero--photo .ow-hero__media :global(img) {
+		inline-size: 100%;
+		block-size: auto;
+	}
+
+	/* Browser: a black band runs behind the frame's lower half and on under it, out to
+	   the screen edges (html clips the overflow). */
+	.ow-hero__stage {
+		position: relative;
+		isolation: isolate;
+		padding-block-end: var(--space-32);
+	}
+
+	.ow-hero__stage::before {
+		content: '';
+		position: absolute;
+		inset-block: 45% 0;
+		inset-inline: calc(50% - 50vw);
+		z-index: -1;
+		background-color: var(--color-surface-inverse);
+	}
+
+	/* Below 600px the pill spans the column, like the home buttons. */
+	@media (max-width: 599.98px) {
+		.ow-hero__live .pill-outline {
+			display: flex;
+			justify-content: center;
+		}
+	}
+
+	@media (min-width: 600px) {
+		.ow-hero__inner {
+			padding-block-start: var(--space-64);
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.ow-hero--photo .ow-hero__inner {
+			grid-template-areas: 'lead media' 'overview media' 'meta meta';
+			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+			grid-template-rows: auto 1fr auto;
+			gap: var(--space-32) var(--space-48);
+		}
+
+		/* The photo runs to the right edge of the viewport and fades in from the copy side. */
+		.ow-hero--photo .ow-hero__media {
+			align-self: center;
+			margin-inline: 0 calc((100vw - min(100vw, var(--content-max) + 2 * var(--gutter))) / -2 - var(--gutter));
+			mask-image: linear-gradient(to right, transparent, #000 20%), linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent);
+			mask-composite: intersect;
+		}
+
+		/* Browser: title and overview across the top, the facts under them, then the frame over the band. */
+		.ow-hero--browser .ow-hero__inner {
+			grid-template-areas: 'lead' 'overview' 'meta' 'media';
+			padding-block-end: 0;
+		}
+
+		.ow-hero--browser .ow-hero__overview {
+			grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+			column-gap: var(--space-48);
+		}
+
+		.ow-hero--browser .ow-hero__overview > :not(.ow-hero__live) {
+			grid-column: 1;
+		}
+
+		.ow-hero--browser .ow-hero__live {
+			grid-column: 2;
+			grid-row: 1 / span 2;
+			align-self: end;
+			justify-self: end;
+		}
+
+		.ow-hero__stage {
+			padding-block: var(--space-16) var(--space-64);
+		}
+
+		.ow-hero__stage :global(.browser) {
+			inline-size: min(100%, 62.5rem);
+			margin-inline: auto;
+			box-shadow: 0 1.5rem 3rem color-mix(in srgb, var(--color-surface-inverse) 30%, transparent);
+		}
+	}
+</style>

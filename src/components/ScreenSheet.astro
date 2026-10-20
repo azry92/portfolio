@@ -1,0 +1,132 @@
+---
+// One screen at full content width, then its caption set as a tagline beside the
+// body: stacked on small screens, tagline left and body right from 768px.
+// `bleed` runs the image out to the screen edges, unframed.
+import { Picture } from 'astro:assets';
+import CaseStudyBlocks from './CaseStudyBlocks.astro';
+import DisplayFrame from './DisplayFrame.astro';
+import ZoomLink from './ZoomLink.astro';
+import type { Frame } from '../lib/case-study/layouts';
+import type { Block, Figure } from '../lib/case-study/parse';
+
+interface Props {
+	figure: Figure;
+	/** `display` or `none`; other frames have their own rows. */
+	frame: Frame;
+	bleed?: boolean;
+	blocks: Block[];
+}
+
+const { figure, frame, bleed = false, blocks } = Astro.props;
+const { image, alt, caption } = figure;
+const widths = [480, 960, 1440, 1920].filter((w) => w <= image.width);
+const sizes = bleed ? '100vw' : '(min-width: 1248px) 1200px, 100vw';
+const formats: ('avif' | 'webp')[] = ['avif', 'webp'];
+---
+
+<div class:list={['sheet', { 'sheet--bleed': bleed }]}>
+	<figure class="sheet__figure">
+		<div class="sheet__media">
+			{
+				frame === 'display' ? (
+					<DisplayFrame>
+						<ZoomLink image={image}>
+							<Picture src={image} alt={alt} formats={formats} widths={widths} sizes={sizes} />
+						</ZoomLink>
+					</DisplayFrame>
+				) : (
+					<ZoomLink image={image}>
+						<Picture class="sheet__image" src={image} alt={alt} formats={formats} widths={widths} sizes={sizes} />
+					</ZoomLink>
+				)
+			}
+		</div>
+		{caption && <figcaption class="sheet__tagline" set:html={caption} />}
+	</figure>
+	<div class="sheet__body">
+		<CaseStudyBlocks blocks={blocks} />
+	</div>
+</div>
+
+<style>
+	.sheet {
+		display: grid;
+		gap: var(--space-24);
+	}
+
+	.sheet__figure {
+		display: grid;
+		gap: var(--space-24);
+	}
+
+	.sheet__body {
+		display: grid;
+		gap: var(--space-16);
+	}
+
+	.sheet :global(.sheet__image) {
+		inline-size: 100%;
+		block-size: auto;
+		border-radius: var(--radius-sm);
+	}
+
+	.sheet__tagline {
+		font-family: var(--font-display);
+		font-size: var(--text-24);
+		font-weight: var(--weight-light);
+		line-height: var(--leading-heading);
+		text-wrap: balance;
+	}
+
+	/* Below 768px every screen runs to the screen edges: a 8:3 screen is short on a
+	   phone, so it takes all the width there is. A tap still opens it full size. */
+	@media (max-width: 767.98px) {
+		.sheet__media {
+			margin-inline: calc(var(--gutter) * -1);
+		}
+
+		.sheet__media :global(.sheet__image) {
+			border-radius: 0;
+		}
+	}
+
+	.sheet--bleed .sheet__media {
+		margin-inline: calc(50% - 50vw);
+	}
+
+	.sheet--bleed :global(.sheet__image) {
+		border-radius: 0;
+	}
+
+	/* The figure spans both rows of the sheet's grid, so its caption and the body sit
+	   on one line under the screen. */
+	@media (min-width: 768px) {
+		.sheet {
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			grid-template-rows: auto auto;
+			gap: var(--space-32) var(--space-24);
+		}
+
+		.sheet__figure {
+			grid-column: 1 / -1;
+			grid-row: 1 / span 2;
+			grid-template-columns: subgrid;
+			grid-template-rows: subgrid;
+			row-gap: var(--space-32);
+		}
+
+		.sheet__media {
+			grid-column: 1 / -1;
+		}
+
+		.sheet__tagline {
+			grid-column: 1 / span 5;
+			grid-row: 2;
+		}
+
+		.sheet__body {
+			grid-column: 7 / -1;
+			grid-row: 2;
+		}
+	}
+</style>

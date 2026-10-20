@@ -1,0 +1,172 @@
+---
+// Copy and subsections in one column, figures in the other (left from 768px). The
+// figures sit side by side at every width. With `lead`, only the first figure takes
+// the media column and the rest follow the copy; one caption still covers them all.
+import CaseStudyBlocks from './CaseStudyBlocks.astro';
+import Figure from './Figure.astro';
+import type { Frame } from '../lib/case-study/layouts';
+import type { Block, Figure as FigureData, Subsection } from '../lib/case-study/parse';
+
+interface Props {
+	blocks: Block[];
+	subsections: Subsection[];
+	items: FigureData[];
+	caption?: string;
+	frames: Frame[];
+	/** The media column's share of 12. */
+	span: number;
+	lead?: boolean;
+}
+
+const { blocks, subsections, items, caption, frames, span, lead = false } = Astro.props;
+if (items.length !== frames.length) {
+	throw new Error(`MediaAside: ${frames.length} frames for ${items.length} images`);
+}
+
+const [first, ...rest] = items;
+const across = lead ? 1 : items.length;
+const sizeFor = (frame: Frame, share: number) =>
+	frame === 'phone' ? '240px' : `(min-width: 1248px) ${Math.round((1200 * share) / 12)}px, (min-width: 768px) ${Math.round((100 * share) / 12)}vw, ${Math.round(100 / across)}vw`;
+const mediaSize = (frame: Frame) => sizeFor(frame, span / across);
+const restSize = (frame: Frame) => sizeFor(frame, 12 - span - 1);
+const Tag = caption ? 'figure' : 'div';
+---
+
+<div class:list={['aside', { 'aside--lead': lead }]} style={`--media: ${span}fr; --text: ${12 - span}fr; --across: ${across}`}>
+	<div class="aside__text">
+		<CaseStudyBlocks blocks={blocks} />
+		{
+			subsections.map((sub) => (
+				<section class="aside__subsection" aria-labelledby={sub.id}>
+					<h3 id={sub.id} class="aside__subtitle">
+						{sub.heading}
+					</h3>
+					<CaseStudyBlocks blocks={sub.blocks} />
+				</section>
+			))
+		}
+	</div>
+	<Tag class="aside__media">
+		{
+			lead ? (
+				<>
+					<div class="aside__lead">
+						<Figure figure={first} frame={frames[0]} sizes={mediaSize(frames[0])} />
+					</div>
+					<div class="aside__rest">
+						{rest.map((figure, i) => <Figure figure={figure} frame={frames[i + 1]} sizes={restSize(frames[i + 1])} />)}
+					</div>
+				</>
+			) : (
+				<div class="aside__figures">
+					{items.map((figure, i) => <Figure figure={figure} frame={frames[i]} sizes={mediaSize(frames[i])} />)}
+				</div>
+			)
+		}
+		{caption && <figcaption class="aside__caption" set:html={caption} />}
+	</Tag>
+</div>
+
+<style>
+	.aside,
+	.aside__text,
+	.aside__media,
+	.aside__rest {
+		display: grid;
+		gap: var(--space-24);
+		align-content: start;
+	}
+
+	.aside__subsection {
+		display: grid;
+		gap: var(--space-16);
+		padding-block-start: var(--space-8);
+	}
+
+	.aside__subtitle {
+		font-size: var(--text-24);
+	}
+
+	.aside__figures {
+		display: grid;
+		grid-template-columns: repeat(var(--across), minmax(0, 1fr));
+		gap: var(--space-16);
+		align-items: start;
+	}
+
+	/* A phone keeps a phone's width, centred in its column. */
+	.aside__media :global(.figure--phone) {
+		justify-self: center;
+		inline-size: min(100%, 15rem);
+	}
+
+	.aside__rest :global(.figure__image) {
+		border: var(--border-width) solid var(--color-border);
+	}
+
+	.aside__caption {
+		color: var(--color-text-muted);
+		font-size: var(--text-14);
+	}
+
+	@media (min-width: 768px) {
+		.aside {
+			grid-template-columns: minmax(0, var(--media)) minmax(0, var(--text));
+			gap: var(--space-48);
+			align-items: start;
+		}
+
+		.aside__text {
+			grid-column: 2;
+			grid-row: 1;
+		}
+
+		.aside__media {
+			grid-column: 1;
+			grid-row: 1;
+		}
+
+		.aside__figures {
+			gap: var(--space-24);
+		}
+
+		/* Lead: the media wrapper takes the whole grid as a subgrid, so the first figure
+		   stays in the media column while the rest and the caption follow the copy. */
+		.aside--lead {
+			grid-template-rows: auto auto 1fr;
+			row-gap: var(--space-24);
+		}
+
+		.aside--lead .aside__text {
+			grid-row: 1;
+		}
+
+		.aside--lead .aside__media {
+			grid-column: 1 / -1;
+			grid-row: 1 / -1;
+			grid-template-columns: subgrid;
+			grid-template-rows: subgrid;
+			/* It overlaps the copy's cell, so it lets clicks and selection through. */
+			pointer-events: none;
+		}
+
+		.aside--lead .aside__media > * {
+			pointer-events: auto;
+		}
+
+		.aside--lead .aside__lead {
+			grid-column: 1;
+			grid-row: 1 / -1;
+		}
+
+		.aside--lead .aside__rest {
+			grid-column: 2;
+			grid-row: 2;
+		}
+
+		.aside--lead .aside__caption {
+			grid-column: 2;
+			grid-row: 3;
+		}
+	}
+</style>
