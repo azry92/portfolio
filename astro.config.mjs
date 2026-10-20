@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
+import { projectImages } from './src/lib/case-study/images-plugin.mjs';
 import { caseStudyVideos } from './src/lib/case-study/videos-plugin.mjs';
 
 // Self-hosted: the woff2 files come from the installed @fontsource-variable
@@ -10,7 +11,7 @@ const fallbacks = ['system-ui', 'sans-serif'];
 export default defineConfig({
 	site: 'https://ismailazry.vercel.app',
 	vite: {
-		plugins: [caseStudyVideos()],
+		plugins: [projectImages(), caseStudyVideos()],
 	},
 	fonts: [
 		{

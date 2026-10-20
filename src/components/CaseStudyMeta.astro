@@ -1,20 +1,24 @@
 ---
-// Project facts under the case study title: client, role, team, timeline, platform, tools, live site.
+// Project facts under a project's title: client, project, role, team, timeline, platform, tools, live site.
+// `grid` sets them two across (case study hero); `row` runs them in one line under a
+// hairline from 1200px, two across below that (other works).
 interface Props {
 	client?: string;
-	role: string;
+	project?: string;
+	role?: string;
 	team: string;
 	timeline: string;
 	platform: string;
 	tools: string[];
 	liveUrl?: string;
+	layout?: 'grid' | 'row';
 }
 
-const { client, role, team, timeline, platform, tools, liveUrl } = Astro.props;
+const { client, project, role, team, timeline, platform, tools, liveUrl, layout = 'grid' } = Astro.props;
 const host = liveUrl ? new URL(liveUrl).host.replace(/^www\./, '') : undefined;
 ---
 
-<dl class="meta">
+<dl class:list={['meta', `meta--${layout}`]}>
 	{
 		client && (
 			<div>
@@ -23,10 +27,22 @@ const host = liveUrl ? new URL(liveUrl).host.replace(/^www\./, '') : undefined;
 			</div>
 		)
 	}
-	<div>
-		<dt>Role</dt>
-		<dd>{role}</dd>
-	</div>
+	{
+		project && (
+			<div>
+				<dt>Project</dt>
+				<dd>{project}</dd>
+			</div>
+		)
+	}
+	{
+		role && (
+			<div>
+				<dt>Role</dt>
+				<dd>{role}</dd>
+			</div>
+		)
+	}
 	<div>
 		<dt>Team</dt>
 		<dd>{team}</dd>
@@ -84,5 +100,23 @@ const host = liveUrl ? new URL(liveUrl).host.replace(/^www\./, '') : undefined;
 
 	.meta__tools li:not(:last-child)::after {
 		content: ',\00a0';
+	}
+
+	.meta--row {
+		padding-block-start: var(--space-24);
+		border-block-start: var(--border-width) solid var(--color-border);
+	}
+
+	@media (min-width: 1200px) {
+		.meta--row {
+			grid-template-columns: none;
+			grid-auto-columns: minmax(0, auto);
+			grid-auto-flow: column;
+			justify-content: space-between;
+		}
+
+		.meta--row > div {
+			max-inline-size: 16rem;
+		}
 	}
 </style>

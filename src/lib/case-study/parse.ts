@@ -1,5 +1,7 @@
-// Turns a case study's Markdown body into sections the template renders with
+// Turns a project's Markdown body into sections the templates render with
 // real components (frames, swatches, tables) instead of raw Markdown HTML.
+// Case studies read their layout notes strictly; other works keep each note as
+// text and set their composition in code (see lib/other-works/compositions.ts).
 //
 // The Markdown is written one block per line with no blank lines between them,
 // so a paragraph is split back into its lines: a line holding one image is a
@@ -12,7 +14,7 @@ import { gfmFromMarkdown } from 'mdast-util-gfm';
 import { toHast } from 'mdast-util-to-hast';
 import { toHtml } from 'hast-util-to-html';
 import { gfm } from 'micromark-extension-gfm';
-import { resolveImage, resolveVideo } from './images';
+import { resolveImage, resolveVideo, type Collection } from './images';
 import { layoutNote, parseLayout, type Layout } from './layouts';
 
 export interface Figure {
@@ -57,6 +59,10 @@ export interface Subsection {
 	id: string;
 	heading: string;
 	layout?: Layout;
+	/** The layout note as written, when the template doesn't parse notes. */
+	note?: string;
+	/** From a <!-- project label: ... --> note. */
+	label?: string;
 	blocks: Block[];
 }
 
@@ -166,7 +172,12 @@ function videoNote(html: string, slug: string, source: string): Extract<Block, {
 	if (flags !== videoFlags) throw new Error(`${source}: video flags must read "${videoFlags}", got "${flags}"`);
 	// The poster sits with the images, named after the video.
 	const name = path.match(/([^/]+)\.mp4$/)![1];
-	return { kind: 'video', src: resolveVideo(slug, path), poster: resolveImage(slug, `./images/${name}-poster.png`), alt };
+	return {
+		kind: 'video',
+		src: resolveVideo(slug, path),
+		poster: resolveImage('case-studies', slug, `./images/${name}-poster.png`),
+		alt,
+	};
 }
 
 function table(node: Table): Block {
@@ -175,7 +186,16 @@ function table(node: Table): Block {
 }
 
 export function parseCaseStudy(slug: string, body: string): Section[] {
-	const source = `case-studies/${slug}/index.md`;
+	return parseProject('case-studies', slug, body, { layouts: true });
+}
+
+/** Other works: layout notes are kept as text, never parsed (their pages compose in code). */
+export function parseOtherWork(slug: string, body: string): Section[] {
+	return parseProject('other-works', slug, body, { layouts: false });
+}
+
+function parseProject(collection: Collection, slug: string, body: string, options: { layouts: boolean }): Section[] {
+	const source = `${collection}/${slug}/index.md`;
 	const tree = fromMarkdown(body, { extensions: [gfm()], mdastExtensions: [gfmFromMarkdown()] });
 	smartQuotes(tree);
 	const sections: Section[] = [];
@@ -244,24 +264,30 @@ export function parseCaseStudy(slug: string, body: string): Section[] {
 				return;
 			}
 			case 'html': {
-				const video = videoNote(node.value.trim(), slug, source);
+				const video = options.layouts ? videoNote(node.value.trim(), slug, source) : undefined;
 				if (video) {
 					flush();
 					push(video);
 					return;
 				}
+				const label = node.value.trim().match(/^<!--\s*project label:\s*([\s\S]*?)\s*-->$/)?.[1];
+				if (label !== undefined && !options.layouts) {
+					target().label = label;
+					return;
+				}
 				const note = layoutNote(node.value.trim());
 				if (note === undefined) return;
 				const section = target();
-				if (section.layout) throw new Error(`${source}: two layout notes under "${section.heading}"`);
-				section.layout = parseLayout(note, source);
+				if (section.layout || section.note) throw new Error(`${source}: two layout notes under "${section.heading}"`);
+				if (options.layouts) section.layout = parseLayout(note, source);
+				else section.note = note;
 				return;
 			}
 			case 'paragraph':
 				for (const line of lines(node.children)) {
 					const [only] = line;
 					if (line.length === 1 && only.type === 'image') {
-						run.push({ image: resolveImage(slug, only.url), alt: only.alt ?? '' });
+						run.push({ image: resolveImage(collection, slug, only.url), alt: only.alt ?? '' });
 					} else if (line.length === 1 && only.type === 'emphasis') {
 						caption(inlineHtml(only.children));
 					} else {
@@ -272,7 +298,7 @@ export function parseCaseStudy(slug: string, body: string): Section[] {
 				return;
 			case 'list':
 				flush();
-				if (target().layout?.kind === 'swatches') push({ kind: 'swatches', items: swatches(node, source) });
+				if (target().layout?.kind === 'swatches' || target().note === 'swatch row') push({ kind: 'swatches', items: swatches(node, source) });
 				else if (target().layout?.kind === 'stats') push({ kind: 'stats', items: stats(node, source) });
 				// Under "shipped navigation", a subsection's list is the menu itself.
 				else if (current !== sections[sections.length - 1] && sections[sections.length - 1].layout?.kind === 'sitemap-nav')
