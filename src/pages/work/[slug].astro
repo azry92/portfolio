@@ -1,7 +1,9 @@
 ---
+import { getImage } from 'astro:assets';
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CaseStudyHero from '../../components/CaseStudyHero.astro';
+import CaseStudyPager from '../../components/CaseStudyPager.astro';
 import CaseStudySection from '../../components/CaseStudySection.astro';
 import Lightbox from '../../components/Lightbox.astro';
 import { readableOn } from '../../lib/case-study/contrast';
@@ -11,15 +13,21 @@ export async function getStaticPaths() {
 	// Case studies whose layout notes the template can draw. The others join as
 	// their own steps add the layouts they need. (getStaticPaths is hoisted, so this lives inside it.)
 	const READY = new Set(['at-auto-shoppe']);
-	const entries = await getCollection('caseStudies');
-	return entries.filter((entry) => READY.has(entry.id)).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+	const entries = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
+	// Neighbours come from every case study, so the pager already points at the full set.
+	const at = (i: number) => entries[(i + entries.length) % entries.length];
+	return entries.flatMap((entry, i) =>
+		READY.has(entry.id) ? [{ params: { slug: entry.id }, props: { entry, prev: at(i - 1), next: at(i + 1) } }] : [],
+	);
 }
 
 interface Props {
 	entry: CollectionEntry<'caseStudies'>;
+	prev: CollectionEntry<'caseStudies'>;
+	next: CollectionEntry<'caseStudies'>;
 }
 
-const { entry } = Astro.props;
+const { entry, prev, next } = Astro.props;
 const { title, summary, accent } = entry.data;
 const [overview, ...sections] = parseCaseStudy(entry.id, entry.body ?? '');
 if (overview?.layout?.kind !== 'hero') {
@@ -34,12 +42,16 @@ const onAccent = accent
 		])
 	: undefined;
 const accentStyle = accent ? `--accent: ${accent}; --on-accent: var(${onAccent})` : undefined;
+const ogImage = await getImage({ src: entry.data.cover, width: 1200, format: 'png' });
 ---
 
-<BaseLayout title={`${title} | Ismail Azry`} description={summary}>
-	<article class="case-study" style={accentStyle}>
-		<CaseStudyHero entry={entry} overview={overview} />
-		{sections.map((section) => <CaseStudySection section={section} />)}
-	</article>
+<BaseLayout title={`${title} | Ismail Azry`} description={summary} ogImage={ogImage.src}>
+	<div class="case-study" style={accentStyle}>
+		<article>
+			<CaseStudyHero entry={entry} overview={overview} />
+			{sections.map((section) => <CaseStudySection section={section} />)}
+		</article>
+		<CaseStudyPager prev={prev} next={next} />
+	</div>
 	<Lightbox />
 </BaseLayout>

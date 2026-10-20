@@ -1,0 +1,103 @@
+---
+// Previous and next case study, by `order`, wrapping at both ends. Next is the lead.
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	prev: CollectionEntry<'caseStudies'>;
+	next: CollectionEntry<'caseStudies'>;
+}
+
+const { prev, next } = Astro.props;
+// The project name: the part of the title before the colon, as on the home cards.
+const name = (entry: CollectionEntry<'caseStudies'>) => entry.data.title.split(':')[0].trim();
+---
+
+<nav class="pager accent-band" aria-label="Case studies">
+	<ul class="pager__inner container" role="list">
+		<li class="pager__next">
+			<a href={`/work/${next.id}`} rel="next">
+				<span class="pager__label">Next read</span>
+				<span class="pager__name">
+					{name(next)}
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg>
+				</span>
+			</a>
+		</li>
+		<li class="pager__prev">
+			<a href={`/work/${prev.id}`} rel="prev">
+				<span class="pager__small">Previous:</span>
+				{name(prev)}
+			</a>
+		</li>
+	</ul>
+</nav>
+
+<style>
+	.pager__inner {
+		display: grid;
+		gap: var(--space-32);
+		justify-items: center;
+		padding-block: var(--space-64);
+		list-style: none;
+		text-align: center;
+	}
+
+	.pager a {
+		text-decoration: none;
+	}
+
+	.pager__next a {
+		display: grid;
+		gap: var(--space-8);
+		justify-items: center;
+	}
+
+	.pager__label {
+		font-family: var(--font-display);
+		font-size: var(--text-display);
+		font-weight: var(--weight-bold);
+		line-height: var(--leading-heading);
+		text-transform: uppercase;
+	}
+
+	.pager__name {
+		display: inline-flex;
+		gap: var(--space-12);
+		align-items: center;
+		font-size: var(--text-24);
+		font-weight: var(--weight-semibold);
+	}
+
+	.pager__name svg {
+		inline-size: 1.5em;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.pager__next a:hover .pager__name,
+	.pager__prev a:hover {
+		text-decoration: underline;
+	}
+
+	.pager__prev a {
+		display: inline-block;
+		padding-block: var(--space-8);
+	}
+
+	.pager__small {
+		margin-inline-end: var(--space-4);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.pager__name svg {
+			transition: transform 150ms ease-out;
+		}
+
+		.pager__next a:hover svg {
+			transform: translateX(var(--space-4));
+		}
+	}
+</style>
