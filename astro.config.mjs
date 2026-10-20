@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
+import { caseStudyVideos } from './src/lib/case-study/videos-plugin.mjs';
 
 // Self-hosted: the woff2 files come from the installed @fontsource-variable
 // packages (latin subset). One variable file per family covers every weight we use.
@@ -8,6 +9,9 @@ const fallbacks = ['system-ui', 'sans-serif'];
 // https://astro.build/config
 export default defineConfig({
 	site: 'https://ismailazry.vercel.app',
+	vite: {
+		plugins: [caseStudyVideos()],
+	},
 	fonts: [
 		{
 			name: 'Sora',

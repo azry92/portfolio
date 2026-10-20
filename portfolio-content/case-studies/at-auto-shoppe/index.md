@@ -86,7 +86,7 @@ I designed and built the store on Shopify: a Make, Model and Generation/Year fin
 | Feedback | Source | Response |
 |---|---|---|
 | "Wheel Finder is hard to read; J-width is shown first." | Sales Manager, several rounds | Removed J-width as the first step and narrowed the Wheel and Tyre Finders to 4 main branches. |
-| "Can we make our own custom YMM search?" | Sales Manager, several rounds | Built a custom Make/Model/Year finder in place of a paid YMM app, saving RM 80/month. |
+| "Can we make our own custom YMM search?" | Sales Manager, several rounds | Built a custom Make/Model/Year finder in place of a paid YMM app, saving RM&nbsp;80/month. |
 | Product filters from the old site were generic and not tuned to customer needs. | Owner, Sales Manager | Each collection has its own filters: tyres by width, aspect ratio and diameter; suspension by front or rear placement. |
 | "It's important to make a sign-up page for our customers for promotions and retention." | Owner | Enabled account sign-up with a promotions opt-in. |
 | Old URLs and product descriptions had broken links. | Owner, Sales Manager | Rebuilt product listings with proper tags, metaobject labels, and cleaned-up URLs and SKUs. 301 redirects are in progress. |
