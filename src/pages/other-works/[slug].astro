@@ -1,6 +1,6 @@
 ---
-import { getImage } from 'astro:assets';
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { ogImageFor } from '../../lib/og';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Lightbox from '../../components/Lightbox.astro';
 import OtherWorkSection from '../../components/OtherWorkSection.astro';
@@ -25,19 +25,13 @@ interface Props {
 }
 
 const { entry, next } = Astro.props;
-const { title, summary, cover } = entry.data;
+const { title, summary } = entry.data;
 const composition = compositions[entry.id];
 const [overview, ...sections] = parseOtherWork(entry.id, entry.body ?? '');
 if (overview?.heading !== 'Overview') {
 	throw new Error(`other-works/${entry.id}/index.md: the first section needs to be ## Overview`);
 }
-const ogImage = await getImage({ src: cover, width: 1200, format: 'png' });
-const og = {
-	src: ogImage.src,
-	width: Number(ogImage.attributes.width),
-	height: Number(ogImage.attributes.height),
-	alt: entry.data.cover_alt,
-};
+const og = ogImageFor(entry.id, entry.data.cover_alt);
 ---
 
 <BaseLayout title={`${title} | Ismail Azry`} description={summary} ogImage={og}>

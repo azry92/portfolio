@@ -24,6 +24,13 @@ const workBase = ({ image }: SchemaContext) =>
 		order: z.number().int(),
 		cover: image(),
 		cover_alt: z.string().min(1),
+		/** Where the 1200×630 social preview crop centres on the cover, as fractions of its width and height. */
+		og_focus: z
+			.object({
+				x: z.number().min(0).max(1).default(0.5),
+				y: z.number().min(0).max(1).default(0.5),
+			})
+			.default({ x: 0.5, y: 0.5 }),
 	});
 
 const caseStudies = defineCollection({

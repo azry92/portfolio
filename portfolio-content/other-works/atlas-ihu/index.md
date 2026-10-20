@@ -9,6 +9,7 @@ tools: [ "Adobe Illustrator"]
 order: 5
 cover: ./images/page-hero-atlas.png
 cover_alt: "Atlas concept application on existing IHU"
+og_focus: { y: 0.44 }
 ---
 ## Overview
 <!-- layout: hero, title and overview left, head-unit screen right -->

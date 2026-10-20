@@ -16,6 +16,7 @@ order: 1
 accent: "#2A72BA"
 cover: ./images/page-hero.png
 cover_alt: "AT Auto Shoppe homepage with a before-and-after slider showing a modified 4X4"
+og_focus: { y: 0.55 }
 hero:
   frame: browser
   image: ./images/hero.png

@@ -17,6 +17,7 @@ order: 2
 accent: "#003399"
 cover: ./images/hero-case-study.png
 cover_alt: "PLANETSTEWARDS homepage on desktop, with the wordmark over a space scene of Earth, the Moon and Mars"
+og_focus: { y: 0.528 }
 hero:
   frame: browser
   image: ./images/home-page-hero.png

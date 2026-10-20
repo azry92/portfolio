@@ -15,6 +15,7 @@ live_url: "https://www.theprecious.com.my/"
 order: 3
 cover: ./images/page-hero-aesthetic.png
 cover_alt: "Precious Wedding fair landing page with full-bleed couple photography and a Chat with us button"
+og_focus: { y: 0.52 }
 accent: "#911421"
 hero:
   frame: phone
