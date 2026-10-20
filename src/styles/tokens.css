@@ -52,6 +52,8 @@
 	/* Shape */
 	--radius-sm: 8px;
 	--radius-lg: 24px;
+	/* Every button and button-styled link; on a square box it draws a circle. */
+	--radius-pill: 999px;
 	--border-width: 1px;
 	--content-max: 75rem;
 

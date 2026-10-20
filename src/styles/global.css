@@ -121,7 +121,7 @@ main[tabindex='-1']:focus {
 	inset-inline-start: var(--space-8);
 	z-index: 100;
 	padding: var(--space-8) var(--space-16);
-	border-radius: var(--radius-sm);
+	border-radius: var(--radius-pill);
 	background-color: var(--color-surface);
 	color: var(--color-text);
 	font-weight: var(--weight-semibold);

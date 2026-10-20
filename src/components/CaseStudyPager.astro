@@ -60,12 +60,19 @@ const name = (entry: CollectionEntry<'caseStudies'>) => entry.data.title.split('
 		text-transform: uppercase;
 	}
 
+	/* The pill swaps the band's colours, so its contrast is the band's own. */
 	.pager__name {
 		display: inline-flex;
 		gap: var(--space-12);
 		align-items: center;
+		min-block-size: var(--space-48);
+		padding: var(--space-12) var(--space-24);
+		border-radius: var(--radius-pill);
+		background-color: var(--on-accent, var(--color-text-inverse));
+		color: var(--accent, var(--color-surface-inverse));
 		font-size: var(--text-24);
 		font-weight: var(--weight-semibold);
+		line-height: var(--leading-heading);
 	}
 
 	.pager__name svg {

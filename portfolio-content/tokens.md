@@ -22,6 +22,6 @@
 ## Spacing (px)
 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 / 128
 ## Shape
-- Radius: small 8, large 24
+- Radius: small 8, large 24, pill 999 (every button and button-styled link; a circle on a square box)
 - Max content width: 1200
 - Border width: 1
