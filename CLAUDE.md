@@ -35,7 +35,7 @@ Personal portfolio for "Product Designer, Web & E-commerce | Shopify Design & Bu
 - British/Malaysian spelling.
 - Small components with one job. Name them by what they are (`CaseStudyMeta`, `PhoneFrame`, `FigureGrid`).
 - Device frames are components, never images. PhoneFrame models the iPhone 17 Pro: screen ratio 1206:2622, outer corner radius about 13% of frame width, thin even black bezel (about 2.5% of width), aluminium edge as a 1–2px outer ring in a neutral grey, Dynamic Island as a black pill centred near the top (about 30% of screen width, 3% of screen height). A top safe-area strip (solid, empty band behind the Dynamic Island, default 6% of screen height, set by the `safeArea` prop, 0 to remove) keeps screenshot content below the island. No status bar, no side buttons, no shadow beyond one soft drop shadow. BrowserFrame: thin top bar with three dots, no URL text. Screenshots fill the screen width exactly (width 100%, height auto), aligned top, clipped only at the bottom. Never crop the sides.
-- Phone rows: from 600px, one equal column per phone across the full content width, each phone centred at a max width. Rows in one group (e.g. stage rows) can share a column count so phones match in size. Below 600px, 2 per row; an odd last phone is centred.
+- Phone rows: from 600px, phones at their max width with a 48px gap, centred; in a narrow column they shrink evenly so the gap holds. Rows in one group (e.g. stage rows) can share a column count so phones match in size. Below 600px, 2 per row; an odd last phone is centred.
 - Rows of 2–3 images stack to one column below 600px, unless a layout note says otherwise.
 ## Workflow
 - Plan before building any new page or component; wait for approval.

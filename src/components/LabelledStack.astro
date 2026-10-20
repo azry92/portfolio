@@ -1,10 +1,8 @@
 ---
 // "Vertical stack of homepage sections, labelled …": one run of screenshots split
-// evenly, in order, under the labels. Each label's screenshots sit together in one
-// browser window, as consecutive sections of the same page.
-import { Picture } from 'astro:assets';
-import BrowserFrame from './BrowserFrame.astro';
-import ZoomLink from './ZoomLink.astro';
+// evenly, in order, under the labels. Each screenshot sits in its own browser
+// window; a label's windows go two across from 768px, one column below.
+import Figure from './Figure.astro';
 import type { Block } from '../lib/case-study/parse';
 
 interface Props {
@@ -27,19 +25,11 @@ const Tag = run.caption ? 'figure' : 'div';
 			groups.map((group) => (
 				<li class="labelled-stack__item">
 					<h4 class="labelled-stack__label">{group.label}</h4>
-					<BrowserFrame>
+					<div class="labelled-stack__figures">
 						{group.items.map((item) => (
-							<ZoomLink image={item.image}>
-								<Picture
-									src={item.image}
-									alt={item.alt}
-									formats={['avif', 'webp']}
-									widths={[480, 960, 1440, 1920].filter((w) => w <= item.image.width)}
-									sizes="(min-width: 1248px) 960px, 100vw"
-								/>
-							</ZoomLink>
+							<Figure figure={item} frame="browser" sizes="(min-width: 1248px) 588px, (min-width: 768px) 50vw, 100vw" />
 						))}
-					</BrowserFrame>
+					</div>
 				</li>
 			))
 		}
@@ -69,25 +59,26 @@ const Tag = run.caption ? 'figure' : 'div';
 		font-size: var(--text-18);
 	}
 
+	.labelled-stack__figures {
+		display: grid;
+		gap: var(--space-24);
+		align-items: start;
+	}
+
 	.labelled-stack__caption {
 		color: var(--color-text-muted);
 		font-size: var(--text-14);
 	}
 
-	@media (min-width: 1200px) {
-		/* Label in a narrow column beside its window. */
-		.labelled-stack__item {
-			grid-template-columns: 10rem minmax(0, 1fr);
-			gap: var(--space-32);
-			align-items: start;
+	@media (min-width: 768px) {
+		.labelled-stack__figures {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
+	}
 
+	@media (min-width: 1200px) {
 		.labelled-stack__label {
 			font-size: var(--text-24);
-		}
-
-		.labelled-stack__caption {
-			padding-inline-start: calc(10rem + var(--space-32));
 		}
 	}
 </style>
