@@ -18,7 +18,8 @@ const stages = section.subsections.map((stage) => {
 	}
 	return { ...stage, row: figures[0] };
 });
-// Every stage uses the longest row's columns, so phones are the same size in every row.
+// Every stage shares the longest row's column count, so phones are the same size in every row
+// (shorter rows leave columns empty on the right). Below 600px all phone rows go 2 per row.
 const columns = Math.max(...stages.map((stage) => stage.row.items.length));
 ---
 

@@ -1,6 +1,8 @@
 ---
-// A row of figures. Rows of 2–3 stack below 600px; rows of 4–5 go 2, then 3, then
-// all across from 1200px. A caption for the whole row makes the row a figure.
+// A row of figures. A caption for the whole row makes the row a figure.
+// Phones: one equal column per phone from 600px, each centred at a max width;
+// 2 per row below that, with an odd last phone centred.
+// Other images: rows of 2–3 stack below 600px; rows of 4–5 go 2, then 3, then all across from 1200px.
 import Figure from './Figure.astro';
 import type { Frame } from '../lib/case-study/layouts';
 import type { Figure as FigureData } from '../lib/case-study/parse';
@@ -10,7 +12,7 @@ interface Props {
 	frame?: Frame;
 	/** Caption HTML for the whole row. */
 	caption?: string;
-	/** Force a column count, e.g. 1 to stack figures in a narrow column. */
+	/** Force a column count: 1 stacks figures in a narrow column; stage rows share their longest row's count. */
 	columns?: number;
 }
 
@@ -19,7 +21,7 @@ const across = Math.min(columns, 5);
 
 const sizes =
 	frame === 'phone'
-		? '(min-width: 1200px) 240px, (min-width: 600px) 30vw, 45vw'
+		? `(min-width: 1200px) 240px, (min-width: 600px) ${Math.round(100 / columns)}vw, 45vw`
 		: across === 1
 			? '(min-width: 1248px) 1200px, 100vw'
 			: `(min-width: 1248px) ${Math.round(1200 / across)}px, (min-width: 600px) ${Math.round(100 / across)}vw, 100vw`;
@@ -27,7 +29,7 @@ const sizes =
 const Tag = caption ? 'figure' : 'div';
 ---
 
-<Tag class:list={['figure-grid', `figure-grid--${frame}`]} style={`--across: ${across}`}>
+<Tag class:list={['figure-grid', `figure-grid--${frame}`]} style={`--across: ${across}; --count: ${columns}`}>
 	<div class="figure-grid__items" data-across={across}>
 		{items.map((figure) => <Figure figure={figure} frame={frame} sizes={sizes} />)}
 	</div>
@@ -42,15 +44,30 @@ const Tag = caption ? 'figure' : 'div';
 
 	.figure-grid__items {
 		--columns: 1;
+		--gap-x: var(--space-24);
 
 		display: grid;
 		grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
-		gap: var(--space-32) var(--space-24);
+		gap: var(--space-32) var(--gap-x);
 	}
 
-	/* Phones keep a phone's width instead of stretching across the content. */
+	/* Phones: 2 per row on small screens, each centred in its column at a phone's width. */
 	.figure-grid--phone .figure-grid__items {
-		grid-template-columns: repeat(var(--columns), minmax(0, 15rem));
+		--gap-x: var(--space-16);
+
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.figure-grid--phone .figure-grid__items > :global(.figure) {
+		justify-self: center;
+		inline-size: 100%;
+		max-inline-size: 15rem;
+	}
+
+	/* An odd last phone takes the full row, centred at one column's width. */
+	.figure-grid--phone .figure-grid__items > :global(.figure:last-child:nth-child(odd)) {
+		grid-column: 1 / -1;
+		inline-size: calc((100% - var(--gap-x)) / 2);
 	}
 
 	.figure-grid__items[data-across='4'],
@@ -61,6 +78,18 @@ const Tag = caption ? 'figure' : 'div';
 	@media (min-width: 600px) {
 		.figure-grid__items:not([data-across='1']) {
 			--columns: min(var(--across), 3);
+		}
+
+		/* One equal column per phone across the full content width. */
+		.figure-grid--phone .figure-grid__items {
+			--gap-x: var(--space-24);
+
+			grid-template-columns: repeat(var(--count), minmax(0, 1fr));
+		}
+
+		.figure-grid--phone .figure-grid__items > :global(.figure:last-child:nth-child(odd)) {
+			grid-column: auto;
+			inline-size: 100%;
 		}
 	}
 
