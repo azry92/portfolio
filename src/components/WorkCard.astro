@@ -1,5 +1,6 @@
 ---
 // One case study on the home grid: cover, project name, and the summary on hover or focus.
+// On touch screens (no hover) there is no overlay; the card line, when set, sits under the name.
 import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 
@@ -8,7 +9,7 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { title, summary, cover, cover_alt } = entry.data;
+const { title, summary, card_line, cover, cover_alt } = entry.data;
 // The card shows the project name: the part of the title before the colon.
 const name = title.split(':')[0].trim();
 const id = `work-card-${entry.id}`;
@@ -30,6 +31,7 @@ const id = `work-card-${entry.id}`;
 		/>
 	</div>
 	<h3 id={`${id}-title`} class="work-card__title">{name}</h3>
+	{card_line && <p class="work-card__line" aria-hidden="true">{card_line}</p>}
 	<p id={`${id}-summary`} class="work-card__summary">{summary}</p>
 </a>
 
@@ -107,6 +109,35 @@ const id = `work-card-${entry.id}`;
 			transition:
 				opacity 150ms ease-out,
 				transform 150ms ease-out;
+		}
+	}
+
+	/* The card line is for touch screens only. */
+	.work-card__line {
+		display: none;
+	}
+
+	/* Touch: no overlay. The name and the card line sit under the cover, always visible.
+	   The summary stays hidden, as the card's accessible description. Without a card
+	   line the name alone fills the space, as on desktop. */
+	@media (hover: none) {
+		.work-card:has(.work-card__line) .work-card__title {
+			flex: none;
+			padding-block-end: 0;
+		}
+
+		.work-card__line {
+			display: block;
+			flex: 1;
+			padding: var(--space-4) var(--space-12) var(--space-8);
+			font-size: var(--text-14);
+			line-height: var(--leading-heading);
+			text-align: center;
+		}
+
+		.work-card:hover .work-card__summary,
+		.work-card:focus-visible .work-card__summary {
+			opacity: 0;
 		}
 	}
 </style>

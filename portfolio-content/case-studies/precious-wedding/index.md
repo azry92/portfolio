@@ -6,6 +6,7 @@ glance:
   did: "Built a reusable Wix kit, WhatsApp first."
   outcome: "82 RSVPs for Fair 4.0."
 role: "Marketing Executive (Web & Design)"
+card_line: "Wix fair landing pages"
 team: "With the marketing team"
 timeline: "May 2024 – Jul 2025"
 platform: "Wix"

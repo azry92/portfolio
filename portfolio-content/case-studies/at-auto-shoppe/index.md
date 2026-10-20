@@ -6,6 +6,7 @@ glance:
   did: "Built a Shopify store around a vehicle finder."
   outcome: "A custom finder replaced a paid app."
 role: "Product Designer & Shopify Developer"
+card_line: "shopify webstore"
 team: "Solo, with the sales team"
 timeline: "Apr 2026 – Present"
 platform: "Shopify"

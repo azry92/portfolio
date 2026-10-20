@@ -1,0 +1,41 @@
+---
+// "Back to top" pill at the end of every page but home, above the footer. The jump is
+// smooth only when motion is allowed (see the scroll-behavior rule in global.css).
+---
+
+<div class="back-to-top container">
+	<a class="back-to-top__link" href="#top">Back to top</a>
+</div>
+
+<style>
+	.back-to-top {
+		padding-block: var(--space-48) 0;
+	}
+
+	.back-to-top__link {
+		display: inline-flex;
+		align-items: center;
+		min-block-size: var(--space-48);
+		padding: var(--space-12) var(--space-24);
+		border: var(--border-width) solid currentColor;
+		border-radius: var(--radius-pill);
+		color: var(--color-text);
+		font-weight: var(--weight-semibold);
+		text-decoration: none;
+	}
+
+	.back-to-top__link:hover,
+	.back-to-top__link:focus-visible {
+		border-color: var(--color-surface-inverse);
+		background-color: var(--color-surface-inverse);
+		color: var(--color-text-inverse);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.back-to-top__link {
+			transition:
+				background-color 150ms ease-out,
+				color 150ms ease-out;
+		}
+	}
+</style>

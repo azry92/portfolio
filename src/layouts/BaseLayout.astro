@@ -1,5 +1,6 @@
 ---
 import { Font } from 'astro:assets';
+import BackToTop from '../components/BackToTop.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { site } from '../data/site';
@@ -53,7 +54,7 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 		{ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
 		<meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
 	</head>
-	<body class={bodyClass}>
+	<body id="top" class={bodyClass}>
 		<a class="skip-link" href="#main">Skip to content</a>
 		{showHeader && <SiteHeader />}
 		{
@@ -62,6 +63,7 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 					<main id="main" tabindex="-1">
 						<slot />
 					</main>
+					<BackToTop />
 					<SiteFooter />
 				</>
 			) : (

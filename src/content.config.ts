@@ -46,6 +46,8 @@ const caseStudies = defineCollection({
 				outcome: z.string().min(1),
 			})
 			.optional(),
+		/** One short line under the name on the home card, on touch screens. Without it the card shows the name only. */
+		card_line: z.string().min(1).optional(),
 		/** Draw the hero image in a device frame instead of the unframed cover mockup. */
 			hero: z
 				.object({

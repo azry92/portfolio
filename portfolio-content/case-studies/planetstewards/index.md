@@ -6,6 +6,7 @@ glance:
   did: "Co-designed the identity, site and motion piece."
   outcome: "1,679 visitors, 61% from abroad."
 role: "Product Designer"
+card_line: "Identity and website"
 client: "Utrecht University"
 team: "September Khu, Project Coordinator"
 timeline: "Apr 2024 – Jul 2024"

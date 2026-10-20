@@ -30,10 +30,17 @@ const { label, href } = Astro.props;
 		}
 	}
 
-	.short-card:hover,
+	/* Touch screens keep a tapped card in its hover state, so the fill follows focus only. */
 	.short-card:focus-visible {
 		background-color: var(--color-accent);
 		color: var(--color-text-inverse);
+	}
+
+	@media (hover: hover) {
+		.short-card:hover {
+			background-color: var(--color-accent);
+			color: var(--color-text-inverse);
+		}
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
