@@ -8,6 +8,7 @@ platform: "Shopify"
 tools: ["Figma", "Shopify CLI", "Liquid", "Adobe Photoshop"]
 live_url: "https://atautoshoppe.com/"
 order: 1
+accent: "#2A72BA"
 cover: ./images/page-hero.png
 cover_alt: "AT Auto Shoppe homepage with a before-and-after slider showing a modified 4x4"
 ---
@@ -43,7 +44,7 @@ The old site was a template catalogue with no way to search by vehicle. 4×4 cus
 ![Diagram: main navigation expands Shop by vehicle into make, model and year, which filters products by their compatible-vehicle metafield](./images/fitment-logic-diagram.svg)
 *Every product is tagged with the vehicles it fits, so search results contain only compatible parts.*
 ## The build
-<!-- layout: copy left, flow diagram right -->
+<!-- layout: diagram full width -->
 I mapped every path from vehicle selection to checkout before building. The flow covers the vehicle finder, category and brand entry points, the wheel and tyre finders, product pages with fitment notes, and the WhatsApp hand-off when a customer is unsure a part fits.
 ![Flow diagram of every customer path from vehicle selection to checkout, including the WhatsApp hand-off](./images/initial-flow-customer-experience.png)
 *Every route into a product, and the WhatsApp exit when fitment is uncertain.*

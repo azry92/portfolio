@@ -1,0 +1,215 @@
+// Turns a case study's Markdown body into sections the template renders with
+// real components (frames, swatches, tables) instead of raw Markdown HTML.
+//
+// The Markdown is written one block per line with no blank lines between them,
+// so a paragraph is split back into its lines: a line holding one image is a
+// figure, a line holding only *italics* is a caption, any other line is a
+// paragraph of its own.
+import type { ImageMetadata } from 'astro';
+import type { List, ListItem, Nodes, PhrasingContent, RootContent, Table } from 'mdast';
+import { fromMarkdown } from 'mdast-util-from-markdown';
+import { gfmFromMarkdown } from 'mdast-util-gfm';
+import { toHast } from 'mdast-util-to-hast';
+import { toHtml } from 'hast-util-to-html';
+import { gfm } from 'micromark-extension-gfm';
+import { resolveImage } from './images';
+import { layoutNote, parseLayout, type Layout } from './layouts';
+
+export interface Figure {
+	image: ImageMetadata;
+	alt: string;
+	/** Caption HTML (inline only). */
+	caption?: string;
+}
+
+export interface Swatch {
+	name: string;
+	hex: string;
+	use: string;
+}
+
+export type Block =
+	| { kind: 'prose'; html: string }
+	| { kind: 'table'; head: string[]; rows: string[][] }
+	| { kind: 'swatches'; items: Swatch[] }
+	/** A run of images; `caption` is set when one caption covers the whole run. */
+	| { kind: 'figures'; items: Figure[]; caption?: string };
+
+export interface Subsection {
+	id: string;
+	heading: string;
+	layout?: Layout;
+	blocks: Block[];
+}
+
+export interface Section extends Subsection {
+	subsections: Subsection[];
+}
+
+const text = (node: Nodes): string =>
+	'value' in node ? node.value : 'children' in node ? node.children.map(text).join('') : '';
+
+const inlineHtml = (children: PhrasingContent[]): string =>
+	toHtml(toHast({ type: 'root', children }));
+
+const slugify = (value: string) =>
+	value
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, '-')
+		.replace(/^-|-$/g, '');
+
+/** Splits a paragraph's inline content at its soft line breaks. */
+function lines(children: PhrasingContent[]): PhrasingContent[][] {
+	const result: PhrasingContent[][] = [[]];
+	for (const child of children) {
+		if (child.type !== 'text') {
+			result[result.length - 1].push(child);
+			continue;
+		}
+		child.value.split('\n').forEach((part, i) => {
+			if (i > 0) result.push([]);
+			if (part.trim()) result[result.length - 1].push({ type: 'text', value: part });
+		});
+	}
+	// Trim the spaces left at either end of a line by the split.
+	return result
+		.filter((line) => line.length)
+		.map((line) => {
+			const first = line[0];
+			const last = line[line.length - 1];
+			if (first.type === 'text') first.value = first.value.trimStart();
+			if (last.type === 'text') last.value = last.value.trimEnd();
+			return line;
+		});
+}
+
+function swatches(list: List, source: string): Swatch[] {
+	return list.children.map((item: ListItem) => {
+		const line = text(item).trim();
+		const match = line.match(/^(.+?) (#[0-9a-f]{6}): (.+)$/i);
+		if (!match) throw new Error(`${source}: swatch must read "Name #RRGGBB: use", got "${line}"`);
+		return { name: match[1], hex: match[2].toUpperCase(), use: match[3] };
+	});
+}
+
+function table(node: Table): Block {
+	const [head, ...rows] = node.children.map((row) => row.children.map((cell) => inlineHtml(cell.children)));
+	return { kind: 'table', head, rows };
+}
+
+export function parseCaseStudy(slug: string, body: string): Section[] {
+	const source = `case-studies/${slug}/index.md`;
+	const tree = fromMarkdown(body, { extensions: [gfm()], mdastExtensions: [gfmFromMarkdown()] });
+	const sections: Section[] = [];
+	const ids = new Set<string>();
+
+	let current: Subsection | undefined;
+	let run: Figure[] = [];
+	let runCaption: string | undefined;
+
+	const uniqueId = (heading: string) => {
+		const base = slugify(heading);
+		let id = base;
+		for (let n = 2; ids.has(id); n++) id = `${base}-${n}`;
+		ids.add(id);
+		return id;
+	};
+
+	const target = () => {
+		if (!current) throw new Error(`${source}: content before the first ## heading`);
+		return current;
+	};
+
+	const push = (block: Block) => {
+		const blocks = target().blocks;
+		const last = blocks[blocks.length - 1];
+		// Neighbouring prose (a paragraph then a list) reads as one flow.
+		if (block.kind === 'prose' && last?.kind === 'prose') last.html += block.html;
+		else blocks.push(block);
+	};
+
+	const flush = () => {
+		if (run.length) push({ kind: 'figures', items: run, caption: runCaption });
+		run = [];
+		runCaption = undefined;
+	};
+
+	const caption = (html: string) => {
+		const uncaptioned = run.filter((figure) => !figure.caption).length;
+		if (uncaptioned > 1 && uncaptioned === run.length) {
+			runCaption = html;
+			flush();
+		} else if (run.length && !run[run.length - 1].caption && uncaptioned === 1) {
+			run[run.length - 1].caption = html;
+		} else {
+			throw new Error(`${source}: caption "${html}" does not follow an uncaptioned image or image row`);
+		}
+	};
+
+	const handle = (node: RootContent) => {
+		switch (node.type) {
+			case 'heading': {
+				flush();
+				const heading = text(node).trim();
+				if (node.depth === 2) {
+					const section: Section = { id: uniqueId(heading), heading, blocks: [], subsections: [] };
+					sections.push(section);
+					current = section;
+				} else if (node.depth === 3) {
+					const parent = sections[sections.length - 1];
+					if (!parent) throw new Error(`${source}: ### "${heading}" before any ## heading`);
+					current = { id: uniqueId(heading), heading, blocks: [] };
+					parent.subsections.push(current);
+				} else {
+					throw new Error(`${source}: heading level ${node.depth} is not supported`);
+				}
+				return;
+			}
+			case 'html': {
+				const note = layoutNote(node.value.trim());
+				if (note === undefined) return;
+				const section = target();
+				if (section.layout) throw new Error(`${source}: two layout notes under "${section.heading}"`);
+				section.layout = parseLayout(note, source);
+				return;
+			}
+			case 'paragraph':
+				for (const line of lines(node.children)) {
+					const [only] = line;
+					if (line.length === 1 && only.type === 'image') {
+						run.push({ image: resolveImage(slug, only.url), alt: only.alt ?? '' });
+					} else if (line.length === 1 && only.type === 'emphasis') {
+						caption(inlineHtml(only.children));
+					} else {
+						flush();
+						push({ kind: 'prose', html: toHtml(toHast({ type: 'paragraph', children: line })) });
+					}
+				}
+				return;
+			case 'list':
+				flush();
+				if (target().layout?.kind === 'swatches') push({ kind: 'swatches', items: swatches(node, source) });
+				else push({ kind: 'prose', html: toHtml(toHast(node)) });
+				return;
+			case 'table':
+				flush();
+				push(table(node));
+				return;
+			default:
+				throw new Error(`${source}: unsupported Markdown block "${node.type}"`);
+		}
+	};
+
+	tree.children.forEach(handle);
+	flush();
+
+	for (const figure of sections.flatMap((s) => [s, ...s.subsections]).flatMap((s) => s.blocks)) {
+		if (figure.kind === 'figures') {
+			for (const item of figure.items) {
+				if (!item.alt) throw new Error(`${source}: every image needs alt text`);
+			}
+		}
+	}
+
+	return sections;
+}

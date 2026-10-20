@@ -1,0 +1,32 @@
+---
+// Paragraphs and lists from the Markdown, already converted to HTML at build time.
+interface Props {
+	html: string;
+	class?: string;
+}
+
+const { html, class: className } = Astro.props;
+---
+
+<div class:list={['prose', className]} set:html={html} />
+
+<style>
+	.prose {
+		display: grid;
+		gap: var(--space-16);
+		max-inline-size: 68ch;
+	}
+
+	.prose :global(ul) {
+		display: grid;
+		gap: var(--space-8);
+		padding-inline-start: 1.25em;
+	}
+
+	.prose :global(code) {
+		padding: 0.1em 0.3em;
+		border-radius: 4px;
+		background-color: color-mix(in srgb, currentColor 8%, transparent);
+		font-size: 0.9em;
+	}
+</style>

@@ -1,0 +1,42 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Prose from '../../components/Prose.astro';
+import { parseCaseStudy } from '../../lib/case-study/parse';
+
+export async function getStaticPaths() {
+	// Case studies whose layout notes the template can draw. The others join as
+	// their own steps add the layouts they need. (getStaticPaths is hoisted, so this lives inside it.)
+	const READY = new Set(['at-auto-shoppe']);
+	const entries = await getCollection('caseStudies');
+	return entries.filter((entry) => READY.has(entry.id)).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+interface Props {
+	entry: CollectionEntry<'caseStudies'>;
+}
+
+const { entry } = Astro.props;
+const { title, summary } = entry.data;
+const sections = parseCaseStudy(entry.id, entry.body ?? '');
+---
+
+<BaseLayout title={`${title} | Ismail Azry`} description={summary}>
+	<article class="case-study">
+		<h1>{title}</h1>
+		{
+			sections.map((section) => (
+				<section aria-labelledby={section.id}>
+					<h2 id={section.id}>{section.heading}</h2>
+					{section.blocks.map((block) => block.kind === 'prose' && <Prose html={block.html} />)}
+					{section.subsections.map((sub) => (
+						<>
+							<h3 id={sub.id}>{sub.heading}</h3>
+							{sub.blocks.map((block) => block.kind === 'prose' && <Prose html={block.html} />)}
+						</>
+					))}
+				</section>
+			))
+		}
+	</article>
+</BaseLayout>
