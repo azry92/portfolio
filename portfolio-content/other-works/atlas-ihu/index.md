@@ -1,7 +1,7 @@
 ---
 title: "ATLAS IHU Theme"
 summary: "A head-unit theme for Proton cars that won Best Theme in the ACO Tech × MMU ATLAS brief, designed for the 10.25-inch display within strict system-UI constraints."
-project: "Final year project MMU University"
+project: "Final year project Multimedia University"
 team: "Solo"
 timeline: "2021"
 platform: "Proton head unit (10.25\", 1920×720)"
@@ -19,7 +19,7 @@ ACO Tech, the joint venture behind Proton's infotainment systems, asked MMU stud
 ![Proton stock theme homepage on the 10.25-inch head unit, flat icons on a zebra-textured grey](./images/before-stock-theme.png)
 ![ATLAS theme homepage with the same four cards in chrome on a copper-and-silver wallpaper](./images/home-page-widgets.png)
 *Same screen, same four-card homepage. Flat icons on a zebra-textured grey became chrome objects on a copper-and-silver field. Stock image: ACO Tech.*
-The stock homepage runs Weather, Member QR, Nav and Radio. Mine runs Music, Weather, Clean Up and Nav. Login is a one-time action action and doesn't earn permanent homepage space.
+The stock homepage runs Weather, Member QR, Nav and Radio. Mine runs Music, Weather, Clean Up and Nav. Login is a one-time action and doesn't earn permanent homepage space.
 ## The brief
 <!-- layout: three short text blocks in a row: The ask, The rules, The move -->
 ### The ask
