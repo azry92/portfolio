@@ -44,10 +44,11 @@ const columns = Math.max(...stages.map((stage) => stage.row.items.length));
 </section>
 
 <style>
+	/* Tighter on phones, like the other case study sections. */
 	.stages__inner {
 		display: grid;
-		gap: var(--space-48);
-		padding-block: var(--space-64);
+		gap: var(--space-32);
+		padding-block: var(--space-48);
 	}
 
 	.stages__title {
@@ -56,7 +57,7 @@ const columns = Math.max(...stages.map((stage) => stage.row.items.length));
 
 	.stages__list {
 		display: grid;
-		gap: var(--space-64);
+		gap: var(--space-48);
 		padding: 0;
 		list-style: none;
 	}
@@ -76,6 +77,17 @@ const columns = Math.max(...stages.map((stage) => stage.row.items.length));
 
 	.stage__label h3 {
 		font-size: var(--text-24);
+	}
+
+	@media (min-width: 600px) {
+		.stages__inner {
+			gap: var(--space-48);
+			padding-block: var(--space-64);
+		}
+
+		.stages__list {
+			gap: var(--space-64);
+		}
 	}
 
 	@media (min-width: 1200px) {

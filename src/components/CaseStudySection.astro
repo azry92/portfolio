@@ -166,15 +166,19 @@ const subsectionClass = (sub: Subsection) => [
 }
 
 <style>
+	/* Phones get a tighter rhythm, so a skim reaches Results sooner; from 600px it
+	   opens up to 48px sections and 32px blocks. */
 	.cs-section {
+		--section-gap: var(--space-24);
+
 		display: grid;
-		gap: var(--space-32);
-		padding-block: var(--space-48);
+		gap: var(--section-gap);
+		padding-block: var(--space-32);
 	}
 
 	/* Every heading sits 16px above its own content; the grid gap still spaces the blocks. */
 	.cs-section__title {
-		margin-block-end: calc(var(--space-16) - var(--space-32));
+		margin-block-end: calc(var(--space-16) - var(--section-gap));
 		font-size: var(--text-32);
 	}
 
@@ -219,6 +223,14 @@ const subsectionClass = (sub: Subsection) => [
 	.cs-stats__source :global(.prose) {
 		color: var(--color-text-muted);
 		font-size: var(--text-14);
+	}
+
+	@media (min-width: 600px) {
+		.cs-section {
+			--section-gap: var(--space-32);
+
+			padding-block: var(--space-48);
+		}
 	}
 
 	@media (min-width: 1200px) {

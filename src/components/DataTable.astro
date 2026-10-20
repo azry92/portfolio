@@ -1,7 +1,9 @@
 ---
 // A Markdown table. The first column labels each row. Below 720px each row
-// stacks into a block with its column names; the ARIA roles keep it a table
-// for screen readers once the CSS display changes.
+// stacks into a block: the middle columns as short "Name: value" lines, the last
+// column (the answer) set off by a rule instead of its name. The ARIA roles keep
+// it a table for screen readers once the CSS display changes, so every cell
+// still reads with its column header.
 interface Props {
 	head: string[];
 	/** Cell HTML, one array per row. */
@@ -83,22 +85,31 @@ const labels = head.map((cell) => cell.replace(/<[^>]+>/g, ''));
 		}
 
 		tbody tr {
-			padding-block: var(--space-8);
+			display: grid;
+			gap: var(--space-8);
+			padding-block: var(--space-16);
 			border-block-end: var(--border-width) solid var(--color-border);
 		}
 
 		th,
 		td {
-			padding-block: var(--space-8);
+			padding-block: 0;
 			border: 0;
 		}
 
-		td::before {
-			content: attr(data-label);
-			display: block;
-			margin-block-end: var(--space-4);
+		td:not(:last-child) {
 			color: var(--color-text-muted);
 			font-size: var(--text-14);
+		}
+
+		td:not(:last-child)::before {
+			content: attr(data-label) ': ';
+		}
+
+		td:last-child {
+			margin-block-start: var(--space-4);
+			padding-inline-start: var(--space-12);
+			border-inline-start: 2px solid var(--accent, var(--color-surface-inverse));
 		}
 	}
 </style>
