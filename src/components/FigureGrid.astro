@@ -3,6 +3,7 @@
 // Phones: from 600px, one column per phone at its max width, 48px apart and centred;
 // 2 per row below that, with an odd last phone centred.
 // Other images: rows of 2–3 stack below 600px; rows of 4–5 go 2, then 3, then all across from 1200px.
+// Uniform rows stay one row at every width.
 import Figure from './Figure.astro';
 import type { Frame } from '../lib/case-study/layouts';
 import type { Figure as FigureData } from '../lib/case-study/parse';
@@ -111,13 +112,31 @@ const Tag = caption ? 'figure' : 'div';
 		}
 	}
 
-	/* Uniform rows: every image on the same square tile, whatever its own proportions. */
+	/* Uniform rows ("… in a row, same size") stay one row at every width, every image
+	   on the same square tile whatever its own proportions. On small screens the gap
+	   and padding tighten so each mark fills most of its tile. */
+	.figure-grid--uniform .figure-grid__items {
+		--gap-x: var(--space-12);
+
+		grid-template-columns: repeat(var(--across), minmax(0, 1fr));
+	}
+
 	.figure-grid--uniform .figure-grid__items :global(.figure__image) {
 		aspect-ratio: 1;
-		padding: var(--space-24);
+		padding: var(--space-8);
 		border: var(--border-width) solid var(--color-border);
 		background-color: var(--color-surface);
 		object-fit: contain;
+	}
+
+	@media (min-width: 600px) {
+		.figure-grid--uniform .figure-grid__items {
+			--gap-x: var(--space-24);
+		}
+
+		.figure-grid--uniform .figure-grid__items :global(.figure__image) {
+			padding: var(--space-24);
+		}
 	}
 
 	.figure-grid__caption {
