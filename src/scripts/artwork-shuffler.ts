@@ -57,6 +57,7 @@ function initShuffler(root: HTMLElement) {
 		const to = items[next];
 		from.removeAttribute('data-current');
 		to.setAttribute('data-current', '');
+		root.style.setProperty('--ratio', to.style.getPropertyValue('--ratio'));
 		if (motion.matches) {
 			fade(from, 'data-leaving');
 			fade(to, 'data-entering');

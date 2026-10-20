@@ -70,6 +70,7 @@ const pieces = items.map((item) => {
 			image.loading = 'eager';
 			image.fetchPriority = 'high';
 			item.setAttribute('data-current', '');
+			root.style.setProperty('--ratio', item.style.getPropertyValue('--ratio'));
 			const button = root.querySelector('[data-shuffle]');
 			button.hidden = false;
 			root.classList.add('is-enhanced');
@@ -101,7 +102,7 @@ const pieces = items.map((item) => {
 	/* The first screen holds the h1, intro, stage, caption and pill: the stage gets what is
 	   left of the viewport after the measured space above it (--stage-above) and the caption
 	   row under it (--stage-below), less 16px at the bottom edge. The tallest caption sets the
-	   row, so the pill and footer stay put from piece to piece. */
+	   row, so the footer stays put from piece to piece. */
 	.shuffler {
 		--stage-above: 0px;
 		--stage-below: 0px;
@@ -109,6 +110,11 @@ const pieces = items.map((item) => {
 		--stage: clamp(280px, calc(100svh - var(--stage-above) - var(--stage-below) - var(--space-16)), 900px);
 
 		display: grid;
+	}
+
+	/* Width queries for the stage and pill (cqi below) measure the shuffler's column. */
+	.shuffler.is-enhanced {
+		container-type: inline-size;
 	}
 
 	.shuffler__list {
@@ -162,11 +168,15 @@ const pieces = items.map((item) => {
 	}
 
 	/* With JS: the pieces share one cell and only the current one shows. Hidden pieces keep
-	   their caption in layout, so the cell is as tall as the longest caption and the pill and
-	   footer never move. Their pictures are not rendered, so they load only when preloaded. */
+	   their caption in layout, and the cell keeps the full stage and caption row, so the
+	   footer never moves. Their pictures are not rendered, so they load only when preloaded. */
 	.is-enhanced .shuffler__list,
 	.is-enhanced .shuffler__button {
 		grid-area: 1 / 1;
+	}
+
+	.is-enhanced .shuffler__list {
+		min-block-size: calc(var(--stage) + var(--stage-below));
 	}
 
 	.is-enhanced .shuffler__item {
@@ -186,17 +196,18 @@ const pieces = items.map((item) => {
 		pointer-events: none;
 	}
 
+	/* A piece sits at the top of the stage at the size that fits it, and its caption follows
+	   straight after; whatever the piece leaves of the stage height falls below the caption. */
 	.is-enhanced .shuffler__stage {
 		display: grid;
-		block-size: var(--stage);
-		container-type: size;
+		block-size: min(var(--stage), 100cqi / var(--ratio));
 	}
 
 	/* The link is exactly the artwork's box, so only the artwork opens the lightbox. */
 	.is-enhanced .shuffler__stage :global(.zoom) {
-		inline-size: min(100cqi, 100cqb * var(--ratio));
-		block-size: min(100cqb, 100cqi / var(--ratio));
-		margin: auto;
+		inline-size: min(100cqi, var(--stage) * var(--ratio));
+		block-size: 100%;
+		margin-inline: auto;
 	}
 
 	.is-enhanced .shuffler__stage :global(picture),
@@ -214,10 +225,12 @@ const pieces = items.map((item) => {
 		padding-inline-end: calc(7rem + var(--space-16));
 	}
 
+	/* The pill keeps to the current piece's caption row: the script copies that piece's
+	   --ratio onto the shuffler. */
 	.is-enhanced .shuffler__button {
 		align-self: start;
 		justify-self: end;
-		margin-block-start: calc(var(--stage) + var(--space-16));
+		margin-block-start: calc(min(var(--stage), 100cqi / var(--ratio)) + var(--space-16));
 	}
 
 	@media (min-width: 600px) {
