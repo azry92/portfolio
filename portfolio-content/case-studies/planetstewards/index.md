@@ -11,7 +11,7 @@ live_url: "https://www.planetstewards.eu/"
 order: 2
 accent: "#003399"
 cover: ./images/hero-case-study.png
-cover_alt: "PLANETSTEWARDS homepage on mobile showing the project's mission statement"
+cover_alt: "PLANETSTEWARDS homepage on desktop, with the wordmark over a space scene of Earth, the Moon and Mars"
 hero:
   frame: browser
   image: ./images/home-page-hero.png
@@ -59,8 +59,8 @@ The shipped navigation expanded these pages and added Publications, News and an 
 ## The Solution
 <!-- layout: one headline, body below, desktop view next to body and a row of phones under -->
 With September Khu, I shaped the site's visual identity and layout: moodboards and logo concepts, a blue-and-yellow palette with Roboto, and a structure built around the project, team, publications and symposium. I worked on visual hierarchy, image placement and icon styling, and produced the space-debris motion piece.
-![PLANETSTEWARDS homepage hero on desktop](./images/events-page.png)
-*Homepage hero.*
+![Desktop event page for the 2024 Earth-Space Symposium, with the event title, dates and venue](./images/events-page.png)
+*2024 Earth-Space Symposium event page on desktop.*
 ![2024 Earth-Space Symposium event page](./images/page-event-2024-symposium.png)
 *2024 Earth-Space Symposium.*
 ![2025 Earth-Space System Workshop event page](./images/page-event-2025-symposium.png)
