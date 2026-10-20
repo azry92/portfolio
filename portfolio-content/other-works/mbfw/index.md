@@ -69,7 +69,7 @@ For the 2026 edition the site was restructured into MBFW 1.0 and 2.0 sections. T
 <!-- layout: two email screens on the left, copy right -->
 An email campaign sent through Bridepay, Malaysia's largest online wedding marketplace, to put MBFW in front of couples already planning a wedding. I designed two emails in the website's palette, with one repeated action, Reserve Your Seat, linking to the same registration flow.
 ![Bridepay email with the Reserve Your Seat button](./images/edm-bridepay-01.png)
-![Bridepay email with the Reserve Your Seat button](./images/edm-bridepay-02.png)
+![Bridepay email footer with the event dates, the venue address and a second Reserve Your Seat button](./images/edm-bridepay-02.png)
 *Left: launch announcement. Right: seat reminder with venue and dates.*
 ## Reflection
 Two months was enough to launch, not enough to instrument. Registrations ran through a Google Form shared across the website, Linktree and social, so I can't separate how many guests came from the site itself. Next time I would give each channel its own form link or UTM tag before launch, so the website's share of the guests is a number, not a guess.
