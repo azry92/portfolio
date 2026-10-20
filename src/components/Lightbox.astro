@@ -62,12 +62,14 @@
 		min-block-size: 0;
 	}
 
+	/* The box is the image: it keeps its ratio and shrinks to fit the space (never past its
+	   own size), centred above the caption, so the light surface only shows through transparency. */
 	.lightbox__image {
+		align-self: center;
 		inline-size: auto;
 		max-inline-size: 100%;
-		block-size: 100%;
+		block-size: auto;
 		max-block-size: 100%;
-		object-fit: contain;
 		background-color: var(--color-surface);
 	}
 
