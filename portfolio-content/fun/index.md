@@ -35,33 +35,33 @@ items:
     title: Go! Go! Go!
     group: Concept · Baskbear
     alt: Newspaper-style poster, "Toastie Tribune" front page with the headline "Go! Go! Go!" and "Caption hero needed"
-  - image: ./images/New-Balance-concept-poster-01.jpg
-    title: New Balance 01
+  - image: ./images/New-Balance-concept-poster-raya.jpg
+    title: New Balance Eid concept
     group: Concept · New Balance
     alt: New Balance concept poster on cream, an illustrated figure with sneakers
-  - image: ./images/New-Balance-concept-poster-02.jpg
-    title: New Balance 02
+  - image: ./images/New-Balance-concept-poster-deepavali.jpg
+    title: New Balance Deepavali Concept
     group: Concept · New Balance
     alt: New Balance concept poster on cream, a collage of illustrated objects with a purple flower
-  - image: ./images/New-Balance-concept-poster-03.jpg
-    title: New Balance 03
+  - image: ./images/New-Balance-concept-poster-chinese-new-year.jpg
+    title: New Balance Chinese New Year concept
     group: Concept · New Balance
     alt: New Balance concept poster on cream, a red dragon wrapped around a sneaker
-  - image: ./images/cover-1.jpg
+  - image: ./images/cover-design.jpg
     title: Samurai
     group: Cover art
     alt: Dark red cover with distressed type reading "Samurai"
-  - image: ./images/cover-3.jpg
-    title: Cover 3
+  - image: ./images/delulu-and-solulu.jpg
+    title: delulu and solulu
     group: Cover art
     alt: Dark cover with a green, flowing wave form
   - image: ./images/a-personal-goal.avif
     title: A Personal Goal
     group: Personal
     alt: Black-and-white ink illustration of a face, heavily textured
-  - image: ./images/artomovement-1.avif
-    title: Artomovement 1
-    group: Personal
+  - image: ./images/dont-worry.avif
+    title: Dont Worry
+    group: Night Shift Exhibition 2024
     alt: Red illustration with a small figure held up in the centre
   - image: ./images/composition-1.png
     title: Composition 1
@@ -71,18 +71,18 @@ items:
     title: EBSTREK
     group: Personal
     alt: Glitch-style portrait in saturated blues, reds and yellows
-  - image: ./images/exhibition-work-01.avif
-    title: Exhibition Work
-    group: Personal
-    alt: Mixed-media figure on a yellow and blue ground
-  - image: ./images/mall-monster-2.avif
+  - image: ./images/senyum.avif
+    title: Senyum
+    group: Exhibition · Night Shift 2024
+    alt: Digital crayon drawing of a scribbled, patchwork-coloured face forced into a wide grin by a white stick at the corner of its mouth, set in a yellow beam on deep indigo with the words "Sudah sudah lama ku menahan sakit" scrawled around it
+  - image: ./images/mall-monster.avif
     title: Mall Monster
     group: Personal
     alt: Dense, colourful illustration of a creature in a mall
-  - image: ./images/artomovement-2.avif
-    title: Artomovement 2
-    group: Personal
-    alt: Black-and-white portrait of an old man over a perspective grid
+  - image: ./images/suram.avif
+    title: Suram
+    group: Exhibition · Night Shift 2024
+    alt: White scratchy line drawing on black of a wide-eyed, grimacing man in front of a perspective grid, with "Penat", "Duit" and "RM" scrawled around his head
   - image: ./images/saloma.avif
     title: Saloma
     group: Personal
