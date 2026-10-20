@@ -24,6 +24,12 @@ const { label, href } = Astro.props;
 		text-transform: uppercase;
 	}
 
+	@media (min-width: 768px) {
+		.short-card {
+			block-size: calc(var(--space-64) + var(--space-12));
+		}
+	}
+
 	.short-card:hover {
 		background-color: var(--color-accent);
 		color: var(--color-text-inverse);

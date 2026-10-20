@@ -41,6 +41,8 @@ body {
 	font-size: var(--text-16);
 	font-weight: var(--weight-regular);
 	line-height: var(--leading-body);
+	/* Inter's contextual alternates turn "4x4" into "4×4"; keep copy as written. */
+	font-variant-ligatures: no-contextual;
 	-webkit-font-smoothing: antialiased;
 }
 

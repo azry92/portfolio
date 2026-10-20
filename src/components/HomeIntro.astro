@@ -1,9 +1,9 @@
 ---
-// Home intro: logo, greeting, the page h1 and the short about, with a link on to /about.
+// Home intro: logo, greeting, the page h1 and the short about, ending in a link to /about.
 import Logo from './Logo.astro';
 import { intro } from '../data/site';
 
-// Keep "e-commerce" whole: browsers otherwise break after its hyphen.
+// Keep "e-commerce" (and the link after it) whole: browsers otherwise break inside.
 const aboutParts = intro.about.split(/(e-commerce)/);
 ---
 
@@ -15,12 +15,10 @@ const aboutParts = intro.about.split(/(e-commerce)/);
 		<p class="home-intro__greeting">{intro.greeting}</p>
 		<h1 id="home-title" class="home-intro__title">{intro.title}</h1>
 	</hgroup>
-	<div class="home-intro__body">
-		<p class="home-intro__about">
-			{aboutParts.map((part) => (part === 'e-commerce' ? <span class="home-intro__nowrap">{part}</span> : part))}
-		</p>
-		<p class="home-intro__more"><a href="/about">More about me</a></p>
-	</div>
+	<p class="home-intro__about">
+		{aboutParts.map((part) => (part === 'e-commerce' ? <span class="home-intro__nowrap">{part}</span> : part))}{' '}
+		<a class="home-intro__nowrap" href="/about">More about me</a>
+	</p>
 </section>
 
 <style>
@@ -61,16 +59,6 @@ const aboutParts = intro.about.split(/(e-commerce)/);
 
 	.home-intro__nowrap {
 		white-space: nowrap;
-	}
-
-	.home-intro__more {
-		margin-block-start: var(--space-12);
-		font-size: var(--text-14);
-	}
-
-	.home-intro__more a {
-		display: inline-block;
-		padding-block: var(--space-8);
 	}
 
 	@media (min-width: 768px) {
