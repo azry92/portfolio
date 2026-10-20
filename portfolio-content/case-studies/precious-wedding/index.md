@@ -10,6 +10,11 @@ live_url: "https://www.theprecious.com.my/"
 order: 3
 cover: ./images/page-hero-aesthetic.png
 cover_alt: "Precious Wedding fair landing page with full-bleed couple photography and a Chat with us button"
+accent: "#911421"
+hero:
+  frame: phone
+  image: ./images/home-page-image-slider.png
+  alt: "Precious Wedding homepage on mobile, with a couple photo and the line We're ready to make memories with you"
 ---
 ## Overview
 <!-- layout: hero, title and overview left, browser mockup right -->
@@ -36,7 +41,7 @@ Precious Wedding's website worked, but its fair landing pages didn't carry the w
 *Wireframe of the section kit: hero, services, reviews, photo grid, CTA.*
 ## The Solution
 <!-- layout: one headline, body below, desktop view next to body and a row of phones under -->
-Each fair used to start from scratch. On Wix, I built a reusable kit: Cormorant Garamond and Cinzel for display, Futura for body text, and a crimson-led palette with crimson reserved for the main CTA. Pages were assembled from fixed sections (hero, services, reviews, photo grid, CTA) and re-skinned per campaign, so a new fair page meant swapping imagery, dates and offers, not redesigning. Every page was designed for desktop and mobile and shipped with titles, meta descriptions and keywords set for search.
+Each fair used to start from scratch. On Wix, I built a reusable kit: Cormorant Garamond for display, Futura for body text, and a crimson-led palette with crimson reserved for the main CTA. Pages were assembled from fixed sections (hero, services, reviews, photo grid, CTA) and re-skinned per campaign, so a new fair page meant swapping imagery, dates and offers, not redesigning. Every page was designed for desktop and mobile and shipped with titles, meta descriptions and keywords set for search.
 ![Event highlights page on desktop](./images/solution-image-01-laptop-view.png)
 *Event highlights on desktop.*
 ![A Wedding Fair with a Twist landing page, June 2024](./images/wedding-fair-june.png)
@@ -46,7 +51,7 @@ Each fair used to start from scratch. On Wix, I built a reusable kit: Cormorant 
 ![Precious Wedding Fair 3.0 landing page with RSVP button](./images/iteration-image-04-event-rsvp.png)
 *October 2024: Precious Wedding Fair 3.0.*
 ## Feedback and iteration
-<!-- layout: table, then three images in a row -->
+<!-- layout: table, then two phones in a row -->
 | Feedback | Source | Response |
 |---|---|---|
 | Every fair starts from a blank page; nothing carries over between campaigns. | Marketing Manager | Built a section kit (hero, services, reviews, photo grid, CTA). Each fair page was the same kit re-skinned with new imagery, dates and offers. |
@@ -56,8 +61,6 @@ Each fair used to start from scratch. On Wix, I built a reusable kit: Cormorant 
 | Blog: Recent Posts sit at the bottom, and the event posts are out of date. | Marketing Manager, Jan 2025 | Redesigned the blog layout and turned each fair into an event-highlights post with SEO titles and meta descriptions, maintained June 2024 – May 2025. |
 ![Chat with us button opening WhatsApp with a pre-filled source message](./images/iteration-image-01-whatsapp.png)
 *Chat with us, pre-filled WhatsApp.*
-![January 2025 festive hero with Chinese-costume photography](./images/iteration-image-02-festive-hero.png)
-*January 2025 festive hero.*
 ![Event-highlights post for A Wedding Fair with a Twist](./images/iteration-image-03-event-rsvp.png)
 *Event-highlights post: A Wedding Fair with a Twist.*
 ## RSVP flow
@@ -67,7 +70,7 @@ Visitors preferred the RSVP button, but a form click told sales nothing. I made 
 *1. Chat with us.*
 ![Step 2: WhatsApp opens with a pre-filled message naming the source](./images/iteration-image-01-whatsapp.png)
 *2. WhatsApp, pre-filled: "I saw your page from Google Ads…"*
-![Step 3: RSVP form in the editor view showing 82 responses](./images/iteration-image-01-whatsapp.png)
+![Step 3: RSVP form in the editor view showing 82 responses](./images/rsvp-google-form-bridal-fair.png)
 *3. RSVP form sent by sales. Editor view: 82 responses, Precious Wedding Fair 4.0, April 2025.*
 ## In-house wedding fair
 <!-- layout: body, then three photos in a row -->
@@ -87,9 +90,9 @@ The fairs brought couples to Precious Wedding Emporium at IOI Mall Damansara (fo
 *Mall LED-screen displays.*
 ## Results
 <!-- layout: stat cards, RSVP card first -->
-[June 2024 - July 2025] · Wix Analytics
+June 2024 - July 2025 · Wix Analytics RSVP from Google Forms
 - **82** RSVP form responses, Precious Wedding Fair 4.0, April 2025
-- **55,728** [site sessions]
+- **55,728** site sessions
 - **68%** of March 2025 sessions included the fair landing page (2,578 of 3,793)
 - **86%** of sessions on mobile
 ### What changed for the business
