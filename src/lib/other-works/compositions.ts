@@ -60,7 +60,8 @@ export const compositions: Record<string, Composition> = {
 			'23-designer-pages-one-template': { kind: 'aside', frames: ['browser', 'phone'], span: 7 },
 			// These screenshots carry their own browser chrome.
 			'built-to-be-reused-mbfw-2-0': { kind: 'row', frames: ['none', 'none'], spans: [6, 6] },
-			'reaching-brides-where-they-already-shop': { kind: 'aside', frames: ['phone'], span: 4 },
+			// The Bridepay email's two screens, top and bottom, side by side.
+			'reaching-brides-where-they-already-shop': { kind: 'aside', frames: ['phone', 'phone'], span: 6 },
 			reflection: { kind: 'text' },
 		},
 	},
