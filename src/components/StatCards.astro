@@ -1,6 +1,7 @@
 ---
 // Figures as cards, the first one largest: one column, two from 600px with the
-// first across both, and from 1200px the first beside the others stacked.
+// first across both (and an odd last card too), and from 1200px the first beside
+// the others stacked.
 import type { Stat } from '../lib/case-study/parse';
 
 interface Props {
@@ -59,7 +60,9 @@ const { items } = Astro.props;
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 
-		.stat-card:first-child {
+		/* An odd card left after the lead takes the full row, so no cell sits empty. */
+		.stat-card:first-child,
+		.stat-card:last-child:nth-child(even) {
 			grid-column: 1 / -1;
 		}
 	}
@@ -76,6 +79,10 @@ const { items } = Astro.props;
 			grid-row: 1 / span var(--rest);
 			align-content: center;
 			padding: var(--space-48);
+		}
+
+		.stat-card:last-child:nth-child(even) {
+			grid-column: 2;
 		}
 
 		.stat-card:first-child .stat-card__value {
