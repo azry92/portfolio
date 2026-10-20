@@ -63,6 +63,10 @@ const Tag = caption ? 'figure' : 'div';
 			grid-auto-columns: auto;
 			gap: var(--space-16);
 			align-items: end;
+			/* Room for the phones' drop shadow to fade out before the scroller clips it,
+			   so no grey edge shows; the margins keep the row where it was. */
+			margin-block: calc(var(--space-16) * -1) calc(var(--space-32) * -1);
+			padding-block: var(--space-16) var(--space-48);
 		}
 
 		.device-row__items.snap-row > :global(.figure) {
