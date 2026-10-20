@@ -12,13 +12,14 @@ interface Props {
 
 const { items } = Astro.props;
 
-// The piece fills the stage height unless the column is narrower: 60vh below 600px, 70vh from 600px,
-// inside the gutters (16px, 24px from 768px) and the 1200px content width.
+// The piece fills the stage height unless the column is narrower. The stage is the viewport less
+// what sits around it, measured at about 368px from 600px and 386px below (see --stage), inside
+// the gutters (16px, 24px from 768px) and the 1200px content width.
 const sizesFor = (ratio: number) =>
 	[
-		`(min-width: 768px) min(${70 * ratio}vh, calc(100vw - 48px), 1200px)`,
-		`(min-width: 600px) min(${70 * ratio}vh, calc(100vw - 32px))`,
-		`min(${60 * ratio}vh, calc(100vw - 32px))`,
+		`(min-width: 768px) min(calc((100vh - 368px) * ${ratio}), calc(100vw - 48px), 1200px)`,
+		`(min-width: 600px) min(calc((100vh - 368px) * ${ratio}), calc(100vw - 32px))`,
+		`min(calc((100vh - 386px) * ${ratio}), calc(100vw - 32px))`,
 	].join(', ');
 
 const pieces = items.map((item) => {
@@ -69,8 +70,25 @@ const pieces = items.map((item) => {
 			image.loading = 'eager';
 			image.fetchPriority = 'high';
 			item.setAttribute('data-current', '');
-			root.querySelector('[data-shuffle]').hidden = false;
+			const button = root.querySelector('[data-shuffle]');
+			button.hidden = false;
 			root.classList.add('is-enhanced');
+
+			// The stage takes the viewport height left over once everything above it and the
+			// caption row under it are in, measured from the page as laid out (see --stage).
+			const stage = item.querySelector('.shuffler__stage');
+			const figure = item.querySelector('figure');
+			const captions = [...root.querySelectorAll('figcaption')];
+			const fit = () => {
+				const above = stage.getBoundingClientRect().top + window.scrollY;
+				const row = Math.max(button.offsetHeight, ...captions.map((caption) => caption.offsetHeight));
+				const below = parseFloat(getComputedStyle(figure).rowGap) + row;
+				root.style.setProperty('--stage-above', `${above}px`);
+				root.style.setProperty('--stage-below', `${below}px`);
+			};
+			fit();
+			window.addEventListener('resize', fit);
+			document.fonts?.ready.then(fit);
 		})();
 	</script>
 </section>
@@ -80,9 +98,15 @@ const pieces = items.map((item) => {
 </script>
 
 <style>
+	/* The first screen holds the h1, intro, stage, caption and pill: the stage gets what is
+	   left of the viewport after the measured space above it (--stage-above) and the caption
+	   row under it (--stage-below), less 16px at the bottom edge. The tallest caption sets the
+	   row, so the pill and footer stay put from piece to piece. */
 	.shuffler {
-		--stage: 60vh;
-		--stage: 60svh;
+		--stage-above: 0px;
+		--stage-below: 0px;
+		--stage: clamp(280px, calc(100vh - var(--stage-above) - var(--stage-below) - var(--space-16)), 900px);
+		--stage: clamp(280px, calc(100svh - var(--stage-above) - var(--stage-below) - var(--space-16)), 900px);
 
 		display: grid;
 	}
@@ -197,11 +221,6 @@ const pieces = items.map((item) => {
 	}
 
 	@media (min-width: 600px) {
-		.shuffler {
-			--stage: 70vh;
-			--stage: 70svh;
-		}
-
 		.shuffler:not(.is-enhanced) .shuffler__list {
 			grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
 			gap: var(--space-48) var(--space-24);
