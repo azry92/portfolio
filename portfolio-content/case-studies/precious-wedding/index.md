@@ -4,7 +4,7 @@ summary: "A reusable Wix landing-page kit for a bridal studio's wedding fairs th
 glance:
   problem: "Every fair page started from scratch."
   did: "Built a reusable Wix kit, WhatsApp first."
-  outcome: "82 RSVPs for Fair 4.0"
+  outcome: "82 RSVPs for Fair 4.0."
 role: "Marketing Executive (Web & Design)"
 team: "With the marketing team"
 timeline: "May 2024 – Jul 2025"
