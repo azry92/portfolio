@@ -101,10 +101,10 @@ I designed and built the store on Shopify: a Make, Model and Generation/Year fin
 | "It's important to make a sign-up page for our customers for promotions and retention." | Owner | Enabled account sign-up with a promotions opt-in. |
 | Old URLs and product descriptions had broken links. | Owner, Sales Manager | Rebuilt product listings with proper tags, metaobject labels, and cleaned-up URLs and SKUs. 301 redirects are in progress. |
 <!-- layout: table, then row of phones, then full-width browser screenshot -->
-![Collection page with filters tuned per category, such as tyre width, aspect ratio and diameter](./images/product-page-filter-category.png)
-![Custom make, model and year search on the home page, replacing a paid YMM app](./images/home-make-model-year-search.png)
-![Interior accessories collection page with its own filter set](./images/collection-page-interior-accessories.png)
-![Product finder page with the vehicle selected and matching parts listed](./images/product-finder-page.png)
+![Collection page with filters tuned per category, such as tyre width, aspect ratio and diameter](./images/product-page-filter-category.png "Collection filters, down to exhaust type and compatible vehicles.")
+![Custom make, model and year search on the home page, replacing a paid YMM app](./images/home-make-model-year-search.png "Custom make, model and year search, in place of a paid app.")
+![Interior accessories collection page with its own filter set](./images/collection-page-interior-accessories.png "Interior accessories collection with its own filters.")
+![Product finder page with the vehicle selected and matching parts listed](./images/product-finder-page.png "Product finder on desktop, starting from the vehicle.")
 *Each change answers a row in the table above.*
 ## Building on a live store safely
 <!-- layout: copy left, terminal screenshot and code screenshot right -->

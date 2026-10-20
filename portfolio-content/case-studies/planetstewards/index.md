@@ -76,9 +76,9 @@ With September Khu, I shaped the site's visual identity and layout: moodboards a
 ### Call for Papers
 <!-- layout: body left, three phones right -->
 The symposium needed a route from first visit to submitted abstract. The menu highlights the current event, the event page leads to the Call for Papers, and the abstract form follows the layout the PI asked for, with the button relabelled from APPLY to SUBMIT.
-![Call for Abstracts submission form on mobile](./images/page-call-for-abstract.png)
-![Call for Papers announcement on mobile](./images/page-call-for-papers-news.png)
-![Mobile menu with the symposium highlighted](./images/menu-mobile-symposium-highlight.png)
+![Call for Abstracts submission form on mobile](./images/page-call-for-abstract.png "2024 symposium page with registration details, captured from the Wayback Machine.")
+![Call for Papers announcement on mobile](./images/page-call-for-papers-news.png "Call for Papers banner for the Earth System Governance special issue.")
+![Mobile menu with the symposium highlighted](./images/menu-mobile-symposium-highlight.png "Mobile menu with the Earth-Space Symposium highlighted.")
 *From left: abstract form, Call for Papers, mobile menu. 2024 pages captured from the Wayback Machine.*
 ## Feedback and iteration
 <!-- layout: table, then logo revisions row, then Earth-Moon-Mars sequence -->
@@ -91,9 +91,9 @@ The symposium needed a route from first visit to submitted abstract. The menu hi
 | Abstract submission form "like the contact form of earth-space.today". | Principal Investigator | Built the Call for Abstracts form and relabelled the button from APPLY to SUBMIT. |
 ### Logo revisions
 <!-- layout: three logos in a row, same size -->
-![First logo version with a dense globe grid](./images/iteration-logo-01-design-v1.svg)
-![Second logo version with fewer grid lines](./images/iteration-logo-02-design-v2.svg)
-![Final logo with constellation lines and dots in place of the grid](./images/iteration-logo-03-design-v3.svg)
+![First logo version with a dense globe grid](./images/iteration-logo-01-design-v1.svg "Logo v1, with a dense globe grid.")
+![Second logo version with fewer grid lines](./images/iteration-logo-02-design-v2.svg "Logo v2, with fewer grid lines.")
+![Final logo with constellation lines and dots in place of the grid](./images/iteration-logo-03-design-v3.svg "Final logo, with constellation lines and dots in place of the grid.")
 *From left: v1, v2, final.*
 ### Earth, Moon, Mars sequence
 <!-- layout: vertical stack of homepage sections, labelled Earth / Moon / Mars -->

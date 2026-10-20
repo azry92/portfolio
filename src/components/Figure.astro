@@ -17,7 +17,7 @@ interface Props {
 }
 
 const { figure, frame = 'none', sizes, fitPhone = false } = Astro.props;
-const { image, alt, caption } = figure;
+const { image, alt, caption, zoomCaption } = figure;
 const widths = (frame === 'phone' ? [240, 360, 540, 720] : [480, 960, 1440, 1920]).filter((w) => w <= image.width);
 // SVG diagrams go out as they are; there is nothing to gain from rasterising them.
 const isSvg = image.format === 'svg';
@@ -27,28 +27,28 @@ const isSvg = image.format === 'svg';
 	{
 		frame === 'phone' ? (
 			<PhoneFrame fitTo={fitPhone ? image : undefined}>
-				<ZoomLink image={image}>
+				<ZoomLink image={image} caption={zoomCaption}>
 					<Picture src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
 				</ZoomLink>
 			</PhoneFrame>
 		) : frame === 'browser' ? (
 			<BrowserFrame>
-				<ZoomLink image={image}>
+				<ZoomLink image={image} caption={zoomCaption}>
 					<Picture src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
 				</ZoomLink>
 			</BrowserFrame>
 		) : frame === 'display' ? (
 			<DisplayFrame>
-				<ZoomLink image={image}>
+				<ZoomLink image={image} caption={zoomCaption}>
 					<Picture src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
 				</ZoomLink>
 			</DisplayFrame>
 		) : isSvg ? (
-			<ZoomLink image={image}>
+			<ZoomLink image={image} caption={zoomCaption}>
 				<img class="figure__image" src={image.src} width={image.width} height={image.height} alt={alt} loading="lazy" decoding="async" />
 			</ZoomLink>
 		) : (
-			<ZoomLink image={image}>
+			<ZoomLink image={image} caption={zoomCaption}>
 				<Picture class="figure__image" src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
 			</ZoomLink>
 		)

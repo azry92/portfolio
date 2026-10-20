@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { figure, frame, bleed = false, blocks } = Astro.props;
-const { image, alt, caption } = figure;
+const { image, alt, caption, zoomCaption } = figure;
 const widths = [480, 960, 1440, 1920].filter((w) => w <= image.width);
 const sizes = bleed ? '100vw' : '(min-width: 1248px) 1200px, 100vw';
 const formats: ('avif' | 'webp')[] = ['avif', 'webp'];
@@ -30,12 +30,12 @@ const formats: ('avif' | 'webp')[] = ['avif', 'webp'];
 			{
 				frame === 'display' ? (
 					<DisplayFrame>
-						<ZoomLink image={image}>
+						<ZoomLink image={image} caption={zoomCaption}>
 							<Picture src={image} alt={alt} formats={formats} widths={widths} sizes={sizes} />
 						</ZoomLink>
 					</DisplayFrame>
 				) : (
-					<ZoomLink image={image}>
+					<ZoomLink image={image} caption={zoomCaption}>
 						<Picture class="sheet__image" src={image} alt={alt} formats={formats} widths={widths} sizes={sizes} />
 					</ZoomLink>
 				)

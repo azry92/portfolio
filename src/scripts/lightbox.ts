@@ -14,8 +14,10 @@ function init(dialog: HTMLDialogElement) {
 	let index = 0;
 	let opener: HTMLElement | null = null;
 
-	// The nearest caption: the figure's own, else one shared by an enclosing figure (a row or a set).
+	// The link's own viewer caption, else the nearest one on the page: the figure's own,
+	// else one shared by an enclosing figure (a row or a set).
 	const captionFor = (link: HTMLAnchorElement) => {
+		if (link.dataset.caption) return link.dataset.caption;
 		for (let figure = link.closest('figure'); figure; figure = figure.parentElement?.closest('figure') ?? null) {
 			const text = figure.querySelector(':scope > figcaption')?.textContent?.trim();
 			if (text) return text;

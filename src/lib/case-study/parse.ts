@@ -22,7 +22,16 @@ export interface Figure {
 	alt: string;
 	/** Caption HTML (inline only). */
 	caption?: string;
+	/**
+	 * The image viewer's caption, from the Markdown image title (`![alt](src "title")`).
+	 * It describes this image alone, for groups whose shared caption points at the layout.
+	 */
+	zoomCaption?: string;
 }
+
+// A shared caption that reads the layout ("From left: …", "the table above") means nothing
+// in the viewer, one image at a time, so each image in its run needs its own viewer caption.
+const positional = /\b(left|right|above|below|table|these)\b/i;
 
 export interface Swatch {
 	name: string;
@@ -287,7 +296,11 @@ function parseProject(collection: Collection, slug: string, body: string, option
 				for (const line of lines(node.children)) {
 					const [only] = line;
 					if (line.length === 1 && only.type === 'image') {
-						run.push({ image: resolveImage(collection, slug, only.url), alt: only.alt ?? '' });
+						run.push({
+							image: resolveImage(collection, slug, only.url),
+							alt: only.alt ?? '',
+							zoomCaption: only.title ?? undefined,
+						});
 					} else if (line.length === 1 && only.type === 'emphasis') {
 						caption(inlineHtml(only.children));
 					} else {
@@ -335,6 +348,11 @@ function parseProject(collection: Collection, slug: string, body: string, option
 		if (figure.kind === 'figures') {
 			for (const item of figure.items) {
 				if (!item.alt) throw new Error(`${source}: every image needs alt text`);
+			}
+			if (figure.caption && positional.test(figure.caption) && figure.items.some((item) => !item.zoomCaption)) {
+				throw new Error(
+					`${source}: caption "${figure.caption}" points at the layout, so each of its images needs a viewer caption as its Markdown title`,
+				);
 			}
 		}
 	}

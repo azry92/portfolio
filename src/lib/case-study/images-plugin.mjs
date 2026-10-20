@@ -33,7 +33,8 @@ export function projectImages() {
 					this.addWatchFile(markdown);
 					const text = readFileSync(markdown, 'utf8');
 					const paths = [
-						...[...text.matchAll(/\]\((\.\/images\/[^)\s]+)\)/g)].map((m) => m[1]),
+						// An image may carry a title (the viewer caption) after its path: ![alt](./images/x.png "title").
+						...[...text.matchAll(/\]\((\.\/images\/[^)\s]+)(?:\s+"[^"]*")?\)/g)].map((m) => m[1]),
 						...[...text.matchAll(/<!--\s*video:\s*\S*?([^/\s]+)\.mp4/g)].map((m) => `./images/${m[1]}-poster.png`),
 					];
 					for (const path of paths) keys.add(`/portfolio-content/${collection}/${slug}/${path.slice(2)}`);

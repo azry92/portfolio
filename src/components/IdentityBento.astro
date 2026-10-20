@@ -23,9 +23,9 @@ const Tag = caption ? 'figure' : 'div';
 <Tag class="bento">
 	<ul class="bento__tiles snap-row" role="list">
 		{
-			items.map(({ image, alt }, i) => (
+			items.map(({ image, alt, zoomCaption }, i) => (
 				<li class:list={['bento__tile', `bento__tile--${areas[i]}`]}>
-					<ZoomLink image={image}>
+					<ZoomLink image={image} caption={zoomCaption}>
 						<Picture
 							class="bento__image"
 							src={image}
