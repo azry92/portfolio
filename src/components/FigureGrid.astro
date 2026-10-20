@@ -75,6 +75,14 @@ const Tag = caption ? 'figure' : 'div';
 		--columns: 2;
 	}
 
+	/* Captioned figures share an image row and a caption row with their neighbours,
+	   so captions start on one line when the images differ in height. */
+	.figure-grid:not(.figure-grid--phone) .figure-grid__items > :global(.figure:has(.figure__caption)) {
+		grid-row: span 2;
+		grid-template-rows: subgrid;
+		row-gap: var(--space-12);
+	}
+
 	@media (min-width: 600px) {
 		.figure-grid__items:not([data-across='1']) {
 			--columns: min(var(--across), 3);
@@ -100,6 +108,7 @@ const Tag = caption ? 'figure' : 'div';
 	}
 
 	.figure-grid__caption {
+		color: var(--color-text-muted);
 		font-size: var(--text-14);
 	}
 

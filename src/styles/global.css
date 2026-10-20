@@ -163,3 +163,8 @@ main[tabindex='-1']:focus {
 .accent-band :focus-visible {
 	outline-color: currentColor;
 }
+
+/* Captions are muted on the page background; on an accent band they take the band's text colour. */
+.accent-band figcaption {
+	color: inherit;
+}

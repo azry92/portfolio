@@ -34,7 +34,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--space-8) var(--space-24);
-		padding-block: var(--space-16);
+		padding-block: var(--space-8);
 	}
 
 	.site-header__name {
@@ -52,7 +52,10 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 		list-style: none;
 	}
 
+	/* Padded like the footer nav for a taller tap target; the bar's padding is smaller to match. */
 	.site-header__nav a {
+		display: inline-block;
+		padding-block: var(--space-8);
 		color: var(--color-text);
 		font-weight: var(--weight-semibold);
 		text-decoration: none;
@@ -62,5 +65,11 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 	.site-header__nav a[aria-current='page'] {
 		color: var(--color-accent);
 		text-decoration: underline;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.site-header__nav a {
+			transition: color 150ms ease-out;
+		}
 	}
 </style>

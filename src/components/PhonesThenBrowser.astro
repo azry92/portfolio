@@ -29,7 +29,10 @@ const Tag = run.caption ? 'figure' : 'div';
 		gap: var(--space-32);
 	}
 
+	/* Captions sit 16px under their figure, as in FigureGrid. */
 	.phones-then-browser__caption {
+		margin-block-start: calc(var(--space-16) - var(--space-32));
+		color: var(--color-text-muted);
 		font-size: var(--text-14);
 	}
 </style>

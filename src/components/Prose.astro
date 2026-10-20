@@ -17,6 +17,12 @@ const { html, class: className } = Astro.props;
 		max-inline-size: 68ch;
 	}
 
+	@media (min-width: 1200px) {
+		.prose {
+			font-size: var(--text-18);
+		}
+	}
+
 	.prose :global(ul) {
 		display: grid;
 		gap: var(--space-8);

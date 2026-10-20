@@ -74,7 +74,9 @@ const subsectionClass = (sub: Subsection) => [
 		padding-block: var(--space-48);
 	}
 
+	/* Every heading sits 16px above its own content; the grid gap still spaces the blocks. */
 	.cs-section__title {
+		margin-block-end: calc(var(--space-16) - var(--space-32));
 		font-size: var(--text-32);
 	}
 
@@ -84,6 +86,7 @@ const subsectionClass = (sub: Subsection) => [
 	}
 
 	.cs-subsection__title {
+		margin-block-end: calc(var(--space-16) - var(--space-24));
 		font-size: var(--text-24);
 	}
 

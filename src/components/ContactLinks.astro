@@ -91,9 +91,18 @@ const links: ContactLink[] = [
 		color: var(--color-text);
 	}
 
-	.contact__link:hover {
+	.contact__link:hover,
+	.contact__link:focus-visible {
 		background-color: var(--color-accent);
 		color: var(--color-text-inverse);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.contact__link {
+			transition:
+				background-color 150ms ease-out,
+				color 150ms ease-out;
+		}
 	}
 
 	.contact__link svg {

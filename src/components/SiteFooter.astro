@@ -63,6 +63,12 @@ const { variant = 'site' } = Astro.props;
 		text-decoration: underline;
 	}
 
+	@media (prefers-reduced-motion: no-preference) {
+		.site-footer__nav a {
+			transition: color 150ms ease-out;
+		}
+	}
+
 	.site-footer__line {
 		color: var(--color-text-muted);
 		font-size: var(--text-14);

@@ -46,11 +46,12 @@ const id = `work-card-${entry.id}`;
 		text-decoration: none;
 	}
 
-	/* 3:2 keeps the cards near the mockup's height inside the 1200px cap. overflow: hidden
-	   stops a cover with a different ratio stretching the box. */
+	/* 6:5 makes the cards tall enough that, from 1200px, they start level with the about
+	   paragraph while Other Works and Fun still end level with the footer line.
+	   overflow: hidden stops a cover with a different ratio stretching the box. */
 	.work-card__media {
 		overflow: hidden;
-		aspect-ratio: 3 / 2;
+		aspect-ratio: 6 / 5;
 	}
 
 	.work-card__media :global(picture) {
@@ -96,11 +97,16 @@ const id = `work-card-${entry.id}`;
 	.work-card:hover .work-card__summary,
 	.work-card:focus-visible .work-card__summary {
 		opacity: 1;
+		transform: none;
 	}
 
+	/* The summary rises a little as it fades in, so it reads as part of the card. */
 	@media (prefers-reduced-motion: no-preference) {
 		.work-card__summary {
-			transition: opacity 150ms ease-out;
+			transform: translateY(var(--space-4));
+			transition:
+				opacity 150ms ease-out,
+				transform 150ms ease-out;
 		}
 	}
 </style>

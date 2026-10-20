@@ -31,10 +31,12 @@ const { items } = Astro.props;
 		list-style: none;
 	}
 
+	/* Tight leading so name, hex and use read as one label. */
 	.swatch {
 		display: grid;
 		gap: var(--space-4);
 		align-content: start;
+		line-height: var(--leading-heading);
 	}
 
 	.swatch__chip {

@@ -30,8 +30,17 @@ const { label, href } = Astro.props;
 		}
 	}
 
-	.short-card:hover {
+	.short-card:hover,
+	.short-card:focus-visible {
 		background-color: var(--color-accent);
 		color: var(--color-text-inverse);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.short-card {
+			transition:
+				background-color 150ms ease-out,
+				color 150ms ease-out;
+		}
 	}
 </style>

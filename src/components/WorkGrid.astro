@@ -52,14 +52,22 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 	}
 
 	.work__cv a {
-		padding: var(--space-4) var(--space-8);
+		display: inline-block;
+		padding: var(--space-4) var(--space-12);
 		background-color: var(--color-accent);
 		color: var(--color-text-inverse);
 		text-decoration: none;
 	}
 
-	.work__cv a:hover {
+	.work__cv a:hover,
+	.work__cv a:focus-visible {
 		background-color: var(--color-accent-deep);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.work__cv a {
+			transition: background-color 150ms ease-out;
+		}
 	}
 
 	/* Mobile: one two-column grid. The header takes the first cell, the cards flow after it. */
@@ -146,8 +154,8 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 	}
 
 	/* Desktop: right column of the home grid, rows 2 to 4 (see index.astro). The heading
-	   shares the h1's baseline; the CV link hangs below it so the cards start level
-	   with the about paragraph. Other Works and Fun sit under cards 2 and 3. */
+	   shares the h1's baseline; the CV link hangs below it, and the cards start level
+	   with the about paragraph's first line. Other Works and Fun sit under cards 2 and 3. */
 	@media (min-width: 1200px) {
 		.work {
 			display: grid;
@@ -176,7 +184,7 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 		.work__body {
 			grid-row: 2 / span 2;
 			align-content: space-between;
-			margin-block-start: var(--space-64);
+			margin-block-start: var(--space-32);
 		}
 
 		.work__cases,
