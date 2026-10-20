@@ -56,6 +56,14 @@ const still = await getImage({ src: poster, width: poster.width, format: 'webp' 
 	}
 
 	.motion-video__toggle:hover {
-		background-color: var(--color-bg);
+		border-color: var(--color-text);
+		background-color: var(--color-text);
+		color: var(--color-surface);
+	}
+
+	/* The ring sits on video frames of any colour: a dark outline over a white halo reads on both. */
+	.motion-video__toggle:focus-visible {
+		outline-color: var(--color-text);
+		box-shadow: 0 0 0 3px var(--color-surface);
 	}
 </style>
