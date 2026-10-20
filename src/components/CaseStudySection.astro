@@ -7,6 +7,7 @@ import LabelledStack from './LabelledStack.astro';
 import PhonesThenBrowser from './PhonesThenBrowser.astro';
 import SplitBlocks from './SplitBlocks.astro';
 import StageRows from './StageRows.astro';
+import StepRow from './StepRow.astro';
 import type { Frame, Layout } from '../lib/case-study/layouts';
 import type { Block, Section, Subsection } from '../lib/case-study/parse';
 
@@ -40,7 +41,9 @@ const run =
 			? needsOneRun('desktop view next to body and a row of phones under', 2)
 			: layout.kind === 'two-column'
 				? needsOneRun('two columns', 2)
-				: undefined;
+				: layout.kind === 'steps'
+					? needsOneRun('phones in a row with numbered step labels and arrows', 2)
+					: undefined;
 const [lead, ...others] = run?.items ?? [];
 
 // The sitemap layout draws its subsection (the shipped navigation) in its own right-hand column.
@@ -92,6 +95,11 @@ const subsectionClass = (sub: Subsection) => [
 						<Figure figure={lead} frame="browser" sizes="(min-width: 1248px) 700px, 100vw" />
 					</div>
 					<FigureGrid items={others} frame="phone" />
+				</>
+			) : layout.kind === 'steps' && run ? (
+				<>
+					<StepRow run={run} frame={layout.frame} />
+					<CaseStudyBlocks blocks={prose} />
 				</>
 			) : layout.kind === 'two-column' && run ? (
 				<div class="cs-columns">

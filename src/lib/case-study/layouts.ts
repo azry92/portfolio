@@ -15,6 +15,8 @@ export type Layout =
 	| { kind: 'row'; frame: Frame; uniform: boolean }
 	/** Several captioned rows of images, one after another, each holding the given number. */
 	| { kind: 'rows'; counts: number[] }
+	/** One run of figures as numbered steps with arrows between them, the body below. */
+	| { kind: 'steps'; frame: Frame }
 	/** Copy, then one figure at full content width. */
 	| { kind: 'full' }
 	/** Copy in one column, figures in the other: stacked, or a row of phones. */
@@ -83,6 +85,10 @@ const patterns: [RegExp, (match: RegExpMatchArray) => Layout][] = [
 	[
 		/^(?:two|three|four|five) [a-z ]+ in a row(?:, then (?:two|three|four|five) [a-z ]+ in a row)+$/i,
 		(m) => ({ kind: 'rows', counts: [...m[0].matchAll(/\b(two|three|four|five) /g)].map((n) => numbers[n[1]]) }),
+	],
+	[
+		/^(?:two|three|four|five) (images|phones) in a row with numbered step labels and arrows, body under$/,
+		(m) => ({ kind: 'steps', frame: rowNouns[m[1]] }),
 	],
 	[/^full-width video, body below$/, () => ({ kind: 'video-then-body' })],
 	[
