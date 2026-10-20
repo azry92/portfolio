@@ -16,30 +16,41 @@ const { variant = 'site' } = Astro.props;
 <footer class:list={['site-footer', `site-footer--${variant}`]}>
 	<div class:list={['site-footer__inner', { container: variant === 'site' }]}>
 		<ContactLinks />
-		{
-			variant === 'site' && (
-				<nav aria-label="Footer">
-					<ul class="site-footer__nav" role="list">
-						{nav.map((item) => (
-							<li>
-								<a href={item.href} download={item.download || undefined}>
-									{item.label}
-								</a>
-							</li>
-						))}
-					</ul>
-				</nav>
-			)
-		}
-		<p class="site-footer__line">{footerLine}</p>
+		<div class="site-footer__meta">
+			{
+				variant === 'site' && (
+					<nav aria-label="Footer">
+						<ul class="site-footer__nav" role="list">
+							{nav.map((item) => (
+								<li>
+									<a href={item.href} download={item.download || undefined}>
+										{item.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					</nav>
+				)
+			}
+			<p class="site-footer__line">{footerLine}</p>
+		</div>
 	</div>
 </footer>
 
 <style>
+	/* Two groups, 32px apart: the contact line with its circles (16px apart, set in
+	   ContactLinks), then the nav with the credit line. */
 	.site-footer__inner {
 		display: grid;
-		gap: var(--space-24);
-		padding-block: var(--space-48);
+		gap: var(--space-32);
+		padding-block: var(--space-48) var(--space-32);
+	}
+
+	/* The links' 8px block padding keeps their tap targets tall, so a 4px gap leaves
+	   12px between the link text and the credit line. */
+	.site-footer__meta {
+		display: grid;
+		gap: var(--space-4);
 	}
 
 	.site-footer__nav {

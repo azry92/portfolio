@@ -1,6 +1,6 @@
 ---
 // A label-only link on home, set as an outline pill under the case study cards:
-// Other Works and Fun.
+// Other Works and Fun. The pill style is shared (.pill-outline in global.css).
 interface Props {
 	label: string;
 	href: string;
@@ -9,40 +9,4 @@ interface Props {
 const { label, href } = Astro.props;
 ---
 
-<a class="short-card" href={href}>{label}</a>
-
-<style>
-	.short-card {
-		display: inline-flex;
-		align-items: center;
-		min-block-size: var(--space-48);
-		padding: var(--space-12) var(--space-24);
-		border: var(--border-width) solid currentColor;
-		border-radius: var(--radius-pill);
-		color: var(--color-text);
-		font-weight: var(--weight-semibold);
-		line-height: var(--leading-heading);
-		text-decoration: none;
-	}
-
-	/* Touch screens keep a tapped link in its hover state, so the fill follows focus there. */
-	.short-card:focus-visible {
-		background-color: var(--color-surface-inverse);
-		color: var(--color-text-inverse);
-	}
-
-	@media (hover: hover) {
-		.short-card:hover {
-			background-color: var(--color-surface-inverse);
-			color: var(--color-text-inverse);
-		}
-	}
-
-	@media (prefers-reduced-motion: no-preference) {
-		.short-card {
-			transition:
-				background-color 150ms ease-out,
-				color 150ms ease-out;
-		}
-	}
-</style>
+<a class="pill-outline" href={href}>{label}</a>
