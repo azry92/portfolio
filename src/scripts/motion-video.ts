@@ -1,22 +1,48 @@
 // Motion pieces: play when the viewer allows motion, and always offer Pause/Play.
 // Under prefers-reduced-motion the poster stays until the viewer presses Play.
+// A video plays only while on screen, so nothing downloads until it is close.
 
 const allowsMotion = matchMedia('(prefers-reduced-motion: no-preference)');
 
 for (const root of document.querySelectorAll<HTMLElement>('[data-motion-video]')) {
 	const video = root.querySelector('video')!;
 	const toggle = root.querySelector<HTMLButtonElement>('[data-motion-video-toggle]')!;
+	// What the viewer wants; scrolling away pauses without changing it.
+	let wanted = allowsMotion.matches;
+	let onScreen = false;
 
 	const label = () => {
-		toggle.textContent = video.paused ? 'Play' : 'Pause';
+		toggle.textContent = video.paused && !(wanted && onScreen) ? 'Play' : 'Pause';
+	};
+
+	// A refused play() (e.g. data saver) leaves the poster and a Play button.
+	const sync = () => {
+		if (wanted && onScreen) {
+			video.play().catch(() => {
+				wanted = false;
+				label();
+			});
+		} else if (!video.paused) {
+			video.pause();
+		}
+		label();
 	};
 
 	video.addEventListener('play', label);
 	video.addEventListener('pause', label);
-	toggle.addEventListener('click', () => (video.paused ? video.play().catch(label) : video.pause()));
+	toggle.addEventListener('click', () => {
+		wanted = !wanted;
+		sync();
+	});
 	toggle.hidden = false;
 
-	// A refused play() (e.g. data saver) leaves the poster and a Play button.
-	if (allowsMotion.matches) video.play().catch(label);
+	new IntersectionObserver(
+		([entry]) => {
+			onScreen = entry.isIntersecting;
+			sync();
+		},
+		{ rootMargin: '200px 0px' },
+	).observe(video);
+
 	label();
 }
