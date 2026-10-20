@@ -279,10 +279,24 @@ export function parseCaseStudy(slug: string, body: string): Section[] {
 					push({ kind: 'tree', items: menuItems(node) });
 				else push({ kind: 'prose', html: toHtml(toHast(node)) });
 				return;
-			case 'table':
+			case 'table': {
 				flush();
-				push(table(node));
+				// With no blank line after a table, GFM reads the lines under it as rows. A row
+				// whose source line has no pipe is one of those: hand it and the rest back as blocks.
+				const spill = node.children.findIndex(
+					(row, i) => i > 0 && !body.slice(row.position!.start.offset, row.position!.end.offset).includes('|'),
+				);
+				if (spill === -1) {
+					push(table(node));
+					return;
+				}
+				const rest = body.slice(node.children[spill].position!.start.offset, node.position!.end.offset);
+				push(table({ ...node, children: node.children.slice(0, spill) }));
+				const after = fromMarkdown(rest, { extensions: [gfm()], mdastExtensions: [gfmFromMarkdown()] });
+				smartQuotes(after);
+				after.children.forEach(handle);
 				return;
+			}
 			default:
 				throw new Error(`${source}: unsupported Markdown block "${node.type}"`);
 		}

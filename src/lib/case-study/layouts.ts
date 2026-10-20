@@ -13,6 +13,8 @@ export type Layout =
 	| { kind: 'swatches' }
 	/** One row of images, each in the given frame; `uniform` boxes them at one size. */
 	| { kind: 'row'; frame: Frame; uniform: boolean }
+	/** Several captioned rows of images, one after another, each holding the given number. */
+	| { kind: 'rows'; counts: number[] }
 	/** Copy, then one figure at full content width. */
 	| { kind: 'full' }
 	/** Copy in one column, figures in the other: stacked, or a row of phones. */
@@ -36,6 +38,8 @@ export type Layout =
 	/** A list of figures drawn as cards, the first one largest. */
 	| { kind: 'stats' };
 
+const numbers: Record<string, number> = { two: 2, three: 3, four: 4, five: 5 };
+
 const rowNouns: Record<string, Frame> = {
 	images: 'none',
 	photos: 'none',
@@ -46,11 +50,14 @@ const rowNouns: Record<string, Frame> = {
 
 const patterns: [RegExp, (match: RegExpMatchArray) => Layout][] = [
 	[/^hero, title and overview left, browser mockup right$/, () => ({ kind: 'hero' })],
-	[/^requirements list, then palette swatches, then reference images in a row$/, () => ({ kind: 'stack' })],
+	[
+		/^requirements list, then palette swatches, then (?:reference images in a row|reference and wireframe side by side)$/,
+		() => ({ kind: 'stack' }),
+	],
 	[/^table, then row of phones, then full-width browser screenshot$/, () => ({ kind: 'phones-then-browser' })],
 	[/^swatch row$/, () => ({ kind: 'swatches' })],
 	[
-		/^(?:body, then )?(?:two|three|four|five) (images|photos|logos|posters|phones) in a row(, same size)?$/,
+		/^(?:(?:body|table), then )?(?:two|three|four|five) (images|photos|logos|posters|phones) in a row(, same size)?$/,
 		(m) => ({ kind: 'row', frame: rowNouns[m[1]], uniform: Boolean(m[2]) }),
 	],
 	[/^(?:full-width diagram|diagram full width)$/, () => ({ kind: 'full' })],
@@ -73,12 +80,16 @@ const patterns: [RegExp, (match: RegExpMatchArray) => Layout][] = [
 		/^vertical stack of homepage sections, labelled ([A-Za-z]+(?: \/ [A-Za-z]+)+)$/,
 		(m) => ({ kind: 'labelled-stack', labels: m[1].split(' / ') }),
 	],
+	[
+		/^(?:two|three|four|five) [a-z ]+ in a row(?:, then (?:two|three|four|five) [a-z ]+ in a row)+$/i,
+		(m) => ({ kind: 'rows', counts: [...m[0].matchAll(/\b(two|three|four|five) /g)].map((n) => numbers[n[1]]) }),
+	],
 	[/^full-width video, body below$/, () => ({ kind: 'video-then-body' })],
 	[
 		/^two columns; left: copy then publications screenshot; right: news screenshots$/,
 		() => ({ kind: 'two-column' }),
 	],
-	[/^stat cards, first card largest$/, () => ({ kind: 'stats' })],
+	[/^stat cards, (?:first card largest|[A-Za-z]+ card first)$/, () => ({ kind: 'stats' })],
 ];
 
 /** Returns the layout for a note, or throws naming the note so it can be added or reworded. */

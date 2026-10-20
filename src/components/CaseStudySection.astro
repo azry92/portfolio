@@ -20,7 +20,7 @@ const { section } = Astro.props;
 const layout: Layout = section.layout ?? { kind: 'stack' };
 
 const frameFor = (own: Layout | undefined, fallback: Frame): Frame =>
-	own?.kind === 'row' ? own.frame : fallback;
+	own?.kind === 'row' ? own.frame : own?.kind === 'rows' ? 'none' : fallback;
 const sectionFrame: Frame = layout.kind === 'headline-row' ? 'phone' : frameFor(layout, 'none');
 const uniform = (own: Layout | undefined) => own?.kind === 'row' && own.uniform;
 
@@ -53,6 +53,15 @@ const subsectionRuns = (sub: Subsection): Run => {
 	if (runs.length !== 1) throw new Error(`"${sub.heading}": a labelled stack needs exactly one run of images`);
 	return runs[0];
 };
+
+// "Three posters in a row, then two LED screens in a row": the runs must hold those counts, in order.
+for (const part of [section, ...section.subsections]) {
+	if (part.layout?.kind !== 'rows') continue;
+	const counts = part.blocks.filter((block): block is Run => block.kind === 'figures').map((r) => r.items.length);
+	if (counts.join() !== part.layout.counts.join()) {
+		throw new Error(`"${part.heading}": the layout note needs rows of ${part.layout.counts.join(', ')} images, got ${counts.join(', ') || 'none'}`);
+	}
+}
 
 const subsectionClass = (sub: Subsection) => [
 	'cs-subsection',
