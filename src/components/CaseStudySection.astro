@@ -1,6 +1,7 @@
 ---
 // One ## section of a case study, laid out by its layout note.
 import CaseStudyBlocks from './CaseStudyBlocks.astro';
+import PhonesThenBrowser from './PhonesThenBrowser.astro';
 import StageRows from './StageRows.astro';
 import type { Frame, Layout } from '../lib/case-study/layouts';
 import type { Section, Subsection } from '../lib/case-study/parse';
@@ -18,6 +19,9 @@ const sectionFrame: Frame = layout.kind === 'headline-row' ? 'phone' : frameFor(
 
 const prose = section.blocks.filter((block) => block.kind !== 'figures');
 const figures = section.blocks.filter((block) => block.kind === 'figures');
+if (layout.kind === 'phones-then-browser' && figures.length !== 1) {
+	throw new Error(`"${section.heading}": "row of phones, then full-width browser screenshot" needs exactly one run of images`);
+}
 
 const subsectionClass = (sub: Subsection) => [
 	'cs-subsection',
@@ -43,6 +47,11 @@ const subsectionClass = (sub: Subsection) => [
 						<CaseStudyBlocks blocks={figures} columns={1} />
 					</div>
 				</div>
+			) : layout.kind === 'phones-then-browser' ? (
+				<>
+					<CaseStudyBlocks blocks={prose} />
+					<PhonesThenBrowser run={figures[0]} />
+				</>
 			) : (
 				<CaseStudyBlocks blocks={section.blocks} frame={sectionFrame} columns={layout.kind === 'full' ? 1 : undefined} />
 			)}

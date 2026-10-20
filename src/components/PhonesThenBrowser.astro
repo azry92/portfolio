@@ -1,0 +1,35 @@
+---
+// One run of images split in two: every image but the last as a row of phones,
+// the last in a full-width browser frame. A caption on the run covers both.
+import Figure from './Figure.astro';
+import FigureGrid from './FigureGrid.astro';
+import type { Block } from '../lib/case-study/parse';
+
+interface Props {
+	run: Extract<Block, { kind: 'figures' }>;
+}
+
+const { run } = Astro.props;
+const phones = run.items.slice(0, -1);
+const browser = run.items[run.items.length - 1];
+if (!phones.length) throw new Error('"row of phones, then full-width browser screenshot" needs at least two images');
+
+const Tag = run.caption ? 'figure' : 'div';
+---
+
+<Tag class="phones-then-browser">
+	<FigureGrid items={phones} frame="phone" />
+	<Figure figure={browser} frame="browser" sizes="(min-width: 1248px) 1200px, 100vw" />
+	{run.caption && <figcaption class="phones-then-browser__caption" set:html={run.caption} />}
+</Tag>
+
+<style>
+	.phones-then-browser {
+		display: grid;
+		gap: var(--space-32);
+	}
+
+	.phones-then-browser__caption {
+		font-size: var(--text-14);
+	}
+</style>

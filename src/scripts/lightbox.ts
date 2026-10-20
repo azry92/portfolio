@@ -13,11 +13,14 @@ function init(dialog: HTMLDialogElement) {
 	let index = 0;
 	let opener: HTMLElement | null = null;
 
-	// A figure's own caption, else the caption shared by its row.
-	const captionFor = (link: HTMLAnchorElement) =>
-		link.closest('figure')?.querySelector(':scope > figcaption')?.textContent?.trim() ||
-		link.closest('.figure-grid')?.querySelector(':scope > figcaption')?.textContent?.trim() ||
-		'';
+	// The nearest caption: the figure's own, else one shared by an enclosing figure (a row or a set).
+	const captionFor = (link: HTMLAnchorElement) => {
+		for (let figure = link.closest('figure'); figure; figure = figure.parentElement?.closest('figure') ?? null) {
+			const text = figure.querySelector(':scope > figcaption')?.textContent?.trim();
+			if (text) return text;
+		}
+		return '';
+	};
 
 	const show = (i: number) => {
 		index = (i + group.length) % group.length;

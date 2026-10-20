@@ -83,7 +83,6 @@ I designed and built the store on Shopify: a Make, Model and Generation/Year fin
 ![Mobile menu with parts, wheel and tyre finders](./images/menu-mobile-parts-wheel-tyre-finder.png)
 *All three finders reachable from the mobile menu.*
 ## Feedback and iteration
-<!-- layout: table, then image grid -->
 | Feedback | Source | Response |
 |---|---|---|
 | "Wheel Finder is hard to read; J-width is shown first." | Sales Manager, several rounds | Removed J-width as the first step and narrowed the Wheel and Tyre Finders to 4 main branches. |
@@ -91,6 +90,12 @@ I designed and built the store on Shopify: a Make, Model and Generation/Year fin
 | Product filters from the old site were generic and not tuned to customer needs. | Owner, Sales Manager | Each collection has its own filters: tyres by width, aspect ratio and diameter; suspension by front or rear placement. |
 | "It's important to make a sign-up page for our customers for promotions and retention." | Owner | Enabled account sign-up with a promotions opt-in. |
 | Old URLs and product descriptions had broken links. | Owner, Sales Manager | Rebuilt product listings with proper tags, metaobject labels, and cleaned-up URLs and SKUs. 301 redirects are in progress. |
+<!-- layout: table, then row of phones, then full-width browser screenshot -->
+![Collection page with filters tuned per category, such as tyre width, aspect ratio and diameter](./images/product-page-filter-category.png)
+![Custom make, model and year search on the home page, replacing a paid YMM app](./images/home-make-model-year-search.png)
+![Interior accessories collection page with its own filter set](./images/collection-page-interior-accessories.png)
+![Product finder page with the vehicle selected and matching parts listed](./images/product-finder-page.png)
+*Each change answers a row in the table above.*
 ## Building on a live store safely
 <!-- layout: copy left, terminal screenshot and code screenshot right -->
 The store runs on Shopify's Dawn 16 theme, extended with custom sections. Before changing the live store I pulled the theme locally with Shopify CLI and kept it under version control, so every edit can be reviewed and rolled back.

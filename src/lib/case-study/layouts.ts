@@ -20,7 +20,9 @@ export type Layout =
 	/** Each subsection is a labelled row of phones, on the accent band. */
 	| { kind: 'stages' }
 	/** A large subsection headline, body, then a row of phones. */
-	| { kind: 'headline-row' };
+	| { kind: 'headline-row' }
+	/** Copy and tables, then one image run: phones in a row, its last image in a full-width browser. */
+	| { kind: 'phones-then-browser' };
 
 const rowNouns: Record<string, Frame> = {
 	images: 'none',
@@ -33,7 +35,7 @@ const rowNouns: Record<string, Frame> = {
 const patterns: [RegExp, (match: RegExpMatchArray) => Layout][] = [
 	[/^hero, title and overview left, browser mockup right$/, () => ({ kind: 'hero' })],
 	[/^requirements list, then palette swatches, then reference images in a row$/, () => ({ kind: 'stack' })],
-	[/^table, then image grid$/, () => ({ kind: 'stack' })],
+	[/^table, then row of phones, then full-width browser screenshot$/, () => ({ kind: 'phones-then-browser' })],
 	[/^swatch row$/, () => ({ kind: 'swatches' })],
 	[/^(?:two|three|four|five) (images|photos|logos|posters|phones) in a row$/, (m) => ({ kind: 'row', frame: rowNouns[m[1]] })],
 	[/^(?:full-width diagram|diagram full width)$/, () => ({ kind: 'full' })],
