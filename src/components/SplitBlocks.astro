@@ -1,6 +1,7 @@
 ---
 // "Copy left, … right": prose in one column, figures in the other. Website
-// screenshots stack; phones keep their row. Stacks below 1200px.
+// screenshots stack; phones keep their row, in a wider column so they stay close
+// to the size of a full-width phone row. Stacks below 1200px.
 import CaseStudyBlocks from './CaseStudyBlocks.astro';
 import type { Frame } from '../lib/case-study/layouts';
 import type { Block } from '../lib/case-study/parse';
@@ -15,7 +16,7 @@ const copy = blocks.filter((block) => block.kind !== 'figures');
 const figures = blocks.filter((block) => block.kind === 'figures');
 ---
 
-<div class="cs-split">
+<div class:list={['cs-split', { 'cs-split--phones': frame === 'phone' }]}>
 	<div class="cs-split__copy">
 		<CaseStudyBlocks blocks={copy} />
 	</div>
@@ -35,6 +36,10 @@ const figures = blocks.filter((block) => block.kind === 'figures');
 			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
 			gap: var(--space-48);
 			align-items: start;
+		}
+
+		.cs-split--phones {
+			grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
 		}
 
 		.cs-split__media {
