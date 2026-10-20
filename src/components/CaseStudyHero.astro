@@ -1,5 +1,8 @@
 ---
 // Full-bleed accent band: title, at-a-glance lines, overview and project facts beside the hero image.
+// Below 600px the image sits between the glance and the overview, so the first screen
+// shows the title, the outcome and the work. From 600px it follows the copy, and from
+// 1200px it sits beside it.
 // By default the cover goes in unframed, since it carries its own mockup. With a
 // `hero` field the image sits in a browser or phone frame, centred beside the copy,
 // and the copy alone sets the band's height.
@@ -25,14 +28,9 @@ const { title, glance, client, role, team, timeline, platform, tools, live_url, 
 
 <header class:list={['hero', 'accent-band', { 'hero--framed': hero }]}>
 	<div class="hero__inner container">
-		<div class="hero__copy">
+		<div class="hero__lead">
 			<h1 class="hero__title">{title}</h1>
 			{glance && <CaseStudyGlance {...glance} resultsId={resultsId} />}
-			<section class="hero__overview" aria-labelledby={overview.id}>
-				<h2 id={overview.id}>{overview.heading}</h2>
-				{overview.blocks.map((block) => block.kind === 'prose' && <Prose html={block.html} />)}
-			</section>
-			<CaseStudyMeta client={client} role={role} team={team} timeline={timeline} platform={platform} tools={tools} liveUrl={live_url} />
 		</div>
 		{
 			hero ? (
@@ -64,6 +62,13 @@ const { title, glance, client, role, team, timeline, platform, tools, live_url, 
 				</div>
 			)
 		}
+		<div class="hero__details">
+			<section class="hero__overview" aria-labelledby={overview.id}>
+				<h2 id={overview.id}>{overview.heading}</h2>
+				{overview.blocks.map((block) => block.kind === 'prose' && <Prose html={block.html} />)}
+			</section>
+			<CaseStudyMeta client={client} role={role} team={team} timeline={timeline} platform={platform} tools={tools} liveUrl={live_url} />
+		</div>
 	</div>
 </header>
 
@@ -74,14 +79,29 @@ const { title, glance, client, role, team, timeline, platform, tools, live_url, 
 
 	.hero__inner {
 		display: grid;
+		grid-template-areas: 'lead' 'media' 'details';
 		gap: var(--space-32);
-		padding-block-start: var(--space-48);
+		padding-block: var(--space-48);
 	}
 
-	.hero__copy {
+	.hero__lead,
+	.hero__details {
 		display: grid;
 		gap: var(--space-32);
 		align-content: start;
+	}
+
+	.hero__lead {
+		grid-area: lead;
+	}
+
+	.hero__details {
+		grid-area: details;
+	}
+
+	.hero__media,
+	.hero__cover {
+		grid-area: media;
 	}
 
 	.hero__title {
@@ -98,13 +118,14 @@ const { title, glance, client, role, team, timeline, platform, tools, live_url, 
 	}
 
 	/* Bleed the cover to the screen edges on small screens. Its backdrop is close to,
-	   not exactly, the accent, so the top and inner edges fade into the band. */
+	   not exactly, the accent, so its edges fade into the band: top and bottom while it
+	   sits mid-band, the top only once it ends the band. */
 	.hero__cover {
 		margin-inline: calc(var(--gutter) * -1);
 	}
 
 	.hero__cover :global(picture) {
-		mask-image: linear-gradient(to bottom, transparent, #000 20%);
+		mask-image: linear-gradient(to bottom, transparent, #000 20%, #000 80%, transparent);
 	}
 
 	.hero__cover :global(img) {
@@ -112,11 +133,7 @@ const { title, glance, client, role, team, timeline, platform, tools, live_url, 
 		block-size: auto;
 	}
 
-	/* Framed: the image keeps to the container, under the copy on small screens. */
-	.hero--framed .hero__inner {
-		padding-block-end: var(--space-48);
-	}
-
+	/* Framed: the image keeps to the container. */
 	.hero__media--phone {
 		display: grid;
 		justify-items: center;
@@ -126,14 +143,31 @@ const { title, glance, client, role, team, timeline, platform, tools, live_url, 
 		inline-size: min(100%, 15rem);
 	}
 
-	@media (min-width: 1200px) {
+	@media (min-width: 600px) {
 		.hero__inner {
-			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-			gap: var(--space-48);
-			padding-block-start: var(--space-64);
+			grid-template-areas: 'lead' 'details' 'media';
 		}
 
-		.hero__copy {
+		/* The unframed cover ends the band, so it runs to the band's bottom edge. */
+		.hero:not(.hero--framed) .hero__inner {
+			padding-block-end: 0;
+		}
+
+		.hero__cover :global(picture) {
+			mask-image: linear-gradient(to bottom, transparent, #000 20%);
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.hero__inner {
+			grid-template-areas: 'lead media' 'details media';
+			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+			grid-template-rows: auto 1fr;
+			gap: var(--space-32) var(--space-48);
+			padding-block: var(--space-64) 0;
+		}
+
+		.hero__details {
 			padding-block-end: var(--space-64);
 		}
 
@@ -156,10 +190,6 @@ const { title, glance, client, role, team, timeline, platform, tools, live_url, 
 		/* contain: size keeps the frame from adding height, so the copy sets the band's
 		   height. The cell reaches up over the top padding to match the copy's bottom
 		   padding, so the frame centres in the band. */
-		.hero--framed .hero__inner {
-			padding-block-end: 0;
-		}
-
 		.hero__media {
 			display: grid;
 			align-content: center;
