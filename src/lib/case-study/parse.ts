@@ -52,6 +52,27 @@ const text = (node: Nodes): string =>
 const inlineHtml = (children: PhrasingContent[]): string =>
 	toHtml(toHast({ type: 'root', children }));
 
+/**
+ * Straight quotes to typographic ones, in text nodes only (code stays as written).
+ * A quote opens after a space, an opening bracket or the start of the text; otherwise
+ * it closes, which also makes apostrophes right. `prev` carries across nodes, so a
+ * quote just after inline code or emphasis still reads its neighbour.
+ */
+function smartQuotes(node: Nodes, state = { prev: '' }): void {
+	// Each block starts fresh: a quote at its start opens.
+	if (['paragraph', 'heading', 'listItem', 'tableCell'].includes(node.type)) state.prev = '';
+	if (node.type === 'html') return;
+	if (node.type === 'text') {
+		node.value = node.value.replace(/["']/g, (quote, i: number, value: string) => {
+			const before = i > 0 ? value[i - 1] : state.prev;
+			const opens = before === '' || /[\s([{—–-]/.test(before);
+			return quote === '"' ? (opens ? '“' : '”') : opens ? '‘' : '’';
+		});
+	}
+	if ('value' in node && node.value) state.prev = node.value[node.value.length - 1];
+	if ('children' in node) for (const child of node.children) smartQuotes(child, state);
+}
+
 const slugify = (value: string) =>
 	value
 		.toLowerCase()
@@ -100,6 +121,7 @@ function table(node: Table): Block {
 export function parseCaseStudy(slug: string, body: string): Section[] {
 	const source = `case-studies/${slug}/index.md`;
 	const tree = fromMarkdown(body, { extensions: [gfm()], mdastExtensions: [gfmFromMarkdown()] });
+	smartQuotes(tree);
 	const sections: Section[] = [];
 	const ids = new Set<string>();
 
