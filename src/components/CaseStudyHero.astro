@@ -1,9 +1,13 @@
 ---
-// Full-bleed accent band: title, overview and project facts beside the cover.
-// The cover already carries its own mockup, so it goes in unframed.
+// Full-bleed accent band: title, overview and project facts beside the hero image.
+// By default the cover goes in unframed, since it carries its own mockup. With a
+// `hero` field the image sits in a browser or phone frame, centred beside the copy,
+// and the copy alone sets the band's height.
 import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import BrowserFrame from './BrowserFrame.astro';
 import CaseStudyMeta from './CaseStudyMeta.astro';
+import PhoneFrame from './PhoneFrame.astro';
 import Prose from './Prose.astro';
 import type { Section } from '../lib/case-study/parse';
 
@@ -13,10 +17,10 @@ interface Props {
 }
 
 const { entry, overview } = Astro.props;
-const { title, client, role, team, timeline, platform, tools, live_url, cover, cover_alt } = entry.data;
+const { title, client, role, team, timeline, platform, tools, live_url, cover, cover_alt, hero } = entry.data;
 ---
 
-<header class="hero accent-band">
+<header class:list={['hero', 'accent-band', { 'hero--framed': hero }]}>
 	<div class="hero__inner container">
 		<div class="hero__copy">
 			<h1 class="hero__title">{title}</h1>
@@ -26,17 +30,36 @@ const { title, client, role, team, timeline, platform, tools, live_url, cover, c
 			</section>
 			<CaseStudyMeta client={client} role={role} team={team} timeline={timeline} platform={platform} tools={tools} liveUrl={live_url} />
 		</div>
-		<div class="hero__cover">
-			<Picture
-				src={cover}
-				alt={cover_alt}
-				formats={['avif', 'webp']}
-				widths={[480, 720, 960, 1440, 1920].filter((w) => w <= cover.width)}
-				sizes="(min-width: 1200px) 60vw, 100vw"
-				loading="eager"
-				fetchpriority="high"
-			/>
-		</div>
+		{
+			hero ? (
+				<div class:list={['hero__media', `hero__media--${hero.frame}`]}>
+					{hero.frame === 'browser' ? (
+						<BrowserFrame
+							src={hero.image}
+							alt={hero.alt}
+							widths={[480, 720, 960, 1440, 1920]}
+							sizes="(min-width: 1248px) 672px, (min-width: 1200px) 56vw, 100vw"
+							loading="eager"
+							fetchpriority="high"
+						/>
+					) : (
+						<PhoneFrame src={hero.image} alt={hero.alt} sizes="240px" loading="eager" fetchpriority="high" />
+					)}
+				</div>
+			) : (
+				<div class="hero__cover">
+					<Picture
+						src={cover}
+						alt={cover_alt}
+						formats={['avif', 'webp']}
+						widths={[480, 720, 960, 1440, 1920].filter((w) => w <= cover.width)}
+						sizes="(min-width: 1200px) 60vw, 100vw"
+						loading="eager"
+						fetchpriority="high"
+					/>
+				</div>
+			)
+		}
 	</div>
 </header>
 
@@ -85,6 +108,20 @@ const { title, client, role, team, timeline, platform, tools, live_url, cover, c
 		block-size: auto;
 	}
 
+	/* Framed: the image keeps to the container, under the copy on small screens. */
+	.hero--framed .hero__inner {
+		padding-block-end: var(--space-48);
+	}
+
+	.hero__media--phone {
+		display: grid;
+		justify-items: center;
+	}
+
+	.hero__media--phone :global(.phone) {
+		inline-size: min(100%, 15rem);
+	}
+
 	@media (min-width: 1200px) {
 		.hero__inner {
 			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
@@ -108,6 +145,20 @@ const { title, client, role, team, timeline, platform, tools, live_url, cover, c
 			inline-size: 100%;
 			mask-image: linear-gradient(to right, transparent, #000 25%), linear-gradient(to bottom, transparent, #000 25%);
 			mask-composite: intersect;
+		}
+
+		/* contain: size keeps the frame from adding height, so the copy sets the band's
+		   height. The cell reaches up over the top padding to match the copy's bottom
+		   padding, so the frame centres in the band. */
+		.hero--framed .hero__inner {
+			padding-block-end: 0;
+		}
+
+		.hero__media {
+			display: grid;
+			align-content: center;
+			margin-block-start: calc(var(--space-64) * -1);
+			contain: size;
 		}
 	}
 </style>

@@ -38,6 +38,14 @@ const caseStudies = defineCollection({
 				.string()
 				.regex(/^#[0-9a-f]{6}$/i)
 				.optional(),
+			/** Draw the hero image in a device frame instead of the unframed cover mockup. */
+			hero: z
+				.object({
+					frame: z.enum(['browser', 'phone']),
+					image: context.image(),
+					alt: z.string().min(1),
+				})
+				.optional(),
 		}),
 });
 

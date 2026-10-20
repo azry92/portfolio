@@ -12,6 +12,8 @@ interface Props {
 	widths?: number[];
 	sizes?: string;
 	loading?: 'lazy' | 'eager';
+	/** For a frame that holds the page's largest image, e.g. a hero. */
+	fetchpriority?: 'high' | 'low' | 'auto';
 	class?: string;
 	/** Inline styles, e.g. "--phone-safe-area-colour: #2a72ba" to match a screenshot's header. */
 	style?: string;
@@ -24,6 +26,7 @@ const {
 	widths = [360, 540, 720, 1080],
 	sizes = '(min-width: 1200px) 360px, (min-width: 600px) 30vw, 85vw',
 	loading = 'lazy',
+	fetchpriority,
 	class: className,
 	style,
 } = Astro.props;
@@ -49,6 +52,7 @@ const hasSlot = Astro.slots.has('default');
 								widths={widths.filter((w) => w <= src.width)}
 								sizes={sizes}
 								loading={loading}
+							fetchpriority={fetchpriority}
 							/>
 						)
 					)
