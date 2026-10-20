@@ -78,24 +78,16 @@ const formats: ('avif' | 'webp')[] = ['avif', 'webp'];
 		text-wrap: balance;
 	}
 
-	/* Below 768px every screen runs to the screen edges: a 8:3 screen is short on a
-	   phone, so it takes all the width there is. A tap still opens it full size. */
-	@media (max-width: 767.98px) {
-		.sheet__media {
-			margin-inline: calc(var(--gutter) * -1);
+	/* Screens keep to the page gutter; a tap opens them full size. From 600px a
+	   `bleed` image runs to the screen edges. */
+	@media (min-width: 600px) {
+		.sheet--bleed .sheet__media {
+			margin-inline: calc(50% - 50vw);
 		}
 
-		.sheet__media :global(.sheet__image) {
+		.sheet--bleed :global(.sheet__image) {
 			border-radius: 0;
 		}
-	}
-
-	.sheet--bleed .sheet__media {
-		margin-inline: calc(50% - 50vw);
-	}
-
-	.sheet--bleed :global(.sheet__image) {
-		border-radius: 0;
 	}
 
 	/* The figure spans both rows of the sheet's grid, so its caption and the body sit

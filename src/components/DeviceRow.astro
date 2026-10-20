@@ -1,6 +1,7 @@
 ---
-// One row of screenshots, each in its own frame, sized by its share of 12 columns
-// and centred on one line, so phones and a browser can sit together. One caption
+// One row of screenshots, each in its own frame, sized by its share of 12 columns.
+// Phones and browsers in one row share a bottom edge; a row without phones lines up
+// at the top. One caption
 // covers the row. Below 600px a row of three or more becomes a snap row (phones
 // narrower than browsers); a row of two stacks.
 import Figure from './Figure.astro';
@@ -61,7 +62,7 @@ const Tag = caption ? 'figure' : 'div';
 			grid-template-columns: none;
 			grid-auto-columns: auto;
 			gap: var(--space-16);
-			align-items: center;
+			align-items: end;
 		}
 
 		.device-row__items.snap-row > :global(.figure) {
@@ -77,7 +78,7 @@ const Tag = caption ? 'figure' : 'div';
 		.device-row__items {
 			grid-template-columns: var(--columns);
 			gap: var(--space-48);
-			align-items: center;
+			align-items: end;
 		}
 
 		/* Without phones the screenshots line up at the top. */

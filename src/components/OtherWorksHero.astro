@@ -129,14 +129,21 @@ const { title, client, project, role, team, timeline, platform, tools, live_url,
 		grid-area: meta;
 	}
 
-	/* Photo: the cover bleeds to the screen edges on small screens. */
-	.ow-hero--photo .ow-hero__media {
-		margin-inline: calc(var(--gutter) * -1);
-	}
-
+	/* Photo: inside the gutter on phones, out to the screen edges from 600px. */
 	.ow-hero--photo .ow-hero__media :global(img) {
 		inline-size: 100%;
 		block-size: auto;
+		border-radius: var(--radius-sm);
+	}
+
+	@media (min-width: 600px) and (max-width: 1199.98px) {
+		.ow-hero--photo .ow-hero__media {
+			margin-inline: calc(var(--gutter) * -1);
+		}
+
+		.ow-hero--photo .ow-hero__media :global(img) {
+			border-radius: 0;
+		}
 	}
 
 	/* Stage: a black band runs behind the mockup's lower half and on under it, out to
@@ -162,11 +169,17 @@ const { title, client, project, role, team, timeline, platform, tools, live_url,
 		background-color: var(--color-surface-inverse);
 	}
 
-	/* Below 600px the mockup runs to the screen edges and the pill spans the column,
-	   like the home buttons. */
+	/* Below 600px the mockup runs to the screen edges and the band ends with it, so
+	   the mockup's own black never meets the band's. The pill spans the column, like
+	   the home buttons. */
 	@media (max-width: 599.98px) {
 		.ow-hero__stage {
 			margin-inline: calc(var(--gutter) * -1);
+			padding-block-end: 0;
+		}
+
+		.ow-hero__stage::before {
+			content: none;
 		}
 
 		.ow-hero__stage :global(.ow-hero__mockup) {
