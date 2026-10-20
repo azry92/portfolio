@@ -38,7 +38,7 @@ const { variant = 'site' } = Astro.props;
 <style>
 	.site-footer__inner {
 		display: grid;
-		gap: var(--space-32);
+		gap: var(--space-24);
 		padding-block: var(--space-48);
 	}
 
@@ -82,8 +82,9 @@ const { variant = 'site' } = Astro.props;
 			text-align: start;
 		}
 
+		/* The home grid adds the space below, so the last line sits on the grid's bottom edge. */
 		.site-footer--home .site-footer__inner {
-			padding-block-start: var(--space-64);
+			padding-block: var(--space-24) 0;
 		}
 	}
 </style>

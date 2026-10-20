@@ -20,6 +20,7 @@ Personal portfolio for "Product Designer, Web & E-commerce | Shopify Design & Bu
 ## Pages
 - `/` home: animated glyph band, intro, three case study cards, Other Works and Fun cards, contact.
 - `/work/[slug]` case studies: AT Auto Shoppe, PlanetStewards, Precious Wedding.
+- `/other-works`: short index listing Atlas IHU and MBFW as cards. Built in the Other Works session.
 - `/other-works/[slug]`: MBFW, Atlas IHU Theme.
 - `/fun`: illustrations and concepts, grid with lightbox.
 - `/about`, CV PDF download, 404.

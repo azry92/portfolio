@@ -15,10 +15,12 @@ const aboutParts = intro.about.split(/(e-commerce)/);
 		<p class="home-intro__greeting">{intro.greeting}</p>
 		<h1 id="home-title" class="home-intro__title">{intro.title}</h1>
 	</hgroup>
-	<p class="home-intro__about">
-		{aboutParts.map((part) => (part === 'e-commerce' ? <span class="home-intro__nowrap">{part}</span> : part))}
-	</p>
-	<p class="home-intro__more"><a href="/about">More about me</a></p>
+	<div class="home-intro__body">
+		<p class="home-intro__about">
+			{aboutParts.map((part) => (part === 'e-commerce' ? <span class="home-intro__nowrap">{part}</span> : part))}
+		</p>
+		<p class="home-intro__more"><a href="/about">More about me</a></p>
+	</div>
 </section>
 
 <style>
@@ -98,11 +100,25 @@ const aboutParts = intro.about.split(/(e-commerce)/);
 		}
 	}
 
-	/* Two-column layout: the title stays on one line and runs past the intro column
-	   into the work column, as in the mockup. */
+	/* Two-column layout: rows 1 to 3 of the home grid (logo, heading, body), so the
+	   heading row can share its baseline with "See the Work". At 40px the title stays
+	   on one line and runs past this column, leaving room for that heading. */
 	@media (min-width: 1200px) {
+		.home-intro {
+			display: grid;
+			grid-template-rows: subgrid;
+			grid-column: 1;
+			grid-row: 1 / span 3;
+		}
+
 		.home-intro__heading {
 			inline-size: max-content;
+			align-self: last baseline;
+		}
+
+		.home-intro__greeting,
+		.home-intro__title {
+			font-size: var(--text-40);
 		}
 	}
 </style>

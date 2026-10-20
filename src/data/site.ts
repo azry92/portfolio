@@ -29,6 +29,15 @@ export const contact = {
 
 export const footerLine = 'Designed and built by Ismail Azry with Astro. © 2026';
 
+export const work = {
+	heading: 'See the Work',
+	cv: 'Download CV',
+	more: [
+		{ label: 'Other Works', href: '/other-works' },
+		{ label: 'Fun', href: '/fun' },
+	],
+} as const;
+
 export const intro = {
 	greeting: 'Hello, I’m Azry.',
 	title: 'Product Designer, Web & E-commerce',

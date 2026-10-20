@@ -1,0 +1,106 @@
+---
+// One case study on the home grid: cover, project name, and the summary on hover or focus.
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+	entry: CollectionEntry<'caseStudies'>;
+}
+
+const { entry } = Astro.props;
+const { title, summary, cover, cover_alt } = entry.data;
+// The card shows the project name: the part of the title before the colon.
+const name = title.split(':')[0].trim();
+const id = `work-card-${entry.id}`;
+---
+
+<a
+	class="work-card"
+	href={`/work/${entry.id}`}
+	aria-labelledby={`${id}-title`}
+	aria-describedby={`${id}-summary`}
+>
+	<div class="work-card__media">
+		<Picture
+			src={cover}
+			alt={cover_alt}
+			formats={['avif', 'webp']}
+			widths={[240, 400, 600, 800]}
+			sizes="(min-width: 1200px) 240px, (min-width: 768px) 33vw, 50vw"
+		/>
+	</div>
+	<h3 id={`${id}-title`} class="work-card__title">{name}</h3>
+	<p id={`${id}-summary`} class="work-card__summary">{summary}</p>
+</a>
+
+<style>
+	.work-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		/* Fill the grid row, so a name that wraps doesn't leave its neighbour shorter. */
+		block-size: 100%;
+		overflow: hidden;
+		background-color: var(--color-pattern-grey);
+		color: var(--color-text);
+		text-decoration: none;
+	}
+
+	/* 3:2 keeps the cards near the mockup's height inside the 1200px cap. overflow: hidden
+	   stops a cover with a different ratio stretching the box. */
+	.work-card__media {
+		overflow: hidden;
+		aspect-ratio: 3 / 2;
+	}
+
+	.work-card__media :global(picture) {
+		display: block;
+		block-size: 100%;
+	}
+
+	/* The covers put the device on the right, so crop from the left first. */
+	.work-card__media :global(img) {
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+		object-position: 75% 50%;
+	}
+
+	.work-card__title {
+		display: grid;
+		flex: 1;
+		place-items: center;
+		padding: var(--space-8) var(--space-12);
+		font-family: var(--font-body);
+		font-size: var(--text-14);
+		font-weight: var(--weight-regular);
+		letter-spacing: 0.04em;
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	/* Hidden until hover or keyboard focus; always in the accessibility tree via aria-describedby. */
+	.work-card__summary {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: flex-end;
+		padding: var(--space-12);
+		background-color: color-mix(in srgb, var(--color-surface-inverse) 90%, transparent);
+		color: var(--color-text-inverse);
+		font-size: var(--text-14);
+		line-height: var(--leading-heading);
+		opacity: 0;
+	}
+
+	.work-card:hover .work-card__summary,
+	.work-card:focus-visible .work-card__summary {
+		opacity: 1;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.work-card__summary {
+			transition: opacity 150ms ease-out;
+		}
+	}
+</style>

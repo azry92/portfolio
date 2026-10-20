@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GlyphBand from '../components/GlyphBand.astro';
 import HomeIntro from '../components/HomeIntro.astro';
+import WorkGrid from '../components/WorkGrid.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 ---
 
@@ -10,7 +11,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 	<div class="home container">
 		<main id="main" tabindex="-1" class="home__main">
 			<HomeIntro />
-			<!-- The work grid goes here: column 2, spanning both rows from 1200px. -->
+			<WorkGrid />
 		</main>
 		<SiteFooter variant="home" />
 	</div>
@@ -27,15 +28,18 @@ import SiteFooter from '../components/SiteFooter.astro';
 		flex: 1;
 	}
 
-	/* Two columns from 1200px: intro over contact on the left, work on the right.
-	   main is a subgrid so its children and the footer share one grid; the footer
-	   sits at the bottom of the left column, level with the bottom of the work. */
+	/* Two columns from 1200px. Rows: 1 logo, 2 heading (h1 beside "See the Work"),
+	   3 about beside the cards, 4 contact beside Other Works and Fun. main is a subgrid
+	   so the intro, the work and the footer share these rows; the footer sits at the
+	   bottom of the left column, level with the bottom of the work. HomeIntro and
+	   WorkGrid place themselves. */
 	@media (min-width: 1200px) {
 		.home {
 			display: grid;
 			grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-			grid-template-rows: auto 1fr;
+			grid-template-rows: repeat(4, auto);
 			column-gap: var(--space-48);
+			padding-block-end: var(--space-48);
 		}
 
 		.home__main {
@@ -46,14 +50,9 @@ import SiteFooter from '../components/SiteFooter.astro';
 			grid-row: 1 / -1;
 		}
 
-		.home__main > :global(.home-intro) {
-			grid-column: 1;
-			grid-row: 1;
-		}
-
 		.home > :global(.site-footer) {
 			grid-column: 1;
-			grid-row: 2;
+			grid-row: 4;
 			align-self: end;
 		}
 	}

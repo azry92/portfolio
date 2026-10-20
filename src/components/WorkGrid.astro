@@ -1,0 +1,191 @@
+---
+// "See the Work": heading, CV link, case study cards in frontmatter order, then the
+// short Other Works and Fun cards. From 1200px it sits in the home grid's right column.
+import { getCollection } from 'astro:content';
+import WorkCard from './WorkCard.astro';
+import ShortCard from './ShortCard.astro';
+import { site, work } from '../data/site';
+
+const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<section id="work" class="work" aria-labelledby="work-title">
+	<div class="work__header">
+		<h2 id="work-title" class="work__heading">{work.heading}</h2>
+		<p class="work__cv"><a href={site.cv} download>{work.cv}</a></p>
+	</div>
+	<div class="work__body">
+		<ul class="work__cases" role="list">
+			{
+				caseStudies.map((entry) => (
+					<li>
+						<WorkCard entry={entry} />
+					</li>
+				))
+			}
+		</ul>
+		<ul class="work__more" role="list">
+			{
+				work.more.map((item) => (
+					<li>
+						<ShortCard {...item} />
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>
+
+<style>
+	.work__cases,
+	.work__more {
+		padding: 0;
+		list-style: none;
+	}
+
+	.work__heading {
+		font-size: var(--text-24);
+	}
+
+	.work__cv {
+		margin-block-start: var(--space-8);
+	}
+
+	.work__cv a {
+		padding: var(--space-4) var(--space-8);
+		background-color: var(--color-accent);
+		color: var(--color-text-inverse);
+		text-decoration: none;
+	}
+
+	.work__cv a:hover {
+		background-color: var(--color-accent-deep);
+	}
+
+	/* Mobile: one two-column grid. The header takes the first cell, the cards flow after it. */
+	.work {
+		--work-gap: var(--space-12);
+
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--work-gap);
+		padding-block-start: var(--space-64);
+	}
+
+	.work__header {
+		position: relative;
+		z-index: 1;
+		grid-column: 1;
+		grid-row: 1;
+		align-self: center;
+	}
+
+	/* The body's lists join the section grid directly; the div adds no semantics. */
+	.work__body {
+		display: contents;
+	}
+
+	.work__cases {
+		display: grid;
+		grid-template-columns: subgrid;
+		grid-template-rows: subgrid;
+		grid-column: 1 / -1;
+		grid-row: 1 / span 2;
+		gap: var(--work-gap);
+		/* Its first cell sits under the header, so let clicks fall through to it. */
+		pointer-events: none;
+	}
+
+	.work__cases > li {
+		pointer-events: auto;
+	}
+
+	.work__cases > li:first-child {
+		grid-column: 2;
+	}
+
+	.work__more {
+		display: grid;
+		grid-template-columns: subgrid;
+		grid-column: 1 / -1;
+		gap: var(--work-gap);
+	}
+
+	/* Tablet: header above, three case cards in a row, then a row of two. */
+	@media (min-width: 768px) {
+		.work {
+			--work-gap: var(--space-24);
+
+			display: block;
+		}
+
+		.work__heading {
+			font-size: var(--text-32);
+		}
+
+		.work__body {
+			display: grid;
+			gap: var(--work-gap);
+			margin-block-start: var(--space-32);
+		}
+
+		.work__cases {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-template-rows: none;
+			grid-row: auto;
+			pointer-events: auto;
+		}
+
+		.work__cases > li:first-child {
+			grid-column: auto;
+		}
+
+		.work__more {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	/* Desktop: right column of the home grid, rows 2 to 4 (see index.astro). The heading
+	   shares the h1's baseline; the CV link hangs below it so the cards start level
+	   with the about paragraph. Other Works and Fun sit under cards 2 and 3. */
+	@media (min-width: 1200px) {
+		.work {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr);
+			grid-template-rows: subgrid;
+			grid-column: 2;
+			grid-row: 2 / span 3;
+			padding-block-start: 0;
+		}
+
+		.work__header {
+			align-self: last baseline;
+			justify-self: end;
+			text-align: end;
+		}
+
+		.work__cv {
+			position: absolute;
+			inset-block-start: 100%;
+			inset-inline-end: 0;
+			white-space: nowrap;
+		}
+
+		/* Cards at the top of rows 3–4, Other Works and Fun at the bottom, level with
+		   the footer line in the left column. */
+		.work__body {
+			grid-row: 2 / span 2;
+			align-content: space-between;
+			margin-block-start: var(--space-64);
+		}
+
+		.work__cases,
+		.work__more {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.work__more > li:first-child {
+			grid-column: 2;
+		}
+	}
+</style>
