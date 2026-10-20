@@ -14,9 +14,9 @@ const description = `${heading} by Ismail Azry: ${entries.map((entry) => entry.d
 		<h1 class="other-works__title">{heading}</h1>
 		<ul class="other-works__list" role="list">
 			{
-				entries.map((entry) => (
+				entries.map((entry, i) => (
 					<li>
-						<OtherWorkRow entry={entry} />
+						<OtherWorkRow entry={entry} priority={i === 0} />
 					</li>
 				))
 			}

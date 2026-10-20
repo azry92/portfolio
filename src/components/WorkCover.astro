@@ -14,11 +14,14 @@ interface Props {
 	data: Data;
 	/** Sizes for a cover that fills the tile; the home grid's by default. */
 	sizes?: string;
+	/** Eager for a cover that's the page's largest image (the first on the Other Works index). */
+	priority?: boolean;
 }
 
 const {
 	data,
 	sizes = '(min-width: 1200px) 240px, (min-width: 768px) 33vw, (min-width: 600px) 50vw, 40vw',
+	priority = false,
 } = Astro.props;
 const { cover, cover_alt } = data;
 const accent = 'accent' in data ? data.accent : undefined;
@@ -55,6 +58,8 @@ const kind = hero ? hero.frame : 'plain';
 				formats={['avif', 'webp']}
 				widths={[240, 400, 600, 800, 1200].filter((w) => w <= cover.width)}
 				sizes={sizes}
+				loading={priority ? 'eager' : 'lazy'}
+				fetchpriority={priority ? 'high' : undefined}
 			/>
 		)
 	}
