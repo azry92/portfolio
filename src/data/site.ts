@@ -20,6 +20,22 @@ export const site = {
 	cv: '/ismail-azry-cv.pdf',
 } as const;
 
+export interface OgImage {
+	/** Root-relative or absolute; the layout resolves it against `site`. */
+	src: string;
+	width: number;
+	height: number;
+	alt: string;
+}
+
+/** The social preview for every page without its own (case studies and other works use their cover). */
+export const ogDefault: OgImage = {
+	src: '/og.png',
+	width: 1200,
+	height: 630,
+	alt: 'Ismail Azry, Product Designer (Web & E-commerce), with the IA glyph on a deep red gradient',
+};
+
 export const nav: NavItem[] = [
 	{ label: 'Work', href: '/#work' },
 	{ label: 'CV', href: site.cv, newTab: true, ariaLabel: cvLabel },

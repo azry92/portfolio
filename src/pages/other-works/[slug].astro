@@ -32,9 +32,15 @@ if (overview?.heading !== 'Overview') {
 	throw new Error(`other-works/${entry.id}/index.md: the first section needs to be ## Overview`);
 }
 const ogImage = await getImage({ src: cover, width: 1200, format: 'png' });
+const og = {
+	src: ogImage.src,
+	width: Number(ogImage.attributes.width),
+	height: Number(ogImage.attributes.height),
+	alt: entry.data.cover_alt,
+};
 ---
 
-<BaseLayout title={`${title} | Ismail Azry`} description={summary} ogImage={ogImage.src}>
+<BaseLayout title={`${title} | Ismail Azry`} description={summary} ogImage={og}>
 	<div class:list={['other-work', { inverse: composition.theme === 'inverse' }]}>
 		<article>
 			<OtherWorksHero entry={entry} overview={overview} variant={composition.hero} />

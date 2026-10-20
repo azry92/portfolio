@@ -44,9 +44,15 @@ const onAccent = accent
 	: undefined;
 const accentStyle = accent ? `--accent: ${accent}; --on-accent: var(${onAccent})` : undefined;
 const ogImage = await getImage({ src: entry.data.cover, width: 1200, format: 'png' });
+const og = {
+	src: ogImage.src,
+	width: Number(ogImage.attributes.width),
+	height: Number(ogImage.attributes.height),
+	alt: entry.data.cover_alt,
+};
 ---
 
-<BaseLayout title={`${title} | Ismail Azry`} description={summary} ogImage={ogImage.src}>
+<BaseLayout title={`${title} | Ismail Azry`} description={summary} ogImage={og}>
 	<div class="case-study" style={accentStyle}>
 		<article>
 			<CaseStudyHero entry={entry} overview={overview} resultsId={resultsId} />
