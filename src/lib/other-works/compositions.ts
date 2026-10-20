@@ -12,8 +12,8 @@ export type SectionLayout =
 	| { kind: 'labelled'; frame: Frame; labels: string[] }
 	/** One captioned image at full width; the caption reads as a tagline beside the body. `bleed` runs it to the screen edges. */
 	| { kind: 'sheet'; frame: Frame; bleed?: boolean }
-	/** Figures in one column, copy and subsections in the other. `lead` keeps only the first figure there and sets the rest under the copy. */
-	| { kind: 'aside'; frames: Frame[]; span: number; lead?: boolean }
+	/** Figures side by side in one column, copy and subsections in the other. */
+	| { kind: 'aside'; frames: Frame[]; span: number }
 	/** One row of figures in the given frames, sized by column span (of 12). */
 	| { kind: 'row'; frames: Frame[]; spans: number[] }
 	/** Four figures as a bento: the second tall on the left, the first wide on top, the last two under it. */
@@ -56,7 +56,8 @@ export const compositions: Record<string, Composition> = {
 			'wireframes-and-visual-system': { kind: 'aside', frames: ['none', 'none'], span: 7 },
 			'answering-the-questions-before-they-re-asked': { kind: 'row', frames: ['phone', 'phone', 'browser'], spans: [3, 3, 6] },
 			'registration-that-matched-capacity': { kind: 'row', frames: ['browser', 'browser'], spans: [8, 4] },
-			'23-designer-pages-one-template': { kind: 'aside', frames: ['browser', 'none'], span: 5, lead: true },
+			// A designer page, and the invited brands list on a phone beside it.
+			'23-designer-pages-one-template': { kind: 'aside', frames: ['browser', 'phone'], span: 7 },
 			// These screenshots carry their own browser chrome.
 			'built-to-be-reused-mbfw-2-0': { kind: 'row', frames: ['none', 'none'], spans: [6, 6] },
 			'reaching-brides-where-they-already-shop': { kind: 'aside', frames: ['phone'], span: 4 },

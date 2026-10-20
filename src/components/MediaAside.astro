@@ -1,8 +1,9 @@
 ---
-// Copy and subsections in one column, figures in the other (left from 768px). The
-// figures sit side by side at every width. On small screens they follow the copy and
-// come before the subsections, as in the Markdown. With `lead`, only the first figure
-// takes the media column and the rest follow the copy; one caption still covers them all.
+// Copy and subsections in one column, figures in the other (left from 768px). On
+// small screens the figures follow the copy and come before the subsections, as in
+// the Markdown. Figures sit side by side; a phone takes a phone's width and the other
+// figures share the rest. A phone beside another frame shares its bottom edge, and
+// below 600px the pair stacks. One caption covers the figures.
 import CaseStudyBlocks from './CaseStudyBlocks.astro';
 import Figure from './Figure.astro';
 import type { Frame } from '../lib/case-study/layouts';
@@ -16,44 +17,34 @@ interface Props {
 	frames: Frame[];
 	/** The media column's share of 12. */
 	span: number;
-	lead?: boolean;
 }
 
-const { blocks, subsections, items, caption, frames, span, lead = false } = Astro.props;
+const { blocks, subsections, items, caption, frames, span } = Astro.props;
 if (items.length !== frames.length) {
 	throw new Error(`MediaAside: ${frames.length} frames for ${items.length} images`);
 }
 
-const [first, ...rest] = items;
-const across = lead ? 1 : items.length;
-const sizeFor = (frame: Frame, share: number) =>
-	frame === 'phone' ? '240px' : `(min-width: 1248px) ${Math.round((1200 * share) / 12)}px, (min-width: 768px) ${Math.round((100 * share) / 12)}vw, ${Math.round(100 / across)}vw`;
-const mediaSize = (frame: Frame) => sizeFor(frame, span / across);
-const restSize = (frame: Frame) => sizeFor(frame, 12 - span - 1);
+const mixed = frames.includes('phone') && frames.some((frame) => frame !== 'phone');
+// A lone figure fills the column; in a row, a phone gets a phone's width.
+const columns = frames
+	.map((frame) => (frame === 'phone' && frames.length > 1 ? 'minmax(0, 15rem)' : 'minmax(0, 1fr)'))
+	.join(' ');
+const share = span / Math.max(1, frames.filter((frame) => frame !== 'phone').length);
+const sizeFor = (frame: Frame) =>
+	frame === 'phone'
+		? '240px'
+		: `(min-width: 1248px) ${Math.round((1200 * share) / 12)}px, (min-width: 768px) ${Math.round((100 * share) / 12)}vw, ${mixed ? 100 : Math.round(100 / items.length)}vw`;
 const Tag = caption ? 'figure' : 'div';
 ---
 
-<div class:list={['aside', { 'aside--lead': lead }]} style={`--media: ${span}fr; --text: ${12 - span}fr; --across: ${across}`}>
+<div class="aside" style={`--media: ${span}fr; --text: ${12 - span}fr; --columns: ${columns}`}>
 	<div class="aside__text">
 		<CaseStudyBlocks blocks={blocks} />
 	</div>
 	<Tag class="aside__media">
-		{
-			lead ? (
-				<>
-					<div class="aside__lead">
-						<Figure figure={first} frame={frames[0]} sizes={mediaSize(frames[0])} />
-					</div>
-					<div class="aside__rest">
-						{rest.map((figure, i) => <Figure figure={figure} frame={frames[i + 1]} sizes={restSize(frames[i + 1])} />)}
-					</div>
-				</>
-			) : (
-				<div class="aside__figures">
-					{items.map((figure, i) => <Figure figure={figure} frame={frames[i]} sizes={mediaSize(frames[i])} />)}
-				</div>
-			)
-		}
+		<div class:list={['aside__figures', { 'aside__figures--mixed': mixed }]}>
+			{items.map((figure, i) => <Figure figure={figure} frame={frames[i]} sizes={sizeFor(frames[i])} />)}
+		</div>
 		{caption && <figcaption class="aside__caption" set:html={caption} />}
 	</Tag>
 	{
@@ -76,7 +67,6 @@ const Tag = caption ? 'figure' : 'div';
 	.aside,
 	.aside__text,
 	.aside__media,
-	.aside__rest,
 	.aside__subsections {
 		display: grid;
 		gap: var(--space-24);
@@ -95,7 +85,7 @@ const Tag = caption ? 'figure' : 'div';
 
 	.aside__figures {
 		display: grid;
-		grid-template-columns: repeat(var(--across), minmax(0, 1fr));
+		grid-template-columns: var(--columns);
 		gap: var(--space-16);
 		align-items: start;
 	}
@@ -106,8 +96,16 @@ const Tag = caption ? 'figure' : 'div';
 		inline-size: min(100%, 15rem);
 	}
 
-	.aside__rest :global(.figure__image) {
-		border: var(--border-width) solid var(--color-border);
+	.aside__figures--mixed {
+		align-items: end;
+	}
+
+	/* Below 600px a phone and another frame stack, like any row of two. */
+	@media (max-width: 599.98px) {
+		.aside__figures--mixed {
+			grid-template-columns: minmax(0, 1fr);
+			gap: var(--space-32);
+		}
 	}
 
 	.aside__caption {
@@ -140,45 +138,6 @@ const Tag = caption ? 'figure' : 'div';
 
 		.aside__figures {
 			gap: var(--space-24);
-		}
-
-		/* Lead: the media wrapper takes the whole grid as a subgrid, so the first figure
-		   stays in the media column while the rest and the caption follow the copy. */
-		.aside--lead {
-			grid-template-rows: auto auto 1fr;
-			row-gap: var(--space-24);
-		}
-
-		.aside--lead .aside__text {
-			grid-row: 1;
-		}
-
-		.aside--lead .aside__media {
-			grid-column: 1 / -1;
-			grid-row: 1 / -1;
-			grid-template-columns: subgrid;
-			grid-template-rows: subgrid;
-			/* It overlaps the copy's cell, so it lets clicks and selection through. */
-			pointer-events: none;
-		}
-
-		.aside--lead .aside__media > * {
-			pointer-events: auto;
-		}
-
-		.aside--lead .aside__lead {
-			grid-column: 1;
-			grid-row: 1 / -1;
-		}
-
-		.aside--lead .aside__rest {
-			grid-column: 2;
-			grid-row: 2;
-		}
-
-		.aside--lead .aside__caption {
-			grid-column: 2;
-			grid-row: 3;
 		}
 	}
 </style>
