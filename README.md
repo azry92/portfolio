@@ -10,6 +10,7 @@ Live: https://ismailazry.vercel.app
 - Plain CSS with custom properties. The design tokens live in `src/styles/tokens.css`, generated from `portfolio-content/tokens.md`. No Tailwind, no UI kit.
 - Content collections load the copy and images from `portfolio-content/`. Each project's folder name is its slug.
 - Images go through `astro:assets` as AVIF and WebP with a responsive `srcset`. Each project's social preview is cropped from its cover at build time.
+- Designed by me; implemented with AI-assisted coding (Claude Code) against my specs, tokens and reviews.
 
 ## Notable pieces
 
