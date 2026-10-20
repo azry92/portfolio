@@ -106,7 +106,7 @@ I designed three content templates: publication entry, news entry and event page
 ![News and activities page](./images/page-news-activities.png)
 *News entries.*
 ![Blog post with SEO title and description](./images/page-news-blog.png)
-*Blog post template.*
+*Event page*
 ## Results
 <!-- layout: stat cards, first card largest -->
 Jun 2024 – Jun 2025 · Wix Analytics
