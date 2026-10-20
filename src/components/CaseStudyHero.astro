@@ -1,11 +1,12 @@
 ---
-// Full-bleed accent band: title, overview and project facts beside the hero image.
+// Full-bleed accent band: title, at-a-glance lines, overview and project facts beside the hero image.
 // By default the cover goes in unframed, since it carries its own mockup. With a
 // `hero` field the image sits in a browser or phone frame, centred beside the copy,
 // and the copy alone sets the band's height.
 import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import BrowserFrame from './BrowserFrame.astro';
+import CaseStudyGlance from './CaseStudyGlance.astro';
 import CaseStudyMeta from './CaseStudyMeta.astro';
 import PhoneFrame from './PhoneFrame.astro';
 import Prose from './Prose.astro';
@@ -14,16 +15,19 @@ import type { Section } from '../lib/case-study/parse';
 interface Props {
 	entry: CollectionEntry<'caseStudies'>;
 	overview: Section;
+	/** Id of the Results heading, for the glance block's link. */
+	resultsId?: string;
 }
 
-const { entry, overview } = Astro.props;
-const { title, client, role, team, timeline, platform, tools, live_url, cover, cover_alt, hero } = entry.data;
+const { entry, overview, resultsId } = Astro.props;
+const { title, glance, client, role, team, timeline, platform, tools, live_url, cover, cover_alt, hero } = entry.data;
 ---
 
 <header class:list={['hero', 'accent-band', { 'hero--framed': hero }]}>
 	<div class="hero__inner container">
 		<div class="hero__copy">
 			<h1 class="hero__title">{title}</h1>
+			{glance && <CaseStudyGlance {...glance} resultsId={resultsId} />}
 			<section class="hero__overview" aria-labelledby={overview.id}>
 				<h2 id={overview.id}>{overview.heading}</h2>
 				{overview.blocks.map((block) => block.kind === 'prose' && <Prose html={block.html} />)}

@@ -33,6 +33,7 @@ const [overview, ...sections] = parseCaseStudy(entry.id, entry.body ?? '');
 if (overview?.layout?.kind !== 'hero') {
 	throw new Error(`case-studies/${entry.id}/index.md: the first section needs the hero layout note`);
 }
+const resultsId = sections.find((section) => section.heading === 'Results')?.id;
 
 // Text on the accent band: white where it reaches AA, otherwise cream.
 const onAccent = accent
@@ -48,7 +49,7 @@ const ogImage = await getImage({ src: entry.data.cover, width: 1200, format: 'pn
 <BaseLayout title={`${title} | Ismail Azry`} description={summary} ogImage={ogImage.src}>
 	<div class="case-study" style={accentStyle}>
 		<article>
-			<CaseStudyHero entry={entry} overview={overview} />
+			<CaseStudyHero entry={entry} overview={overview} resultsId={resultsId} />
 			{sections.map((section) => <CaseStudySection section={section} />)}
 		</article>
 		<CaseStudyPager prev={prev} next={next} />

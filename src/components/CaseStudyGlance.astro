@@ -1,0 +1,56 @@
+---
+// The case study in three lines under the title: problem, what I did, outcome.
+// With a Results section, the outcome links down to it.
+interface Props {
+	problem: string;
+	did: string;
+	outcome: string;
+	/** Id of the Results heading, when the case study has one. */
+	resultsId?: string;
+}
+
+const { problem, did, outcome, resultsId } = Astro.props;
+---
+
+<dl class="glance">
+	<div>
+		<dt>Problem</dt>
+		<dd>{problem}</dd>
+	</div>
+	<div>
+		<dt>What I did</dt>
+		<dd>{did}</dd>
+	</div>
+	<div>
+		<dt>Outcome</dt>
+		<dd>
+			{outcome}
+			{resultsId && <a class="glance__results" href={`#${resultsId}`}>See results</a>}
+		</dd>
+	</div>
+</dl>
+
+<style>
+	.glance {
+		display: grid;
+		gap: var(--space-16);
+		padding-block-start: var(--space-16);
+		border-block-start: var(--border-width) solid color-mix(in srgb, currentColor 40%, transparent);
+	}
+
+	dt {
+		font-size: var(--text-14);
+	}
+
+	dd {
+		font-size: var(--text-18);
+		font-weight: var(--weight-semibold);
+		line-height: 1.4;
+	}
+
+	.glance__results {
+		margin-inline-start: var(--space-4);
+		font-weight: var(--weight-regular);
+		white-space: nowrap;
+	}
+</style>

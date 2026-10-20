@@ -38,7 +38,15 @@ const caseStudies = defineCollection({
 				.string()
 				.regex(/^#[0-9a-f]{6}$/i)
 				.optional(),
-			/** Draw the hero image in a device frame instead of the unframed cover mockup. */
+			/** One line each, shown under the title for a reader skimming to the outcome. */
+		glance: z
+			.object({
+				problem: z.string().min(1),
+				did: z.string().min(1),
+				outcome: z.string().min(1),
+			})
+			.optional(),
+		/** Draw the hero image in a device frame instead of the unframed cover mockup. */
 			hero: z
 				.object({
 					frame: z.enum(['browser', 'phone']),

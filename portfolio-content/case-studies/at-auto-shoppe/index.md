@@ -1,6 +1,10 @@
 ---
 title: "AT Auto Shoppe: catalogue and webstore design"
 summary: "A Shopify store for a 4x4 parts dealer, built around vehicle-first search so customers find parts that fit their make and model, and the sales team updates products without a developer."
+glance:
+  problem: "The old template catalogue had no way to search by vehicle."
+  did: "Designed and built the Shopify store around a make, model and year finder."
+  outcome: "Shipped a custom vehicle finder that replaced a paid make, model and year app."
 role: "Product Designer & Shopify Developer"
 team: "Solo, with the sales team"
 timeline: "Apr 2026 – Present"
