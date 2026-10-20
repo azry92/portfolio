@@ -6,7 +6,8 @@ import { work } from '../../data/site';
 
 const entries = (await getCollection('otherWorks')).sort((a, b) => a.data.order - b.data.order);
 const heading = work.more.find((item) => item.href === '/other-works')!.label;
-const description = `${heading} by Ismail Azry: ${entries.map((entry) => entry.data.title).join(' and ')}.`;
+const description =
+	'Smaller projects by Ismail Azry: an event website for Malaysia Bridal Fashion Week and an in-car theme for Proton head units.';
 ---
 
 <BaseLayout title={`${heading} | Ismail Azry`} description={description}>
