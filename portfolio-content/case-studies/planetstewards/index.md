@@ -76,10 +76,10 @@ With September Khu, I shaped the site's visual identity and layout: moodboards a
 ### Call for Papers
 <!-- layout: body left, three phones right -->
 The symposium needed a route from first visit to submitted abstract. The menu highlights the current event, the event page leads to the Call for Papers, and the abstract form follows the layout the PI asked for, with the button relabelled from APPLY to SUBMIT.
-![Call for Abstracts submission form on mobile](./images/page-call-for-abstract.png "2024 symposium page with registration details, captured from the Wayback Machine.")
+![2024 Earth-Space Symposium page announcing that registration is open](./images/page-symposium-registration.png "2024 symposium page with registration details, captured from the Wayback Machine.")
 ![Call for Papers announcement on mobile](./images/page-call-for-papers-news.png "Call for Papers banner for the Earth System Governance special issue.")
 ![Mobile menu with the symposium highlighted](./images/menu-mobile-symposium-highlight.png "Mobile menu with the Earth-Space Symposium highlighted.")
-*From left: abstract form, Call for Papers, mobile menu. 2024 pages captured from the Wayback Machine.*
+*From left: symposium registration page, Call for Papers, mobile menu. 2024 pages captured from the Wayback Machine.*
 ## Feedback and iteration
 <!-- layout: table, then logo revisions row, then Earth-Moon-Mars sequence -->
 | Feedback | Source | Response |
