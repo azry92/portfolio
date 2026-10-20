@@ -15,11 +15,11 @@ live_url: "https://atautoshoppe.com/"
 order: 1
 accent: "#2A72BA"
 cover: ./images/page-hero.png
-cover_alt: "AT Auto Shoppe homepage with a before-and-after slider showing a modified 4x4"
+cover_alt: "AT Auto Shoppe homepage with a before-and-after slider showing a modified 4X4"
 hero:
   frame: browser
   image: ./images/hero.png
-  alt: "AT Auto Shoppe homepage with the make, model and year vehicle finder above a before-and-after slider of a red 4x4"
+  alt: "AT Auto Shoppe homepage with the make, model and year vehicle finder above a before-and-after slider of a red 4×4"
 ---
 ## Overview
 <!-- layout: hero, title and overview left, browser mockup right -->
