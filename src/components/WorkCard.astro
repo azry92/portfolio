@@ -1,15 +1,16 @@
 ---
-// One case study on the home grid: cover, project name, and the summary on hover or focus.
-// On touch screens (no hover) there is no overlay; the card line, when set, sits under the name.
-import { Picture } from 'astro:assets';
+// One case study on the home grid: its cover, then the project name and card line as
+// plain text. Below 600px the card is a row (cover left, text right); from 600px the
+// text sits under the cover. The summary is the link's description, not shown.
 import type { CollectionEntry } from 'astro:content';
+import WorkCover from './WorkCover.astro';
 
 interface Props {
 	entry: CollectionEntry<'caseStudies'>;
 }
 
 const { entry } = Astro.props;
-const { title, summary, card_line, cover, cover_alt } = entry.data;
+const { title, summary, card_line } = entry.data;
 // The card shows the project name: the part of the title before the colon.
 const name = title.split(':')[0].trim();
 const id = `work-card-${entry.id}`;
@@ -21,123 +22,71 @@ const id = `work-card-${entry.id}`;
 	aria-labelledby={`${id}-title`}
 	aria-describedby={`${id}-summary`}
 >
-	<div class="work-card__media">
-		<Picture
-			src={cover}
-			alt={cover_alt}
-			formats={['avif', 'webp']}
-			widths={[240, 400, 600, 800]}
-			sizes="(min-width: 1200px) 240px, (min-width: 768px) 33vw, 50vw"
-		/>
+	<WorkCover entry={entry} />
+	<div class="work-card__text">
+		<h3 id={`${id}-title`} class="work-card__title">{name}</h3>
+		{card_line && <p class="work-card__line" aria-hidden="true">{card_line}</p>}
 	</div>
-	<h3 id={`${id}-title`} class="work-card__title">{name}</h3>
-	{card_line && <p class="work-card__line" aria-hidden="true">{card_line}</p>}
-	<p id={`${id}-summary`} class="work-card__summary">{summary}</p>
+	<p id={`${id}-summary`} class="visually-hidden">{summary}</p>
 </a>
 
 <style>
 	.work-card {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		/* Fill the grid row, so a name that wraps doesn't leave its neighbour shorter. */
-		block-size: 100%;
-		overflow: hidden;
-		background-color: var(--color-pattern-grey);
+		display: grid;
+		grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+		gap: var(--space-16);
+		align-items: center;
 		color: var(--color-text);
 		text-decoration: none;
 	}
 
-	/* 6:5 makes the cards tall enough that, from 1200px, they start level with the about
-	   paragraph while Other Works and Fun still end level with the footer line.
-	   overflow: hidden stops a cover with a different ratio stretching the box. */
-	.work-card__media {
-		overflow: hidden;
-		aspect-ratio: 6 / 5;
-	}
-
-	.work-card__media :global(picture) {
-		display: block;
-		block-size: 100%;
-	}
-
-	/* The covers put the device on the right, so crop from the left first. */
-	.work-card__media :global(img) {
-		inline-size: 100%;
-		block-size: 100%;
-		object-fit: cover;
-		object-position: 75% 50%;
-	}
-
-	.work-card__title {
+	.work-card__text {
 		display: grid;
-		flex: 1;
-		place-items: center;
-		padding: var(--space-8) var(--space-12);
-		font-family: var(--font-body);
-		font-size: var(--text-14);
-		font-weight: var(--weight-regular);
-		letter-spacing: 0.04em;
-		text-align: center;
-		text-transform: uppercase;
+		gap: var(--space-4);
+		min-inline-size: 0;
 	}
 
-	/* Hidden until hover or keyboard focus; always in the accessibility tree via aria-describedby. */
-	.work-card__summary {
-		position: absolute;
-		inset: 0;
-		display: flex;
-		align-items: flex-end;
-		padding: var(--space-12);
-		background-color: color-mix(in srgb, var(--color-surface-inverse) 90%, transparent);
-		color: var(--color-text-inverse);
+	/* 16px keeps the longest name, PLANETSTEWARDS, on one line at 360px. */
+	.work-card__title {
+		font-family: var(--font-display);
+		font-size: var(--text-16);
+		font-weight: var(--weight-semibold);
+		line-height: var(--leading-heading);
+		overflow-wrap: break-word;
+	}
+
+	.work-card__line {
+		color: var(--color-text-muted);
 		font-size: var(--text-14);
 		line-height: var(--leading-heading);
-		opacity: 0;
 	}
 
-	.work-card:hover .work-card__summary,
-	.work-card:focus-visible .work-card__summary {
-		opacity: 1;
-		transform: none;
-	}
-
-	/* The summary rises a little as it fades in, so it reads as part of the card. */
-	@media (prefers-reduced-motion: no-preference) {
-		.work-card__summary {
-			transform: translateY(var(--space-4));
-			transition:
-				opacity 150ms ease-out,
-				transform 150ms ease-out;
+	@media (min-width: 600px) {
+		.work-card {
+			grid-template-columns: minmax(0, 1fr);
+			gap: var(--space-12);
+			align-content: start;
 		}
 	}
 
-	/* The card line is for touch screens only. */
-	.work-card__line {
-		display: none;
+	@media (min-width: 768px) {
+		.work-card__title {
+			font-size: var(--text-18);
+		}
 	}
 
-	/* Touch: no overlay. The name and the card line sit under the cover, always visible.
-	   The summary stays hidden, as the card's accessible description. Without a card
-	   line the name alone fills the space, as on desktop. */
-	@media (hover: none) {
-		.work-card:has(.work-card__line) .work-card__title {
-			flex: none;
-			padding-block-end: 0;
+	/* Hover underlines the name and, where motion is welcome, lifts the frame. Touch
+	   screens get neither. */
+	@media (hover: hover) {
+		.work-card:hover .work-card__title {
+			text-decoration: underline;
+			text-underline-offset: 0.15em;
 		}
+	}
 
-		.work-card__line {
-			display: block;
-			flex: 1;
-			padding: var(--space-4) var(--space-12) var(--space-8);
-			font-size: var(--text-14);
-			line-height: var(--leading-heading);
-			text-align: center;
-		}
-
-		.work-card:hover .work-card__summary,
-		.work-card:focus-visible .work-card__summary {
-			opacity: 0;
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+		.work-card:hover :global(.work-cover > *) {
+			transform: translateY(calc(var(--space-4) * -1.5));
 		}
 	}
 </style>

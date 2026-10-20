@@ -1,0 +1,103 @@
+---
+// A case study's home card cover, drawn from its frontmatter: the project accent as the
+// backdrop, with the hero screenshot in its browser or phone frame rising from the bottom
+// edge. One recipe for every project. Without a `hero`, the cover image fills the tile.
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import BrowserFrame from './BrowserFrame.astro';
+import PhoneFrame from './PhoneFrame.astro';
+
+interface Props {
+	entry: CollectionEntry<'caseStudies'>;
+}
+
+const { entry } = Astro.props;
+const { accent, hero, cover, cover_alt } = entry.data;
+const kind = hero ? hero.frame : 'plain';
+---
+
+<div class:list={['work-cover', `work-cover--${kind}`]} style={accent ? `--cover-accent: ${accent}` : undefined}>
+	{
+		hero?.frame === 'browser' && (
+			<BrowserFrame
+				src={hero.image}
+				alt={hero.alt}
+				widths={[240, 400, 600, 800]}
+				sizes="(min-width: 1200px) 202px, (min-width: 768px) 28vw, (min-width: 600px) 42vw, 34vw"
+			/>
+		)
+	}
+	{
+		hero?.frame === 'phone' && (
+			<PhoneFrame
+				src={hero.image}
+				alt={hero.alt}
+				widths={[240, 360, 540]}
+				sizes="(min-width: 1200px) 110px, (min-width: 768px) 15vw, (min-width: 600px) 23vw, 18vw"
+			/>
+		)
+	}
+	{
+		!hero && (
+			<Picture
+				src={cover}
+				alt={cover_alt}
+				formats={['avif', 'webp']}
+				widths={[240, 400, 600, 800].filter((w) => w <= cover.width)}
+				sizes="(min-width: 1200px) 240px, (min-width: 768px) 33vw, (min-width: 600px) 50vw, 40vw"
+			/>
+		)
+	}
+</div>
+
+<style>
+	/* 6:5 keeps the cards, from 1200px, starting level with the about paragraph while
+	   Other Works and Fun still end level with the footer line. */
+	.work-cover {
+		display: grid;
+		align-content: end;
+		justify-items: center;
+		overflow: hidden;
+		aspect-ratio: 6 / 5;
+		border-radius: var(--radius-sm);
+		background-color: var(--cover-accent, var(--color-accent));
+	}
+
+	@media (min-width: 600px) {
+		.work-cover {
+			border-radius: var(--radius-lg);
+		}
+	}
+
+	/* Frames keep their full width; the tile edge clips them at the bottom only. */
+	.work-cover--browser :global(.browser) {
+		inline-size: 84%;
+		margin-block-end: -12%;
+		box-shadow: 0 12px 32px color-mix(in srgb, var(--color-surface-inverse) 28%, transparent);
+	}
+
+	.work-cover--phone :global(.phone) {
+		inline-size: 46%;
+		margin-block-end: -34%;
+	}
+
+	.work-cover--plain {
+		align-content: stretch;
+	}
+
+	.work-cover--plain :global(picture) {
+		display: block;
+	}
+
+	.work-cover--plain :global(img) {
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: cover;
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.work-cover > :global(*) {
+			transition: transform 200ms ease-out;
+		}
+	}
+</style>

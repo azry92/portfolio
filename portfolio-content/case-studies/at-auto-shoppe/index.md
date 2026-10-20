@@ -6,7 +6,7 @@ glance:
   did: "Built a Shopify store around a vehicle finder."
   outcome: "A custom finder replaced a paid app."
 role: "Product Designer & Shopify Developer"
-card_line: "shopify webstore"
+card_line: "Shopify webstore"
 team: "Solo, with the sales team"
 timeline: "Apr 2026 – Present"
 platform: "Shopify"
@@ -16,6 +16,10 @@ order: 1
 accent: "#2A72BA"
 cover: ./images/page-hero.png
 cover_alt: "AT Auto Shoppe homepage with a before-and-after slider showing a modified 4x4"
+hero:
+  frame: browser
+  image: ./images/hero.png
+  alt: "AT Auto Shoppe homepage with the make, model and year vehicle finder above a before-and-after slider of a red 4x4"
 ---
 ## Overview
 <!-- layout: hero, title and overview left, browser mockup right -->

@@ -1,5 +1,6 @@
 ---
-// A label-only link card, shorter than a case study card: Other Works and Fun on home.
+// A label-only link on home, set as an outline pill under the case study cards:
+// Other Works and Fun.
 interface Props {
 	label: string;
 	href: string;
@@ -12,33 +13,27 @@ const { label, href } = Astro.props;
 
 <style>
 	.short-card {
-		display: grid;
-		place-items: center;
-		/* About 40% of a case study card's height. */
-		block-size: var(--space-64);
-		background-color: var(--color-pattern-grey);
+		display: inline-flex;
+		align-items: center;
+		min-block-size: var(--space-48);
+		padding: var(--space-12) var(--space-24);
+		border: var(--border-width) solid currentColor;
+		border-radius: var(--radius-pill);
 		color: var(--color-text);
-		font-size: var(--text-14);
-		letter-spacing: 0.04em;
+		font-weight: var(--weight-semibold);
+		line-height: var(--leading-heading);
 		text-decoration: none;
-		text-transform: uppercase;
 	}
 
-	@media (min-width: 768px) {
-		.short-card {
-			block-size: calc(var(--space-64) + var(--space-12));
-		}
-	}
-
-	/* Touch screens keep a tapped card in its hover state, so the fill follows focus only. */
+	/* Touch screens keep a tapped link in its hover state, so the fill follows focus there. */
 	.short-card:focus-visible {
-		background-color: var(--color-accent);
+		background-color: var(--color-surface-inverse);
 		color: var(--color-text-inverse);
 	}
 
 	@media (hover: hover) {
 		.short-card:hover {
-			background-color: var(--color-accent);
+			background-color: var(--color-surface-inverse);
 			color: var(--color-text-inverse);
 		}
 	}

@@ -1,6 +1,6 @@
 ---
-// "See the Work": heading, CV link, case study cards in frontmatter order, then the
-// short Other Works and Fun cards. From 1200px it sits in the home grid's right column.
+// "See the Work": heading, CV link, case study cards in frontmatter order, then
+// Other Works and Fun as pills. From 1200px it sits in the home grid's right column.
 import { getCollection } from 'astro:content';
 import WorkCard from './WorkCard.astro';
 import ShortCard from './ShortCard.astro';
@@ -71,56 +71,86 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 		}
 	}
 
-	/* Mobile: one two-column grid. The header takes the first cell, the cards flow after it. */
+	/* Below 600px: header on top, then one row per case study, hairlines between, and
+	   Other Works and Fun as pills underneath. */
 	.work {
 		--work-gap: var(--space-12);
 
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: var(--work-gap);
 		padding-block-start: var(--space-64);
 	}
 
-	.work__header {
-		position: relative;
-		z-index: 1;
-		grid-column: 1;
-		grid-row: 1;
-		align-self: center;
-	}
-
-	/* The body's lists join the section grid directly; the div adds no semantics. */
 	.work__body {
-		display: contents;
-	}
-
-	.work__cases {
 		display: grid;
-		grid-template-columns: subgrid;
-		grid-template-rows: subgrid;
-		grid-column: 1 / -1;
-		grid-row: 1 / span 2;
-		gap: var(--work-gap);
-		/* Its first cell sits under the header, so let clicks fall through to it. */
-		pointer-events: none;
+		gap: var(--space-24);
+		margin-block-start: var(--space-24);
 	}
 
 	.work__cases > li {
-		pointer-events: auto;
+		padding-block: var(--space-16);
+		border-block-start: var(--border-width) solid var(--color-border);
 	}
 
-	.work__cases > li:first-child {
-		grid-column: 2;
+	.work__cases > li:last-child {
+		border-block-end: var(--border-width) solid var(--color-border);
 	}
 
 	.work__more {
-		display: grid;
-		grid-template-columns: subgrid;
-		grid-column: 1 / -1;
-		gap: var(--work-gap);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-12);
 	}
 
-	/* Tablet: header above, three case cards in a row, then a row of two. */
+	/* From 600px: one two-column grid. The header takes the first cell, the cards flow
+	   after it, and the pills run under them. */
+	@media (min-width: 600px) {
+		.work {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: var(--work-gap);
+		}
+
+		.work__header {
+			position: relative;
+			z-index: 1;
+			grid-column: 1;
+			grid-row: 1;
+			align-self: center;
+		}
+
+		/* The body's lists join the section grid directly; the div adds no semantics. */
+		.work__body {
+			display: contents;
+		}
+
+		.work__cases {
+			display: grid;
+			grid-template-columns: subgrid;
+			grid-template-rows: subgrid;
+			grid-column: 1 / -1;
+			grid-row: 1 / span 2;
+			gap: var(--work-gap);
+			/* Its first cell sits under the header, so let clicks fall through to it. */
+			pointer-events: none;
+		}
+
+		.work__cases > li,
+		.work__cases > li:last-child {
+			padding-block: 0;
+			border: 0;
+			pointer-events: auto;
+		}
+
+		.work__cases > li:first-child {
+			grid-column: 2;
+		}
+
+		.work__more {
+			grid-column: 1 / -1;
+			margin-block-start: var(--space-12);
+		}
+	}
+
+	/* Tablet: header above, three case cards in a row, then the pills. */
 	@media (min-width: 768px) {
 		.work {
 			--work-gap: var(--space-24);
@@ -150,13 +180,14 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 		}
 
 		.work__more {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
+			margin-block-start: 0;
 		}
 	}
 
 	/* Desktop: right column of the home grid, rows 2 to 4 (see index.astro). The heading
 	   shares the h1's baseline; the CV link hangs below it, and the cards start level
-	   with the about paragraph's first line. Other Works and Fun sit under cards 2 and 3. */
+	   with the about paragraph's first line. The pills sit at the bottom, level with the
+	   footer line in the left column. */
 	@media (min-width: 1200px) {
 		.work {
 			display: grid;
@@ -180,21 +211,10 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 			white-space: nowrap;
 		}
 
-		/* Cards at the top of rows 3–4, Other Works and Fun at the bottom, level with
-		   the footer line in the left column. */
 		.work__body {
 			grid-row: 2 / span 2;
 			align-content: space-between;
 			margin-block-start: var(--space-32);
-		}
-
-		.work__cases,
-		.work__more {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
-		}
-
-		.work__more > li:first-child {
-			grid-column: 2;
 		}
 	}
 </style>
