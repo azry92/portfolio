@@ -61,7 +61,7 @@ items:
     alt: Black-and-white ink illustration of a face, heavily textured
   - image: ./images/dont-worry.avif
     title: Dont Worry
-    group: Night Shift Exhibition 2024
+    group: Exhibition · Night Shift 2024
     alt: Red illustration with a small figure held up in the centre
   - image: ./images/composition-1.png
     title: Composition 1
