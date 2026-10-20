@@ -1,0 +1,79 @@
+---
+// Project facts under the case study title: role, team, timeline, platform, tools, live site.
+interface Props {
+	role: string;
+	team: string;
+	timeline: string;
+	platform: string;
+	tools: string[];
+	liveUrl?: string;
+}
+
+const { role, team, timeline, platform, tools, liveUrl } = Astro.props;
+const host = liveUrl ? new URL(liveUrl).host.replace(/^www\./, '') : undefined;
+---
+
+<dl class="meta">
+	<div>
+		<dt>Role</dt>
+		<dd>{role}</dd>
+	</div>
+	<div>
+		<dt>Team</dt>
+		<dd>{team}</dd>
+	</div>
+	<div>
+		<dt>Timeline</dt>
+		<dd>{timeline}</dd>
+	</div>
+	<div>
+		<dt>Platform</dt>
+		<dd>{platform}</dd>
+	</div>
+	<div>
+		<dt>Tools</dt>
+		<dd>
+			<ul class="meta__tools" role="list">
+				{tools.map((tool) => <li>{tool}</li>)}
+			</ul>
+		</dd>
+	</div>
+	{
+		liveUrl && (
+			<div>
+				<dt>Live site</dt>
+				<dd>
+					<a href={liveUrl}>{host}</a>
+				</dd>
+			</div>
+		)
+	}
+</dl>
+
+<style>
+	.meta {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--space-24) var(--space-32);
+	}
+
+	dt {
+		font-size: var(--text-14);
+	}
+
+	dd {
+		font-weight: var(--weight-semibold);
+		line-height: var(--leading-heading);
+	}
+
+	.meta__tools {
+		display: flex;
+		flex-wrap: wrap;
+		padding: 0;
+		list-style: none;
+	}
+
+	.meta__tools li:not(:last-child)::after {
+		content: ',\00a0';
+	}
+</style>

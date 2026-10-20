@@ -148,3 +148,18 @@ main[tabindex='-1']:focus {
 		scroll-behavior: auto !important;
 	}
 }
+
+/* Case study accent: the page sets --accent and picks --on-accent for contrast */
+.accent-band {
+	background-color: var(--accent, var(--color-surface-inverse));
+	color: var(--on-accent, var(--color-text-inverse));
+}
+
+.accent-band a,
+.accent-band a:hover {
+	color: inherit;
+}
+
+.accent-band :focus-visible {
+	outline-color: currentColor;
+}

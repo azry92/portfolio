@@ -1,0 +1,113 @@
+---
+// Full-bleed accent band: title, overview and project facts beside the cover.
+// The cover already carries its own mockup, so it goes in unframed.
+import { Picture } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import CaseStudyMeta from './CaseStudyMeta.astro';
+import Prose from './Prose.astro';
+import type { Section } from '../lib/case-study/parse';
+
+interface Props {
+	entry: CollectionEntry<'caseStudies'>;
+	overview: Section;
+}
+
+const { entry, overview } = Astro.props;
+const { title, role, team, timeline, platform, tools, live_url, cover, cover_alt } = entry.data;
+---
+
+<header class="hero accent-band">
+	<div class="hero__inner container">
+		<div class="hero__copy">
+			<h1 class="hero__title">{title}</h1>
+			<section class="hero__overview" aria-labelledby={overview.id}>
+				<h2 id={overview.id}>{overview.heading}</h2>
+				{overview.blocks.map((block) => block.kind === 'prose' && <Prose html={block.html} />)}
+			</section>
+			<CaseStudyMeta role={role} team={team} timeline={timeline} platform={platform} tools={tools} liveUrl={live_url} />
+		</div>
+		<div class="hero__cover">
+			<Picture
+				src={cover}
+				alt={cover_alt}
+				formats={['avif', 'webp']}
+				widths={[480, 720, 960, 1440, 1920].filter((w) => w <= cover.width)}
+				sizes="(min-width: 1200px) 60vw, 100vw"
+				loading="eager"
+				fetchpriority="high"
+			/>
+		</div>
+	</div>
+</header>
+
+<style>
+	.hero {
+		overflow: hidden;
+	}
+
+	.hero__inner {
+		display: grid;
+		gap: var(--space-32);
+		padding-block-start: var(--space-48);
+	}
+
+	.hero__copy {
+		display: grid;
+		gap: var(--space-32);
+		align-content: start;
+	}
+
+	.hero__title {
+		font-size: var(--text-display);
+	}
+
+	.hero__overview {
+		display: grid;
+		gap: var(--space-8);
+	}
+
+	.hero__overview h2 {
+		font-size: var(--text-24);
+	}
+
+	/* Bleed the cover to the screen edges on small screens. Its backdrop is close to,
+	   not exactly, the accent, so the top and inner edges fade into the band. */
+	.hero__cover {
+		margin-inline: calc(var(--gutter) * -1);
+	}
+
+	.hero__cover :global(picture) {
+		mask-image: linear-gradient(to bottom, transparent, #000 20%);
+	}
+
+	.hero__cover :global(img) {
+		inline-size: 100%;
+		block-size: auto;
+	}
+
+	@media (min-width: 1200px) {
+		.hero__inner {
+			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+			gap: var(--space-48);
+			padding-block-start: var(--space-64);
+		}
+
+		.hero__copy {
+			padding-block-end: var(--space-64);
+		}
+
+		/* Fill the band's height and run out to the right edge of the viewport. */
+		.hero__cover {
+			display: flex;
+			align-items: flex-end;
+			margin-block-start: calc(var(--space-64) * -1);
+			margin-inline: 0 calc((100vw - min(100vw, var(--content-max) + 2 * var(--gutter))) / -2 - var(--gutter));
+		}
+
+		.hero__cover :global(picture) {
+			inline-size: 100%;
+			mask-image: linear-gradient(to right, transparent, #000 25%), linear-gradient(to bottom, transparent, #000 25%);
+			mask-composite: intersect;
+		}
+	}
+</style>

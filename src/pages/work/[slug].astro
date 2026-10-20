@@ -1,7 +1,9 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudyHero from '../../components/CaseStudyHero.astro';
 import Prose from '../../components/Prose.astro';
+import { readableOn } from '../../lib/case-study/contrast';
 import { parseCaseStudy } from '../../lib/case-study/parse';
 
 export async function getStaticPaths() {
@@ -17,13 +19,25 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { title, summary } = entry.data;
-const sections = parseCaseStudy(entry.id, entry.body ?? '');
+const { title, summary, accent } = entry.data;
+const [overview, ...sections] = parseCaseStudy(entry.id, entry.body ?? '');
+if (overview?.layout?.kind !== 'hero') {
+	throw new Error(`case-studies/${entry.id}/index.md: the first section needs the hero layout note`);
+}
+
+// Text on the accent band: cream where it reaches AA, otherwise white.
+const onAccent = accent
+	? readableOn(accent, [
+			['--color-text-inverse', '#f0eee9'],
+			['--color-surface', '#ffffff'],
+		])
+	: undefined;
+const accentStyle = accent ? `--accent: ${accent}; --on-accent: var(${onAccent})` : undefined;
 ---
 
 <BaseLayout title={`${title} | Ismail Azry`} description={summary}>
-	<article class="case-study">
-		<h1>{title}</h1>
+	<article class="case-study" style={accentStyle}>
+		<CaseStudyHero entry={entry} overview={overview} />
 		{
 			sections.map((section) => (
 				<section aria-labelledby={section.id}>

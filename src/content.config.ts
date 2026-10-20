@@ -31,6 +31,11 @@ const caseStudies = defineCollection({
 	schema: (context) =>
 		workBase(context).extend({
 			role: z.string(),
+			/** Brand colour for the hero, stage band and pager. The site palette is used without it. */
+			accent: z
+				.string()
+				.regex(/^#[0-9a-f]{6}$/i)
+				.optional(),
 		}),
 });
 
