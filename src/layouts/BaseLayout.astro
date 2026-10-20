@@ -46,8 +46,10 @@ const ogImageUrl = new URL(ogImage.src, Astro.site).href;
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+		<!-- The PNG is the fallback; browsers that take SVG icons use the one after it. /favicon.ico is for crawlers that ask for it directly. -->
+		<link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" sizes="32x32" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<meta name="theme-color" content="#f0eee9" />
 		<Font cssVariable="--font-sora" preload />
 		<Font cssVariable="--font-inter" preload />
