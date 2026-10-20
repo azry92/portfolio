@@ -12,6 +12,10 @@ order: 2
 accent: "#003399"
 cover: ./images/page-hero-phone.png
 cover_alt: "PLANETSTEWARDS homepage on mobile showing the project's mission statement"
+hero:
+  frame: browser
+  image: ./images/home-page-hero.png
+  alt: "PLANETSTEWARDS homepage hero on desktop"
 ---
 ## Overview
 <!-- layout: hero, title and overview left, browser mockup right -->
