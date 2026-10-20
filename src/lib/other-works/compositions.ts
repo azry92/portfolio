@@ -22,8 +22,8 @@ export type SectionLayout =
 export interface Composition {
 	/** `inverse` sets the whole article on the dark surface. */
 	theme: 'light' | 'inverse';
-	/** How the overview's visual is shown: the cover photo as it is, or the cover in a browser frame over a black band. */
-	hero: 'photo' | 'browser';
+	/** How the overview's visual is shown: the cover photo beside the copy, or the cover mockup under it on a black band. */
+	hero: 'photo' | 'stage';
 	sections: Record<string, SectionLayout>;
 }
 
@@ -44,6 +44,22 @@ export const compositions: Record<string, Composition> = {
 			wallpaper: { kind: 'sheet', frame: 'none', bleed: true },
 			'icon-set': { kind: 'sheet', frame: 'none' },
 			'best-theme': { kind: 'aside', frames: ['none'], span: 6 },
+			reflection: { kind: 'text' },
+		},
+	},
+	mbfw: {
+		theme: 'light',
+		hero: 'stage',
+		sections: {
+			'one-identity-across-every-touchpoint': { kind: 'bento' },
+			// Wireframes stay side by side on phones: stacked, the two tall pages would run four screens.
+			'wireframes-and-visual-system': { kind: 'aside', frames: ['none', 'none'], span: 7 },
+			'answering-the-questions-before-they-re-asked': { kind: 'row', frames: ['phone', 'phone', 'browser'], spans: [3, 3, 6] },
+			'registration-that-matched-capacity': { kind: 'row', frames: ['browser', 'browser'], spans: [8, 4] },
+			'23-designer-pages-one-template': { kind: 'aside', frames: ['browser', 'none'], span: 5, lead: true },
+			// These screenshots carry their own browser chrome.
+			'built-to-be-reused-mbfw-2-0': { kind: 'row', frames: ['none', 'none'], spans: [6, 6] },
+			'reaching-brides-where-they-already-shop': { kind: 'aside', frames: ['phone'], span: 4 },
 			reflection: { kind: 'text' },
 		},
 	},

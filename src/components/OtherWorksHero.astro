@@ -1,12 +1,12 @@
 ---
 // An Other Works page opens with its title, the project label, the overview and one
 // row of project facts, beside or above the cover. `photo` sets the cover as it is,
-// running out to the right edge from 1200px (Atlas). `browser` puts it in a browser
-// frame that crosses into a black band, with the live site as a pill (MBFW).
+// running out to the right edge from 1200px (Atlas). `stage` sets the cover, a mockup
+// with its own browser chrome, across the top of a black band, with the live site as
+// a pill (MBFW).
 // Below 600px the cover sits under the title, so the first screen shows the work.
 import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
-import BrowserFrame from './BrowserFrame.astro';
 import CaseStudyMeta from './CaseStudyMeta.astro';
 import Prose from './Prose.astro';
 import type { Section } from '../lib/case-study/parse';
@@ -14,7 +14,7 @@ import type { Section } from '../lib/case-study/parse';
 interface Props {
 	entry: CollectionEntry<'otherWorks'>;
 	overview: Section;
-	variant: 'photo' | 'browser';
+	variant: 'photo' | 'stage';
 }
 
 const { entry, overview, variant } = Astro.props;
@@ -42,10 +42,12 @@ const { title, client, project, role, team, timeline, platform, tools, live_url,
 				</div>
 			) : (
 				<div class="ow-hero__media ow-hero__stage">
-					<BrowserFrame
+					<Picture
+						class="ow-hero__mockup"
 						src={cover}
 						alt={cover_alt}
-						widths={[480, 720, 960, 1440, 1920]}
+						formats={['avif', 'webp']}
+						widths={[480, 720, 960, 1440, 1920].filter((w) => w <= cover.width)}
 						sizes="(min-width: 1248px) 1000px, (min-width: 1200px) 83vw, 100vw"
 						loading="eager"
 						fetchpriority="high"
@@ -137,12 +139,18 @@ const { title, client, project, role, team, timeline, platform, tools, live_url,
 		block-size: auto;
 	}
 
-	/* Browser: a black band runs behind the frame's lower half and on under it, out to
+	/* Stage: a black band runs behind the mockup's lower half and on under it, out to
 	   the screen edges (html clips the overflow). */
 	.ow-hero__stage {
 		position: relative;
 		isolation: isolate;
 		padding-block-end: var(--space-32);
+	}
+
+	.ow-hero__stage :global(.ow-hero__mockup) {
+		inline-size: 100%;
+		block-size: auto;
+		border-radius: var(--radius-sm);
 	}
 
 	.ow-hero__stage::before {
@@ -154,8 +162,17 @@ const { title, client, project, role, team, timeline, platform, tools, live_url,
 		background-color: var(--color-surface-inverse);
 	}
 
-	/* Below 600px the pill spans the column, like the home buttons. */
+	/* Below 600px the mockup runs to the screen edges and the pill spans the column,
+	   like the home buttons. */
 	@media (max-width: 599.98px) {
+		.ow-hero__stage {
+			margin-inline: calc(var(--gutter) * -1);
+		}
+
+		.ow-hero__stage :global(.ow-hero__mockup) {
+			border-radius: 0;
+		}
+
 		.ow-hero__live .pill-outline {
 			display: flex;
 			justify-content: center;
@@ -184,22 +201,22 @@ const { title, client, project, role, team, timeline, platform, tools, live_url,
 			mask-composite: intersect;
 		}
 
-		/* Browser: title and overview across the top, the facts under them, then the frame over the band. */
-		.ow-hero--browser .ow-hero__inner {
+		/* Stage: title and overview across the top, the facts under them, then the mockup over the band. */
+		.ow-hero--stage .ow-hero__inner {
 			grid-template-areas: 'lead' 'overview' 'meta' 'media';
 			padding-block-end: 0;
 		}
 
-		.ow-hero--browser .ow-hero__overview {
+		.ow-hero--stage .ow-hero__overview {
 			grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
 			column-gap: var(--space-48);
 		}
 
-		.ow-hero--browser .ow-hero__overview > :not(.ow-hero__live) {
+		.ow-hero--stage .ow-hero__overview > :not(.ow-hero__live) {
 			grid-column: 1;
 		}
 
-		.ow-hero--browser .ow-hero__live {
+		.ow-hero--stage .ow-hero__live {
 			grid-column: 2;
 			grid-row: 1 / span 2;
 			align-self: end;
@@ -210,10 +227,10 @@ const { title, client, project, role, team, timeline, platform, tools, live_url,
 			padding-block: var(--space-16) var(--space-64);
 		}
 
-		.ow-hero__stage :global(.browser) {
+		.ow-hero__stage :global(.ow-hero__mockup) {
 			inline-size: min(100%, 62.5rem);
 			margin-inline: auto;
-			box-shadow: 0 1.5rem 3rem color-mix(in srgb, var(--color-surface-inverse) 30%, transparent);
+			border-radius: var(--radius-lg);
 		}
 	}
 </style>

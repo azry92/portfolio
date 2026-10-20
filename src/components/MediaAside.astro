@@ -1,7 +1,8 @@
 ---
 // Copy and subsections in one column, figures in the other (left from 768px). The
-// figures sit side by side at every width. With `lead`, only the first figure takes
-// the media column and the rest follow the copy; one caption still covers them all.
+// figures sit side by side at every width. On small screens they follow the copy and
+// come before the subsections, as in the Markdown. With `lead`, only the first figure
+// takes the media column and the rest follow the copy; one caption still covers them all.
 import CaseStudyBlocks from './CaseStudyBlocks.astro';
 import Figure from './Figure.astro';
 import type { Frame } from '../lib/case-study/layouts';
@@ -35,16 +36,6 @@ const Tag = caption ? 'figure' : 'div';
 <div class:list={['aside', { 'aside--lead': lead }]} style={`--media: ${span}fr; --text: ${12 - span}fr; --across: ${across}`}>
 	<div class="aside__text">
 		<CaseStudyBlocks blocks={blocks} />
-		{
-			subsections.map((sub) => (
-				<section class="aside__subsection" aria-labelledby={sub.id}>
-					<h3 id={sub.id} class="aside__subtitle">
-						{sub.heading}
-					</h3>
-					<CaseStudyBlocks blocks={sub.blocks} />
-				</section>
-			))
-		}
 	</div>
 	<Tag class="aside__media">
 		{
@@ -65,13 +56,28 @@ const Tag = caption ? 'figure' : 'div';
 		}
 		{caption && <figcaption class="aside__caption" set:html={caption} />}
 	</Tag>
+	{
+		subsections.length > 0 && (
+			<div class="aside__subsections">
+				{subsections.map((sub) => (
+					<section class="aside__subsection" aria-labelledby={sub.id}>
+						<h3 id={sub.id} class="aside__subtitle">
+							{sub.heading}
+						</h3>
+						<CaseStudyBlocks blocks={sub.blocks} />
+					</section>
+				))}
+			</div>
+		)
+	}
 </div>
 
 <style>
 	.aside,
 	.aside__text,
 	.aside__media,
-	.aside__rest {
+	.aside__rest,
+	.aside__subsections {
 		display: grid;
 		gap: var(--space-24);
 		align-content: start;
@@ -112,7 +118,8 @@ const Tag = caption ? 'figure' : 'div';
 	@media (min-width: 768px) {
 		.aside {
 			grid-template-columns: minmax(0, var(--media)) minmax(0, var(--text));
-			gap: var(--space-48);
+			grid-template-rows: auto 1fr;
+			gap: var(--space-24) var(--space-48);
 			align-items: start;
 		}
 
@@ -121,9 +128,14 @@ const Tag = caption ? 'figure' : 'div';
 			grid-row: 1;
 		}
 
+		.aside__subsections {
+			grid-column: 2;
+			grid-row: 2;
+		}
+
 		.aside__media {
 			grid-column: 1;
-			grid-row: 1;
+			grid-row: 1 / -1;
 		}
 
 		.aside__figures {

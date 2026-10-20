@@ -1,0 +1,134 @@
+---
+// Four touchpoints of one identity as a bento of dark tiles: the second image tall on
+// the left, the first wide across the top right, the last two under it. Each image is
+// contained in its tile, never cropped. Below 600px the tiles become a snap row.
+// One caption covers the set.
+import { Picture } from 'astro:assets';
+import ZoomLink from './ZoomLink.astro';
+import type { Figure } from '../lib/case-study/parse';
+
+interface Props {
+	items: Figure[];
+	caption?: string;
+}
+
+const { items, caption } = Astro.props;
+if (items.length !== 4) throw new Error(`IdentityBento: needs four images, got ${items.length}`);
+
+const areas = ['wide', 'tall', 'left', 'right'];
+const sizes = ['(min-width: 1248px) 800px, (min-width: 600px) 66vw, 84vw', '(min-width: 1248px) 400px, (min-width: 600px) 33vw, 84vw'];
+const Tag = caption ? 'figure' : 'div';
+---
+
+<Tag class="bento">
+	<ul class="bento__tiles snap-row" role="list">
+		{
+			items.map(({ image, alt }, i) => (
+				<li class:list={['bento__tile', `bento__tile--${areas[i]}`]}>
+					<ZoomLink image={image}>
+						<Picture
+							class="bento__image"
+							src={image}
+							alt={alt}
+							formats={['avif', 'webp']}
+							widths={[400, 800, 1200].filter((w) => w <= image.width)}
+							sizes={sizes[i === 0 ? 0 : 1]}
+						/>
+					</ZoomLink>
+				</li>
+			))
+		}
+	</ul>
+	{caption && <figcaption class="bento__caption" set:html={caption} />}
+</Tag>
+
+<style>
+	.bento {
+		display: grid;
+		gap: var(--space-16);
+	}
+
+	.bento__tiles {
+		display: grid;
+		gap: var(--space-16);
+		padding: 0;
+		list-style: none;
+	}
+
+	/* One row the tile's own height, so the image can fill it and be contained. */
+	.bento__tile {
+		display: grid;
+		grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+		block-size: 18rem;
+		padding: var(--space-24);
+		border-radius: var(--radius-sm);
+		background-color: var(--color-surface-inverse);
+	}
+
+	.bento__tile :global(.zoom) {
+		display: grid;
+		grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+		min-block-size: 0;
+	}
+
+	/* Not a grid: its <source> elements would take rows. */
+	.bento__tile :global(picture) {
+		display: block;
+		block-size: 100%;
+	}
+
+	.bento__tile :global(.bento__image) {
+		inline-size: 100%;
+		block-size: 100%;
+		object-fit: contain;
+	}
+
+	.bento__caption {
+		color: var(--color-text-muted);
+		font-size: var(--text-14);
+	}
+
+	/* In a snap row the tiles follow the Markdown order. */
+	@media (max-width: 599.98px) {
+		.bento__tiles.snap-row {
+			grid-template-columns: none;
+		}
+	}
+
+	@media (min-width: 600px) {
+		.bento__tiles {
+			grid-template-areas: 'tall wide wide' 'tall left right';
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-auto-rows: clamp(13rem, 26vw, 20rem);
+			gap: var(--space-24);
+		}
+
+		.bento__tile {
+			block-size: auto;
+			min-block-size: 0;
+			border-radius: var(--radius-lg);
+		}
+
+		.bento__tile--wide {
+			grid-area: wide;
+		}
+
+		.bento__tile--tall {
+			grid-area: tall;
+		}
+
+		.bento__tile--left {
+			grid-area: left;
+		}
+
+		.bento__tile--right {
+			grid-area: right;
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.bento__tile {
+			padding: var(--space-32);
+		}
+	}
+</style>

@@ -2,6 +2,8 @@
 // One ## section of an Other Works page, laid out by its entry in compositions.ts.
 // Each layout checks the section has the images it needs and stops the build if not.
 import CaseStudyBlocks from './CaseStudyBlocks.astro';
+import DeviceRow from './DeviceRow.astro';
+import IdentityBento from './IdentityBento.astro';
 import LabelledScreens from './LabelledScreens.astro';
 import MediaAside from './MediaAside.astro';
 import ScreenSheet from './ScreenSheet.astro';
@@ -31,6 +33,8 @@ if (layout.kind !== 'text' && layout.kind !== 'columns' && runs.length !== 1) fa
 if (layout.kind === 'sheet' && (count !== 1 || !run.items[0].caption)) fail('needs one captioned image');
 if (layout.kind === 'labelled' && count !== layout.labels.length) fail(`needs ${layout.labels.length} images`);
 if (layout.kind === 'aside' && count !== layout.frames.length) fail(`needs ${layout.frames.length} images`);
+if (layout.kind === 'row' && count !== layout.frames.length) fail(`needs ${layout.frames.length} images`);
+if (layout.kind === 'bento' && count !== 4) fail('needs four images');
 if (section.subsections.length && layout.kind !== 'columns' && layout.kind !== 'aside') fail('has no place for ### subsections');
 ---
 
@@ -62,8 +66,10 @@ if (section.subsections.length && layout.kind !== 'columns' && layout.kind !== '
 					<CaseStudyBlocks blocks={[block]} />
 				) : layout.kind === 'labelled' ? (
 					<LabelledScreens items={block.items} labels={layout.labels} frame={layout.frame} caption={block.caption} />
+				) : layout.kind === 'row' ? (
+					<DeviceRow items={block.items} frames={layout.frames} spans={layout.spans} caption={block.caption} />
 				) : (
-					<CaseStudyBlocks blocks={[block]} />
+					<IdentityBento items={block.items} caption={block.caption} />
 				),
 			)
 		)

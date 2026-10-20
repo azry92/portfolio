@@ -1,0 +1,88 @@
+---
+// One row of screenshots, each in its own frame, sized by its share of 12 columns
+// and centred on one line, so phones and a browser can sit together. One caption
+// covers the row. Below 600px a row of three or more becomes a snap row (phones
+// narrower than browsers); a row of two stacks.
+import Figure from './Figure.astro';
+import type { Frame } from '../lib/case-study/layouts';
+import type { Figure as FigureData } from '../lib/case-study/parse';
+
+interface Props {
+	items: FigureData[];
+	frames: Frame[];
+	spans: number[];
+	caption?: string;
+}
+
+const { items, frames, spans, caption } = Astro.props;
+if (items.length !== frames.length || items.length !== spans.length) {
+	throw new Error(`DeviceRow: ${items.length} images, ${frames.length} frames and ${spans.length} spans`);
+}
+
+const snap = items.length >= 3;
+const sizeFor = (frame: Frame, span: number) =>
+	frame === 'phone'
+		? '240px'
+		: `(min-width: 1248px) ${Math.round((1200 * span) / 12)}px, (min-width: 600px) ${Math.round((100 * span) / 12)}vw, ${snap ? 80 : 100}vw`;
+const Tag = caption ? 'figure' : 'div';
+---
+
+<Tag class="device-row">
+	<div class:list={['device-row__items', { 'snap-row': snap }]} style={`--columns: ${spans.map((span) => `minmax(0, ${span}fr)`).join(' ')}`}>
+		{items.map((figure, i) => <Figure figure={figure} frame={frames[i]} sizes={sizeFor(frames[i], spans[i])} />)}
+	</div>
+	{caption && <figcaption class="device-row__caption" set:html={caption} />}
+</Tag>
+
+<style>
+	.device-row {
+		display: grid;
+		gap: var(--space-16);
+	}
+
+	.device-row__items {
+		display: grid;
+		gap: var(--space-32);
+	}
+
+	/* A phone keeps a phone's width, centred in its column. */
+	.device-row__items > :global(.figure--phone) {
+		justify-self: center;
+		inline-size: min(100%, 15rem);
+	}
+
+	.device-row__caption {
+		color: var(--color-text-muted);
+		font-size: var(--text-14);
+	}
+
+	@media (max-width: 599.98px) {
+		.device-row__items.snap-row {
+			grid-template-columns: none;
+			grid-auto-columns: auto;
+			gap: var(--space-16);
+			align-items: center;
+		}
+
+		.device-row__items.snap-row > :global(.figure) {
+			inline-size: 80vw;
+		}
+
+		.device-row__items.snap-row > :global(.figure--phone) {
+			inline-size: 40vw;
+		}
+	}
+
+	@media (min-width: 600px) {
+		.device-row__items {
+			grid-template-columns: var(--columns);
+			gap: var(--space-48);
+			align-items: center;
+		}
+
+		/* Without phones the screenshots line up at the top. */
+		.device-row__items:not(:has(.figure--phone)) {
+			align-items: start;
+		}
+	}
+</style>
