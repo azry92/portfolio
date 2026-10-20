@@ -3,14 +3,14 @@ title: "PLANETSTEWARDS: identity and website design"
 summary: "A visual identity and website for an academic space-governance project, redesigned to put human activity in orbit, on the Moon and on Mars at the centre of the story while staying credible to academic partners."
 role: "Product Designer"
 client: "Utrecht University"
-team: "With September Khu, Project Coordinator"
+team: "September Khu, Project Coordinator"
 timeline: "Apr 2024 – Jul 2024"
 platform: "Wix"
 tools: ["Wix", "Adobe Illustrator", "CapCut"]
 live_url: "https://www.planetstewards.eu/"
 order: 2
 accent: "#003399"
-cover: ./images/page-hero-phone.png
+cover: ./images/hero-case-study.png
 cover_alt: "PLANETSTEWARDS homepage on mobile showing the project's mission statement"
 hero:
   frame: browser
@@ -59,7 +59,7 @@ The shipped navigation expanded these pages and added Publications, News and an 
 ## The Solution
 <!-- layout: one headline, body below, desktop view next to body and a row of phones under -->
 With September Khu, I shaped the site's visual identity and layout: moodboards and logo concepts, a blue-and-yellow palette with Roboto, and a structure built around the project, team, publications and symposium. I worked on visual hierarchy, image placement and icon styling, and produced the space-debris motion piece.
-![PLANETSTEWARDS homepage hero on desktop](./images/home-page-hero.png)
+![PLANETSTEWARDS homepage hero on desktop](./images/events-page.png)
 *Homepage hero.*
 ![2024 Earth-Space Symposium event page](./images/page-event-2024-symposium.png)
 *2024 Earth-Space Symposium.*
@@ -109,8 +109,8 @@ I designed three content templates: publication entry, news entry and event page
 *Publication entries.*
 ![News and activities page](./images/page-news-activities.png)
 *News entries.*
-![Blog post with SEO title and description](./images/page-news-blog.png)
-*Event page*
+![Embassy of The Moon page entry](./images/page-news-blog.png)
+*Page entry.*
 ## Results
 <!-- layout: stat cards, first card largest -->
 Jun 2024 – Jun 2025 · Wix Analytics
