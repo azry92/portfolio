@@ -57,8 +57,8 @@ The schedule card listed day one's programme hour by hour. When opening-day seat
 <!-- layout: brand page grid, then search result screenshot -->
 Each designer got a page from the same template (name, collection imagery, profile), so adding a brand during the run-up was a content task rather than a design task. The site ranked first on Google for "bridal fashion week" in Malaysia (checked September 2026).
 ![Designer pages built from one template](./images/brands-pages.png)
-![Google search result showing the MBFW site ranked first for bridal fashion week in Malaysia](./images/seo-google-search-mbfw.png)
-*Designer pages, and the Google result for "bridal fashion week", September 2026.*
+![Invited brands page on mobile, listing the designers with a link to each page.](./images/mobile-view-invited-brands.png)
+*The invited brands list and one designer page.*
 ## Built to be reused: MBFW 2.0
 <!-- layout: two images side by side -->
 For the 2026 edition the site was restructured into MBFW 1.0 and 2.0 sections. The design system, About copy and visual language carried over unchanged, and the 2025 photography became the "Moments of MBFW 1.0" gallery.
