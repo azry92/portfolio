@@ -33,7 +33,7 @@ export const ogDefault: OgImage = {
 	src: '/og.png',
 	width: 1200,
 	height: 630,
-	alt: 'Ismail Azry, Product Designer (Web & E-commerce), with the IA glyph on a deep red gradient',
+	alt: 'Ismail Azry, Product Designer, Web & E-commerce, with the IA glyph on a red background',
 };
 
 export const nav: NavItem[] = [
