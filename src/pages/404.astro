@@ -1,0 +1,49 @@
+---
+// Vercel serves dist/404.html, with a 404 status, for any path the static build doesn't have.
+import { getEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import RandomFunPiece from '../components/RandomFunPiece.astro';
+
+const fun = await getEntry('fun', 'index');
+if (!fun) throw new Error('portfolio-content/fun/index.md is missing');
+---
+
+<BaseLayout title="Page not found | Ismail Azry" noindex showBackToTop={false}>
+	<div class="not-found container">
+		<header class="not-found__header">
+			<h1 class="not-found__title">Page not found</h1>
+			<p>That link doesn’t go anywhere.</p>
+			<p><a class="pill-outline pill-outline--accent" href="/#work">Work</a></p>
+		</header>
+		<RandomFunPiece items={fun.data.items} />
+	</div>
+</BaseLayout>
+
+<style>
+	.not-found {
+		display: grid;
+		gap: var(--space-32);
+		padding-block: var(--space-48) var(--space-32);
+	}
+
+	.not-found__header {
+		display: grid;
+		gap: var(--space-12);
+		justify-items: start;
+	}
+
+	.not-found__title {
+		font-size: var(--text-display);
+	}
+
+	.not-found__header p:last-child {
+		margin-block-start: var(--space-12);
+	}
+
+	@media (min-width: 600px) {
+		.not-found {
+			gap: var(--space-48);
+			padding-block-start: var(--space-64);
+		}
+	}
+</style>

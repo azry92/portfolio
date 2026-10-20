@@ -1,0 +1,104 @@
+---
+// One piece from the Fun page, linked to /fun. The output is static, so every piece is in
+// the markup, hidden but the first; an inline bootstrap shows a random one before first
+// paint. Hidden pictures aren't rendered, so only the shown piece loads.
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+	items: { image: ImageMetadata; title: string; group: string; alt: string }[];
+}
+
+const { items } = Astro.props;
+
+// The piece is at most 480px (or half the viewport) tall, inside the 16px gutters.
+const pieces = items.map((item) => {
+	const ratio = Number((item.image.width / item.image.height).toFixed(4));
+	const widths = [320, 480, 720, 960].filter((w) => w <= item.image.width);
+	return {
+		...item,
+		ratio,
+		widths: widths.length ? widths : [item.image.width],
+		sizes: `min(calc(min(480px, 50vh) * ${ratio}), calc(100vw - 32px), 1200px)`,
+	};
+});
+---
+
+<ul class="fun-piece" role="list" data-fun-piece>
+	{
+		pieces.map((piece, index) => (
+			<li hidden={index > 0} style={`--ratio: ${piece.ratio}`}>
+				<a class="fun-piece__link" href="/fun">
+					<figure class="fun-piece__figure">
+						<Picture
+							src={piece.image}
+							alt={piece.alt}
+							formats={['avif', 'webp']}
+							widths={piece.widths}
+							sizes={piece.sizes}
+							loading="lazy"
+						/>
+						<figcaption class="fun-piece__caption">
+							<span class="fun-piece__title">{piece.title}</span>
+							<span class="visually-hidden">, </span>
+							<span class="fun-piece__group">{piece.group}</span>
+						</figcaption>
+					</figure>
+				</a>
+			</li>
+		))
+	}
+</ul>
+<script is:inline>
+	(() => {
+		const items = document.querySelectorAll('[data-fun-piece] > li');
+		const item = items[Math.floor(Math.random() * items.length)];
+		items.forEach((other) => (other.hidden = other !== item));
+		item.querySelector('img').loading = 'eager';
+	})();
+</script>
+
+<style>
+	.fun-piece {
+		padding: 0;
+		list-style: none;
+	}
+
+	.fun-piece__link {
+		display: inline-block;
+		color: var(--color-text);
+		text-decoration: none;
+	}
+
+	.fun-piece__figure {
+		display: grid;
+		gap: var(--space-16);
+	}
+
+	.fun-piece :global(img) {
+		inline-size: min(100%, calc(min(480px, 50vh) * var(--ratio)));
+		block-size: auto;
+	}
+
+	.fun-piece__caption {
+		display: grid;
+		gap: var(--space-4);
+	}
+
+	.fun-piece__title {
+		font-family: var(--font-display);
+		font-size: var(--text-18);
+		font-weight: var(--weight-semibold);
+		line-height: var(--leading-heading);
+	}
+
+	.fun-piece__link:hover .fun-piece__title {
+		color: var(--color-accent);
+		text-decoration: underline;
+	}
+
+	.fun-piece__group {
+		color: var(--color-text-muted);
+		font-size: var(--text-14);
+	}
+</style>

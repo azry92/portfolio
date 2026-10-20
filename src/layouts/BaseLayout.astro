@@ -16,6 +16,10 @@ interface Props {
 	/** Set false when the page lays out its own main and footer (the home grid). */
 	wrapMain?: boolean;
 	bodyClass?: string;
+	/** Keep the page out of search results (the 404); it also drops the canonical URL. */
+	noindex?: boolean;
+	/** Set false on a page too short for Back to top to have a purpose (the 404). */
+	showBackToTop?: boolean;
 }
 
 const {
@@ -25,6 +29,8 @@ const {
 	showHeader = true,
 	wrapMain = true,
 	bodyClass,
+	noindex = false,
+	showBackToTop = true,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -38,7 +44,7 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>{title}</title>
 		<meta name="description" content={description} />
-		<link rel="canonical" href={canonical} />
+		{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" sizes="32x32" />
 		<meta name="theme-color" content="#f0eee9" />
@@ -49,7 +55,7 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 		<meta property="og:site_name" content={site.name} />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
-		<meta property="og:url" content={canonical} />
+		{!noindex && <meta property="og:url" content={canonical} />}
 		<meta property="og:locale" content="en_GB" />
 		{ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
 		<meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
@@ -63,7 +69,7 @@ const ogImageUrl = ogImage ? new URL(ogImage, Astro.site).href : undefined;
 					<main id="main" tabindex="-1">
 						<slot />
 					</main>
-					<BackToTop />
+					{showBackToTop && <BackToTop />}
 					<SiteFooter />
 				</>
 			) : (
