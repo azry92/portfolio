@@ -1,18 +1,28 @@
 ---
-// A case study's home card cover, drawn from its frontmatter: the project accent as the
+// A project's card cover, drawn from its frontmatter: the project accent as the
 // backdrop, with the hero screenshot in its browser or phone frame rising from the bottom
-// edge. One recipe for every project. Without a `hero`, the cover image fills the tile.
+// edge. One recipe for every project, case study or other work. Without a `hero`, the
+// cover image fills the tile.
 import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import BrowserFrame from './BrowserFrame.astro';
 import PhoneFrame from './PhoneFrame.astro';
 
+type Data = CollectionEntry<'caseStudies'>['data'] | CollectionEntry<'otherWorks'>['data'];
+
 interface Props {
-	entry: CollectionEntry<'caseStudies'>;
+	data: Data;
+	/** Sizes for a cover that fills the tile; the home grid's by default. */
+	sizes?: string;
 }
 
-const { entry } = Astro.props;
-const { accent, hero, cover, cover_alt } = entry.data;
+const {
+	data,
+	sizes = '(min-width: 1200px) 240px, (min-width: 768px) 33vw, (min-width: 600px) 50vw, 40vw',
+} = Astro.props;
+const { cover, cover_alt } = data;
+const accent = 'accent' in data ? data.accent : undefined;
+const hero = 'hero' in data ? data.hero : undefined;
 const kind = hero ? hero.frame : 'plain';
 ---
 
@@ -43,8 +53,8 @@ const kind = hero ? hero.frame : 'plain';
 				src={cover}
 				alt={cover_alt}
 				formats={['avif', 'webp']}
-				widths={[240, 400, 600, 800].filter((w) => w <= cover.width)}
-				sizes="(min-width: 1200px) 240px, (min-width: 768px) 33vw, (min-width: 600px) 50vw, 40vw"
+				widths={[240, 400, 600, 800, 1200].filter((w) => w <= cover.width)}
+				sizes={sizes}
 			/>
 		)
 	}

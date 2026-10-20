@@ -1,0 +1,106 @@
+---
+// One project on the Other Works index: its cover (the WorkCover recipe), then the
+// title, summary and a short fact line. The whole row is one link, through the title.
+// Stacked below 768px; cover left and text right from there.
+import type { CollectionEntry } from 'astro:content';
+import WorkCover from './WorkCover.astro';
+
+interface Props {
+	entry: CollectionEntry<'otherWorks'>;
+}
+
+const { entry } = Astro.props;
+const { title, summary, timeline, platform } = entry.data;
+---
+
+<article class="ow-row">
+	<WorkCover data={entry.data} sizes="(min-width: 1248px) 672px, (min-width: 768px) 56vw, 100vw" />
+	<div class="ow-row__text">
+		<h2 class="ow-row__title">
+			<a class="ow-row__link" href={`/other-works/${entry.id}`}>{title}</a>
+		</h2>
+		<p class="ow-row__summary">{summary}</p>
+		<p class="ow-row__facts">{timeline} · {platform}</p>
+	</div>
+</article>
+
+<style>
+	.ow-row {
+		position: relative;
+		display: grid;
+		gap: var(--space-16);
+	}
+
+	.ow-row__text {
+		display: grid;
+		gap: var(--space-12);
+		align-content: center;
+	}
+
+	.ow-row__title {
+		font-size: var(--text-24);
+	}
+
+	.ow-row__link {
+		color: var(--color-text);
+		text-decoration: none;
+	}
+
+	/* The title's link covers the whole row; its focus ring draws round the row. */
+	.ow-row__link::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: var(--radius-sm);
+	}
+
+	.ow-row__link:focus-visible {
+		outline: none;
+	}
+
+	.ow-row__link:focus-visible::after {
+		outline: 2px solid var(--color-accent);
+		outline-offset: var(--space-8);
+	}
+
+	.ow-row__summary {
+		max-inline-size: 48ch;
+	}
+
+	.ow-row__facts {
+		color: var(--color-text-muted);
+		font-size: var(--text-14);
+	}
+
+	@media (hover: hover) {
+		.ow-row:hover .ow-row__link {
+			text-decoration: underline;
+			text-underline-offset: 0.15em;
+		}
+	}
+
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+		.ow-row:hover :global(.work-cover > *) {
+			transform: translateY(calc(var(--space-4) * -1.5));
+		}
+	}
+
+	@media (min-width: 768px) {
+		.ow-row {
+			grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+			gap: var(--space-48);
+		}
+
+		.ow-row__link::after {
+			border-radius: var(--radius-lg);
+		}
+
+		.ow-row__title {
+			font-size: var(--text-32);
+		}
+
+		.ow-row__summary {
+			font-size: var(--text-18);
+		}
+	}
+</style>
