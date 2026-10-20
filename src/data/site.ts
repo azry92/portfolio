@@ -45,7 +45,9 @@ export const contact = {
 	heading: 'Let’s brew something together.',
 	email: 'ismailazry14@gmail.com',
 	linkedin: 'https://www.linkedin.com/in/ismail-azry',
-	location: 'Selangor, Malaysia',
+	/** This site's source. */
+	github: 'https://github.com/azry92/portfolio',
+	location: 'Kuala Lumpur, Malaysia',
 } as const;
 
 export const footerLine = 'Designed and built by Ismail Azry with Astro. © 2026';

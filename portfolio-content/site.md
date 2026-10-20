@@ -49,7 +49,8 @@ Product designer who designs and builds e-commerce storefronts end to end, from 
 ## Contact
 - email: ismailazry14@gmail.com
 - linkedin: https://www.linkedin.com/in/ismail-azry
-- location: Selangor, Malaysia
+- github: https://github.com/azry92/portfolio
+- location: Kuala Lumpur, Malaysia
 ## Footer
 - line: "Designed and built by Ismail Azry with Astro. © 2026"
-- links: Email, LinkedIn, CV
+- links: Email, LinkedIn, CV, GitHub
