@@ -1,0 +1,32 @@
+---
+// Renders a run of parsed blocks with the component for each kind.
+import DataTable from './DataTable.astro';
+import FigureGrid from './FigureGrid.astro';
+import Prose from './Prose.astro';
+import SwatchRow from './SwatchRow.astro';
+import type { Frame } from '../lib/case-study/layouts';
+import type { Block } from '../lib/case-study/parse';
+
+interface Props {
+	blocks: Block[];
+	frame?: Frame;
+	/** Passed to every figure row, e.g. 1 to stack figures in a narrow column. */
+	columns?: number;
+}
+
+const { blocks, frame, columns } = Astro.props;
+---
+
+{
+	blocks.map((block) =>
+		block.kind === 'prose' ? (
+			<Prose html={block.html} />
+		) : block.kind === 'table' ? (
+			<DataTable head={block.head} rows={block.rows} />
+		) : block.kind === 'swatches' ? (
+			<SwatchRow items={block.items} />
+		) : (
+			<FigureGrid items={block.items} caption={block.caption} frame={frame} columns={columns} />
+		),
+	)
+}

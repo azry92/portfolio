@@ -1,0 +1,104 @@
+---
+// A Markdown table. The first column labels each row. Below 720px each row
+// stacks into a block with its column names; the ARIA roles keep it a table
+// for screen readers once the CSS display changes.
+interface Props {
+	head: string[];
+	/** Cell HTML, one array per row. */
+	rows: string[][];
+}
+
+const { head, rows } = Astro.props;
+// Column names as plain text for the stacked labels.
+const labels = head.map((cell) => cell.replace(/<[^>]+>/g, ''));
+---
+
+<table class="data-table" role="table">
+	<thead role="rowgroup">
+		<tr role="row">{head.map((cell) => <th scope="col" role="columnheader" set:html={cell} />)}</tr>
+	</thead>
+	<tbody role="rowgroup">
+		{
+			rows.map(([first, ...rest]) => (
+				<tr role="row">
+					<th scope="row" role="rowheader" set:html={first} />
+					{rest.map((cell, i) => (
+						<td role="cell" data-label={labels[i + 1]} set:html={cell} />
+					))}
+				</tr>
+			))
+		}
+	</tbody>
+</table>
+
+<style>
+	.data-table {
+		inline-size: 100%;
+		border-collapse: collapse;
+		background-color: var(--color-surface);
+		font-size: var(--text-16);
+		line-height: 1.4;
+		text-align: start;
+	}
+
+	th,
+	td {
+		padding: var(--space-16);
+		border-block-end: var(--border-width) solid var(--color-border);
+		text-align: start;
+		vertical-align: top;
+	}
+
+	thead th {
+		background-color: var(--accent, var(--color-surface-inverse));
+		color: var(--on-accent, var(--color-text-inverse));
+		font-weight: var(--weight-semibold);
+	}
+
+	tbody th {
+		font-weight: var(--weight-semibold);
+	}
+
+	@media (min-width: 720px) {
+		tbody th {
+			inline-size: 34%;
+		}
+	}
+
+	@media (max-width: 719.98px) {
+		.data-table,
+		tbody,
+		tr,
+		th,
+		td {
+			display: block;
+		}
+
+		thead {
+			position: absolute;
+			inline-size: 1px;
+			block-size: 1px;
+			overflow: hidden;
+			clip-path: inset(50%);
+		}
+
+		tbody tr {
+			padding-block: var(--space-8);
+			border-block-end: var(--border-width) solid var(--color-border);
+		}
+
+		th,
+		td {
+			padding-block: var(--space-8);
+			border: 0;
+		}
+
+		td::before {
+			content: attr(data-label);
+			display: block;
+			margin-block-end: var(--space-4);
+			color: var(--color-text-muted);
+			font-size: var(--text-14);
+		}
+	}
+</style>

@@ -2,7 +2,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CaseStudyHero from '../../components/CaseStudyHero.astro';
-import Prose from '../../components/Prose.astro';
+import CaseStudySection from '../../components/CaseStudySection.astro';
 import { readableOn } from '../../lib/case-study/contrast';
 import { parseCaseStudy } from '../../lib/case-study/parse';
 
@@ -38,19 +38,6 @@ const accentStyle = accent ? `--accent: ${accent}; --on-accent: var(${onAccent})
 <BaseLayout title={`${title} | Ismail Azry`} description={summary}>
 	<article class="case-study" style={accentStyle}>
 		<CaseStudyHero entry={entry} overview={overview} />
-		{
-			sections.map((section) => (
-				<section aria-labelledby={section.id}>
-					<h2 id={section.id}>{section.heading}</h2>
-					{section.blocks.map((block) => block.kind === 'prose' && <Prose html={block.html} />)}
-					{section.subsections.map((sub) => (
-						<>
-							<h3 id={sub.id}>{sub.heading}</h3>
-							{sub.blocks.map((block) => block.kind === 'prose' && <Prose html={block.html} />)}
-						</>
-					))}
-				</section>
-			))
-		}
+		{sections.map((section) => <CaseStudySection section={section} />)}
 	</article>
 </BaseLayout>

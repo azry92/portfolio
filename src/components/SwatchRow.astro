@@ -1,0 +1,61 @@
+---
+// A project's palette: one swatch per colour with its name, hex and use.
+import type { Swatch } from '../lib/case-study/parse';
+
+interface Props {
+	items: Swatch[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="swatches" role="list">
+	{
+		items.map(({ name, hex, use }) => (
+			<li class="swatch">
+				<span class="swatch__chip" style={`background-color: ${hex}`} aria-hidden="true" />
+				<span class="swatch__name">{name}</span>
+				<span class="swatch__hex">{hex}</span>
+				<span class="swatch__use">{use}</span>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.swatches {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+		gap: var(--space-32) var(--space-24);
+		padding: 0;
+		list-style: none;
+	}
+
+	.swatch {
+		display: grid;
+		gap: var(--space-4);
+		align-content: start;
+	}
+
+	.swatch__chip {
+		inline-size: 4.5rem;
+		aspect-ratio: 1;
+		margin-block-end: var(--space-8);
+		border: var(--border-width) solid var(--color-border);
+		border-radius: 50%;
+	}
+
+	.swatch__name {
+		font-weight: var(--weight-semibold);
+	}
+
+	.swatch__hex {
+		font-variant-numeric: tabular-nums;
+	}
+
+	.swatch__use {
+		color: var(--color-text-muted);
+		font-size: var(--text-14);
+		line-height: var(--leading-heading);
+	}
+</style>

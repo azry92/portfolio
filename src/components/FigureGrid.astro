@@ -1,0 +1,80 @@
+---
+// A row of figures. Rows of 2–3 stack below 600px; rows of 4–5 go 2, then 3, then
+// all across from 1200px. A caption for the whole row makes the row a figure.
+import Figure from './Figure.astro';
+import type { Frame } from '../lib/case-study/layouts';
+import type { Figure as FigureData } from '../lib/case-study/parse';
+
+interface Props {
+	items: FigureData[];
+	frame?: Frame;
+	/** Caption HTML for the whole row. */
+	caption?: string;
+	/** Force a column count, e.g. 1 to stack figures in a narrow column. */
+	columns?: number;
+}
+
+const { items, frame = 'none', caption, columns = items.length } = Astro.props;
+const across = Math.min(columns, 5);
+
+const sizes =
+	frame === 'phone'
+		? '(min-width: 1200px) 240px, (min-width: 600px) 30vw, 45vw'
+		: across === 1
+			? '(min-width: 1248px) 1200px, 100vw'
+			: `(min-width: 1248px) ${Math.round(1200 / across)}px, (min-width: 600px) ${Math.round(100 / across)}vw, 100vw`;
+
+const Tag = caption ? 'figure' : 'div';
+---
+
+<Tag class:list={['figure-grid', `figure-grid--${frame}`]} style={`--across: ${across}`}>
+	<div class="figure-grid__items" data-across={across}>
+		{items.map((figure) => <Figure figure={figure} frame={frame} sizes={sizes} />)}
+	</div>
+	{caption && <figcaption class="figure-grid__caption" set:html={caption} />}
+</Tag>
+
+<style>
+	.figure-grid {
+		display: grid;
+		gap: var(--space-16);
+	}
+
+	.figure-grid__items {
+		--columns: 1;
+
+		display: grid;
+		grid-template-columns: repeat(var(--columns), minmax(0, 1fr));
+		gap: var(--space-32) var(--space-24);
+	}
+
+	/* Phones keep a phone's width instead of stretching across the content. */
+	.figure-grid--phone .figure-grid__items {
+		grid-template-columns: repeat(var(--columns), minmax(0, 15rem));
+	}
+
+	.figure-grid__items[data-across='4'],
+	.figure-grid__items[data-across='5'] {
+		--columns: 2;
+	}
+
+	@media (min-width: 600px) {
+		.figure-grid__items:not([data-across='1']) {
+			--columns: min(var(--across), 3);
+		}
+	}
+
+	@media (min-width: 1200px) {
+		.figure-grid__items:not([data-across='1']) {
+			--columns: var(--across);
+		}
+	}
+
+	.figure-grid__caption {
+		font-size: var(--text-14);
+	}
+
+	.figure-grid--phone .figure-grid__caption {
+		text-align: center;
+	}
+</style>

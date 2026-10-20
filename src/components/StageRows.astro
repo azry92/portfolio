@@ -1,0 +1,96 @@
+---
+// "Rows of phones, one labelled row per stage": each subsection becomes a row of
+// phones on the accent band, labelled by its heading and described by its caption.
+import FigureGrid from './FigureGrid.astro';
+import Prose from './Prose.astro';
+import type { Section } from '../lib/case-study/parse';
+
+interface Props {
+	section: Section;
+}
+
+const { section } = Astro.props;
+
+const stages = section.subsections.map((stage) => {
+	const figures = stage.blocks.filter((block) => block.kind === 'figures');
+	if (figures.length !== 1 || stage.blocks.length !== 1) {
+		throw new Error(`Stage "${stage.heading}" must hold exactly one row of images and nothing else`);
+	}
+	return { ...stage, row: figures[0] };
+});
+// Every stage uses the longest row's columns, so phones are the same size in every row.
+const columns = Math.max(...stages.map((stage) => stage.row.items.length));
+---
+
+<section class="stages accent-band" aria-labelledby={section.id}>
+	<div class="stages__inner container">
+		<h2 id={section.id} class="stages__title">{section.heading}</h2>
+		{section.blocks.length > 0 && <Prose html={section.blocks.map((b) => (b.kind === 'prose' ? b.html : '')).join('')} />}
+		<ol class="stages__list" role="list">
+			{
+				stages.map((stage) => (
+					<li class="stage">
+						<div class="stage__label">
+							<h3 id={stage.id}>{stage.heading}</h3>
+							{stage.row.caption && <p set:html={stage.row.caption} />}
+						</div>
+						<FigureGrid items={stage.row.items} frame="phone" columns={columns} />
+					</li>
+				))
+			}
+		</ol>
+	</div>
+</section>
+
+<style>
+	.stages__inner {
+		display: grid;
+		gap: var(--space-48);
+		padding-block: var(--space-64);
+	}
+
+	.stages__title {
+		font-size: var(--text-display);
+	}
+
+	.stages__list {
+		display: grid;
+		gap: var(--space-64);
+		padding: 0;
+		list-style: none;
+	}
+
+	.stage {
+		display: grid;
+		gap: var(--space-24);
+	}
+
+	.stage__label {
+		display: grid;
+		gap: var(--space-8);
+		align-content: start;
+		padding: var(--space-24);
+		background-color: color-mix(in srgb, var(--accent, var(--color-surface-inverse)) 60%, #000);
+	}
+
+	.stage__label h3 {
+		font-size: var(--text-24);
+	}
+
+	@media (min-width: 1200px) {
+		.stage__label h3 {
+			font-size: var(--text-32);
+		}
+
+		.stage {
+			grid-template-columns: minmax(0, 1fr) 20rem;
+			align-items: start;
+		}
+
+		/* The label sits to the right of its row, as in the stage reference. */
+		.stage__label {
+			grid-column: 2;
+			grid-row: 1;
+		}
+	}
+</style>

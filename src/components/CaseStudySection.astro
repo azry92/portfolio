@@ -1,0 +1,120 @@
+---
+// One ## section of a case study, laid out by its layout note.
+import CaseStudyBlocks from './CaseStudyBlocks.astro';
+import StageRows from './StageRows.astro';
+import type { Frame, Layout } from '../lib/case-study/layouts';
+import type { Section, Subsection } from '../lib/case-study/parse';
+
+interface Props {
+	section: Section;
+}
+
+const { section } = Astro.props;
+const layout: Layout = section.layout ?? { kind: 'stack' };
+
+const frameFor = (own: Layout | undefined, fallback: Frame): Frame =>
+	own?.kind === 'row' ? own.frame : fallback;
+const sectionFrame: Frame = layout.kind === 'headline-row' ? 'phone' : frameFor(layout, 'none');
+
+const prose = section.blocks.filter((block) => block.kind !== 'figures');
+const figures = section.blocks.filter((block) => block.kind === 'figures');
+
+const subsectionClass = (sub: Subsection) => [
+	'cs-subsection',
+	{ 'cs-subsection--headline': layout.kind === 'headline-row' },
+	{ 'cs-subsection--swatches': sub.layout?.kind === 'swatches' },
+];
+---
+
+{
+	layout.kind === 'stages' ? (
+		<StageRows section={section} />
+	) : (
+		<section class:list={['cs-section', 'container', `cs-section--${layout.kind}`]} aria-labelledby={section.id}>
+			<h2 id={section.id} class="cs-section__title">
+				{section.heading}
+			</h2>
+			{layout.kind === 'split' ? (
+				<div class="cs-split">
+					<div class="cs-split__copy">
+						<CaseStudyBlocks blocks={prose} />
+					</div>
+					<div class="cs-split__media">
+						<CaseStudyBlocks blocks={figures} columns={1} />
+					</div>
+				</div>
+			) : (
+				<CaseStudyBlocks blocks={section.blocks} frame={sectionFrame} columns={layout.kind === 'full' ? 1 : undefined} />
+			)}
+			{section.subsections.map((sub) => (
+				<section class:list={subsectionClass(sub)} aria-labelledby={sub.id}>
+					<h3 id={sub.id} class="cs-subsection__title">
+						{sub.heading}
+					</h3>
+					<CaseStudyBlocks blocks={sub.blocks} frame={frameFor(sub.layout, sectionFrame)} />
+				</section>
+			))}
+		</section>
+	)
+}
+
+<style>
+	.cs-section {
+		display: grid;
+		gap: var(--space-32);
+		padding-block: var(--space-48);
+	}
+
+	.cs-section__title {
+		font-size: var(--text-32);
+	}
+
+	.cs-subsection {
+		display: grid;
+		gap: var(--space-24);
+	}
+
+	.cs-subsection__title {
+		font-size: var(--text-24);
+	}
+
+	/* "One headline, body below": the subsection heading is the section's headline. */
+	.cs-subsection--headline {
+		gap: var(--space-32);
+	}
+
+	.cs-subsection--headline .cs-subsection__title {
+		max-inline-size: 18ch;
+		font-size: var(--text-display);
+	}
+
+	.cs-section--headline-row .cs-section__title {
+		font-size: var(--text-24);
+	}
+
+	.cs-split {
+		display: grid;
+		gap: var(--space-32);
+	}
+
+	@media (min-width: 1200px) {
+		.cs-section {
+			padding-block: var(--space-64);
+		}
+
+		.cs-section__title {
+			font-size: var(--text-40);
+		}
+
+		.cs-split {
+			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+			gap: var(--space-48);
+			align-items: start;
+		}
+
+		.cs-split__media {
+			display: grid;
+			gap: var(--space-32);
+		}
+	}
+</style>

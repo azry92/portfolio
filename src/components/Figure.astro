@@ -1,0 +1,62 @@
+---
+// One image from a case study, in a phone or browser frame or on its own, with an optional caption.
+import { Picture } from 'astro:assets';
+import BrowserFrame from './BrowserFrame.astro';
+import PhoneFrame from './PhoneFrame.astro';
+import type { Frame } from '../lib/case-study/layouts';
+import type { Figure } from '../lib/case-study/parse';
+
+interface Props {
+	figure: Figure;
+	frame?: Frame;
+	sizes: string;
+}
+
+const { figure, frame = 'none', sizes } = Astro.props;
+const { image, alt, caption } = figure;
+const widths = (frame === 'phone' ? [240, 360, 540, 720] : [480, 960, 1440, 1920]).filter((w) => w <= image.width);
+// SVG diagrams go out as they are; there is nothing to gain from rasterising them.
+const isSvg = image.format === 'svg';
+---
+
+<figure class:list={['figure', `figure--${frame}`]}>
+	{
+		frame === 'phone' ? (
+			<PhoneFrame>
+				<Picture src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
+			</PhoneFrame>
+		) : frame === 'browser' ? (
+			<BrowserFrame>
+				<Picture src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
+			</BrowserFrame>
+		) : isSvg ? (
+			<img class="figure__image" src={image.src} width={image.width} height={image.height} alt={alt} loading="lazy" decoding="async" />
+		) : (
+			<Picture class="figure__image" src={image} alt={alt} formats={['avif', 'webp']} widths={widths} sizes={sizes} />
+		)
+	}
+	{caption && <figcaption class="figure__caption" set:html={caption} />}
+</figure>
+
+<style>
+	.figure {
+		display: grid;
+		gap: var(--space-12);
+		align-content: start;
+	}
+
+	/* The class lands on the <img> inside <Picture>, outside this component's scope. */
+	.figure :global(.figure__image) {
+		inline-size: 100%;
+		block-size: auto;
+		border-radius: var(--radius-sm);
+	}
+
+	.figure__caption {
+		font-size: var(--text-14);
+	}
+
+	.figure--phone .figure__caption {
+		text-align: center;
+	}
+</style>
