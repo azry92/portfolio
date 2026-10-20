@@ -1,6 +1,6 @@
 ---
-// A site menu drawn as live HTML from a Markdown list: top-level items as tiles,
-// sub-pages indented under their parent. A list, not a <nav>: it shows a menu, it isn't one.
+// A site menu drawn as live HTML from a Markdown list: top-level items in bold,
+// sub-pages indented under their parent, all on one panel. A list, not a <nav>: it shows a menu, it isn't one.
 import type { TreeItem } from '../lib/case-study/parse';
 
 interface Props {
@@ -30,27 +30,31 @@ const { items } = Astro.props;
 </ul>
 
 <style>
+	/* One panel for the whole menu, items as plain text: it reads as a drawing of
+	   the menu, not as a set of buttons. */
+	.menu-tree {
+		padding: var(--space-24);
+		border: var(--border-width) solid var(--color-border);
+		border-radius: var(--radius-sm);
+		background-color: var(--color-surface);
+	}
+
 	.menu-tree,
 	.menu-tree__children {
 		display: grid;
-		gap: var(--space-8);
-		padding: 0;
+		gap: var(--space-12);
 		list-style: none;
 	}
 
 	.menu-tree__children {
-		margin-block-start: var(--space-8);
-		padding-inline-start: var(--space-24);
+		margin-block-start: var(--space-12);
+		margin-inline-start: var(--space-4);
+		padding-inline-start: var(--space-16);
 		border-inline-start: 2px solid var(--accent, var(--color-border));
-		margin-inline-start: var(--space-12);
 	}
 
 	.menu-tree__item {
 		display: block;
-		padding: var(--space-12) var(--space-16);
-		border: var(--border-width) solid var(--color-border);
-		border-radius: var(--radius-sm);
-		background-color: var(--color-surface);
 		line-height: var(--leading-heading);
 	}
 
