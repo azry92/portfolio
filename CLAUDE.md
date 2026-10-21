@@ -18,7 +18,7 @@ Personal portfolio for "Product Designer, Web & E-commerce | Shopify Design & Bu
 - `tokens.md` and `references/` override any design skill's defaults. Use skills for craft, not brand choices.
 
 ## Pages
-- `/` home: animated glyph band, intro, three case study cards, Other Works and Fun cards, contact.
+- `/` home: full-screen hero (role and availability labels, about with See the work and CV, the name and claim as a large two-line h1, a faint static IA glyph texture behind), then "01 / Selected work" with the three case study cards and the Other Works and Fun pills, then the footer. The animated glyph band is off home and moves to the About page.
 - `/work/[slug]` case studies: AT Auto Shoppe, PlanetStewards, Precious Wedding.
 - `/other-works`: short index listing Atlas IHU and MBFW as cards. Built in the Other Works session.
 - `/other-works/[slug]`: MBFW, Atlas IHU Theme.

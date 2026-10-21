@@ -25,9 +25,10 @@ nav:
 - Decorative: aria-hidden="true", no focusable elements inside.
 ### 2. Intro (desktop: left column, about one third width; mobile: full width, stacked)
 - Logo mark (portfolio-content/brand/logo.svg), about 80px desktop, 60px mobile.
-- "Hello, I'm Azry." (Sora, light weight, same size as the title line below on desktop; smaller on mobile)
+- Status line: "Ismail Azry · Open to roles, Kuala Lumpur" (Inter 600, 16px, muted; a small green dot before "Open to roles"). It names the person in the first screen and says they're available.
 - Title, the h1: "Product Designer, Web & E-commerce" (Sora, about 48px desktop, at least 32px mobile). This is the largest text on the page.
 - About paragraph from site.md, Inter 400, max width about 36ch, left-aligned at every breakpoint.
+- Under it, the current line: "Currently designing and building the AT Auto Shoppe store.", with "AT Auto Shoppe store" linking to its case study.
 - Desktop only: the contact block ("Let's brew something together.", three labelled icon links: Email, LinkedIn, CV) and the footer line sit at the bottom of this left column.
 ### 3. Work (desktop: right two thirds; mobile: full width below the intro)
 - Heading "See the Work" (Sora, right-aligned on desktop, left on mobile), an h2, smaller than the h1.

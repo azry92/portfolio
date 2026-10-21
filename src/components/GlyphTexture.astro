@@ -1,0 +1,41 @@
+---
+// Faint IA glyph outlines tiled behind the home hero, in the border colour. Decorative
+// and static: the animated band lives on the About page.
+import { glyph } from '../lib/glyphPattern';
+
+// One tile holds an upright glyph and a brick-offset second one, so the rows interlock.
+const TILE = 192;
+---
+
+<svg class="glyph-texture" aria-hidden="true" focusable="false">
+	<defs>
+		<g id="glyph-texture-ia">
+			<path d={glyph.I}></path>
+			<path d={glyph.A}></path>
+		</g>
+		<pattern id="glyph-texture-tile" width={TILE} height={TILE} patternUnits="userSpaceOnUse">
+			<use href="#glyph-texture-ia" transform="translate(24 30) scale(1.4)"></use>
+			<use href="#glyph-texture-ia" transform={`translate(${24 + TILE / 2} ${30 + TILE / 2}) scale(1.4)`}></use>
+		</pattern>
+	</defs>
+	<rect width="100%" height="100%" fill="url(#glyph-texture-tile)"></rect>
+</svg>
+
+<style>
+	.glyph-texture {
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		inline-size: 100%;
+		block-size: 100%;
+		/* Fades out towards the headline so the big type sits on plain ground. */
+		mask-image: linear-gradient(to bottom, #000 40%, transparent 85%);
+		pointer-events: none;
+	}
+
+	.glyph-texture use {
+		fill: none;
+		stroke: var(--color-border);
+		stroke-width: 0.7;
+	}
+</style>

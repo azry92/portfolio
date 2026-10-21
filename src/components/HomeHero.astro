@@ -1,0 +1,173 @@
+---
+// Home hero: role and availability on top, the short about with the two calls to
+// action, then the name and claim as the page h1 across the bottom of the first screen.
+import GlyphTexture from './GlyphTexture.astro';
+import { intro, site } from '../data/site';
+
+// Keep "e-commerce" whole: browsers otherwise break inside.
+const aboutParts = intro.about.split(/(e-commerce)/);
+---
+
+<section class="hero" aria-labelledby="home-title">
+	<GlyphTexture />
+	<div class="container hero__inner">
+		<div class="hero__top">
+			<p class="hero__label">{intro.title}</p>
+			<p class="hero__label hero__status">
+				<span class="hero__dot" aria-hidden="true"></span>{intro.status}
+			</p>
+		</div>
+		<div class="hero__intro">
+			<p class="hero__about">
+				{aboutParts.map((part) => (part === 'e-commerce' ? <span class="hero__nowrap">{part}</span> : part))}
+			</p>
+			<div class="hero__actions">
+				<a class="hero__primary" href="#work">{intro.cta}</a>
+				<a class="hero__cv" href={site.cv} download>{intro.cv}</a>
+			</div>
+			<p class="hero__current">
+				{intro.current.before}<a href={intro.current.href}>{intro.current.link}</a>{intro.current.after}
+			</p>
+		</div>
+		<h1 id="home-title" class="hero__title">
+			<span class="hero__name">{intro.name}</span>
+			<span class="hero__claim">{intro.claim}</span>
+		</h1>
+	</div>
+</section>
+
+<style>
+	/* Fills the first screen under the sticky header: labels at the top, the intro in
+	   the middle, the headline on the bottom edge. */
+	.hero {
+		position: relative;
+		isolation: isolate;
+		display: flex;
+		min-block-size: calc(100svh - var(--header-h));
+		overflow: hidden;
+	}
+
+	.hero__inner {
+		display: grid;
+		grid-template-rows: auto 1fr auto;
+		gap: var(--space-48);
+		padding-block: var(--space-24) var(--space-32);
+	}
+
+	.hero__top {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: var(--space-8) var(--space-24);
+	}
+
+	.hero__label {
+		font-size: var(--text-14);
+		font-weight: var(--weight-semibold);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.hero__dot {
+		display: inline-block;
+		inline-size: 0.6em;
+		block-size: 0.6em;
+		margin-inline-end: 0.5em;
+		border-radius: var(--radius-pill);
+		background-color: var(--color-status);
+	}
+
+	.hero__intro {
+		align-self: end;
+		max-inline-size: 36rem;
+	}
+
+	.hero__about {
+		font-size: var(--text-18);
+	}
+
+	.hero__nowrap {
+		white-space: nowrap;
+	}
+
+	.hero__actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--space-16) var(--space-24);
+		margin-block-start: var(--space-24);
+	}
+
+	.hero__primary {
+		display: inline-block;
+		padding: var(--space-12) var(--space-24);
+		border-radius: var(--radius-pill);
+		background-color: var(--color-accent);
+		color: var(--color-text-inverse);
+		font-weight: var(--weight-semibold);
+		text-decoration: none;
+	}
+
+	.hero__primary:focus-visible {
+		background-color: var(--color-accent-deep);
+	}
+
+	.hero__cv {
+		color: var(--color-text);
+		font-weight: var(--weight-semibold);
+	}
+
+	.hero__current {
+		margin-block-start: var(--space-24);
+		color: var(--color-text-muted);
+		font-size: var(--text-14);
+	}
+
+	/* The largest text on the site: name in black, the claim under it in the accent. */
+	.hero__title {
+		font-family: var(--font-display);
+		font-weight: var(--weight-bold);
+		line-height: 0.95;
+		letter-spacing: -0.02em;
+	}
+
+	.hero__name,
+	.hero__claim {
+		display: block;
+	}
+
+	.hero__name {
+		font-size: clamp(var(--text-48), 1rem + 8vw, 8rem);
+	}
+
+	.hero__claim {
+		margin-block-start: var(--space-8);
+		color: var(--color-accent);
+		font-size: clamp(var(--text-32), 0.75rem + 4.4vw, 4.5rem);
+		line-height: 1;
+	}
+
+	@media (hover: hover) {
+		.hero__primary:hover {
+			background-color: var(--color-accent-deep);
+		}
+
+		.hero__cv:hover {
+			color: var(--color-accent);
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.hero__primary {
+			transition: background-color 150ms ease-out;
+		}
+	}
+
+	/* From 900px the intro moves to the right half, as a column beside empty ground. */
+	@media (min-width: 900px) {
+		.hero__intro {
+			justify-self: end;
+			inline-size: 50%;
+		}
+	}
+</style>

@@ -14,6 +14,7 @@
 | pattern-black | #000000 | hero glyph states |
 | pattern-cream | #F7F5F0 | hero glyph states |
 | border | #D6D2CA | dividers |
+| status | #1A7F37 | "Open to roles" dot |
 ## Type
 - Display: Sora, weights 300 and 700, 48px
 - Body: Inter, weights 400 and 600

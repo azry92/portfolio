@@ -1,18 +1,18 @@
 ---
-// "See the Work": heading, CV link, case study cards in frontmatter order, then
-// Other Works and Fun as pills. From 1200px it sits in the home grid's right column.
+// "See the Work": numbered label and heading, case study cards in frontmatter order,
+// then Other Works and Fun as pills.
 import { getCollection } from 'astro:content';
 import WorkCard from './WorkCard.astro';
 import ShortCard from './ShortCard.astro';
-import { site, work } from '../data/site';
+import { work } from '../data/site';
 
 const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
 ---
 
 <section id="work" class="work" aria-labelledby="work-title">
 	<div class="work__header">
+		<p class="work__label">{work.label}</p>
 		<h2 id="work-title" class="work__heading">{work.heading}</h2>
-		<p class="work__cv"><a href={site.cv} download>{work.cv}</a></p>
 	</div>
 	<div class="work__body">
 		<ul class="work__cases" role="list">
@@ -47,28 +47,13 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 		font-size: var(--text-24);
 	}
 
-	.work__cv {
-		margin-block-start: var(--space-8);
-	}
-
-	.work__cv a {
-		display: inline-block;
-		padding: var(--space-4) var(--space-16);
-		border-radius: var(--radius-pill);
-		background-color: var(--color-accent);
-		color: var(--color-text-inverse);
-		text-decoration: none;
-	}
-
-	.work__cv a:hover,
-	.work__cv a:focus-visible {
-		background-color: var(--color-accent-deep);
-	}
-
-	@media (prefers-reduced-motion: no-preference) {
-		.work__cv a {
-			transition: background-color 150ms ease-out;
-		}
+	/* Matches the hero's labels: numbering over the heading. */
+	.work__label {
+		margin-block-end: var(--space-8);
+		font-size: var(--text-14);
+		font-weight: var(--weight-semibold);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
 	}
 
 	/* Below 600px: header on top, then one row per case study, hairlines between, and
@@ -181,40 +166,6 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 
 		.work__more {
 			margin-block-start: 0;
-		}
-	}
-
-	/* Desktop: right column of the home grid, rows 2 to 4 (see index.astro). The heading
-	   shares the h1's baseline; the CV link hangs below it, and the cards start level
-	   with the about paragraph's first line. The pills sit at the bottom, level with the
-	   footer line in the left column. */
-	@media (min-width: 1200px) {
-		.work {
-			display: grid;
-			grid-template-columns: minmax(0, 1fr);
-			grid-template-rows: subgrid;
-			grid-column: 2;
-			grid-row: 2 / span 3;
-			padding-block-start: 0;
-		}
-
-		.work__header {
-			align-self: last baseline;
-			justify-self: end;
-			text-align: end;
-		}
-
-		.work__cv {
-			position: absolute;
-			inset-block-start: 100%;
-			inset-inline-end: 0;
-			white-space: nowrap;
-		}
-
-		.work__body {
-			grid-row: 2 / span 2;
-			align-content: space-between;
-			margin-block-start: var(--space-32);
 		}
 	}
 </style>

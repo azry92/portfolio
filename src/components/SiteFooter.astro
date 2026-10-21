@@ -1,42 +1,28 @@
 ---
 import ContactLinks from './ContactLinks.astro';
 import { footerLine, nav } from '../data/site';
-
-interface Props {
-	/**
-	 * site: full-width footer with text nav, on every page but home.
-	 * home: no nav or container; the home grid places it (left column from 1200px).
-	 */
-	variant?: 'site' | 'home';
-}
-
-const { variant = 'site' } = Astro.props;
 ---
 
-<footer id="contact" class:list={['site-footer', `site-footer--${variant}`]}>
-	<div class:list={['site-footer__inner', { container: variant === 'site' }]}>
+<footer id="contact" class="site-footer">
+	<div class="container site-footer__inner">
 		<ContactLinks />
 		<div class="site-footer__meta">
-			{
-				variant === 'site' && (
-					<nav aria-label="Footer">
-						<ul class="site-footer__nav" role="list">
-							{nav.map((item) => (
-								<li>
-									<a
-										href={item.href}
-										target={item.newTab ? '_blank' : undefined}
-										rel={item.newTab ? 'noopener' : undefined}
-										aria-label={item.ariaLabel}
-									>
-										{item.label}
-									</a>
-								</li>
-							))}
-						</ul>
-					</nav>
-				)
-			}
+			<nav aria-label="Footer">
+				<ul class="site-footer__nav" role="list">
+					{nav.map((item) => (
+						<li>
+							<a
+								href={item.href}
+								target={item.newTab ? '_blank' : undefined}
+								rel={item.newTab ? 'noopener' : undefined}
+								aria-label={item.ariaLabel}
+							>
+								{item.label}
+							</a>
+						</li>
+					))}
+				</ul>
+			</nav>
 			<p class="site-footer__line">{footerLine}</p>
 		</div>
 	</div>
@@ -88,25 +74,5 @@ const { variant = 'site' } = Astro.props;
 	.site-footer__line {
 		color: var(--color-text-muted);
 		font-size: var(--text-14);
-	}
-
-	/* Home: centred at the end of the page until the two-column layout takes over */
-	.site-footer--home {
-		--contact-justify: center;
-
-		text-align: center;
-	}
-
-	@media (min-width: 1200px) {
-		.site-footer--home {
-			--contact-justify: flex-start;
-
-			text-align: start;
-		}
-
-		/* The home grid adds the space below, so the last line sits on the grid's bottom edge. */
-		.site-footer--home .site-footer__inner {
-			padding-block: var(--space-24) 0;
-		}
 	}
 </style>

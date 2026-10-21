@@ -16,6 +16,7 @@
 	--color-pattern-black: #000000;
 	--color-pattern-cream: #f7f5f0;
 	--color-border: #d6d2ca;
+	--color-status: #1a7f37;
 
 	/* Type */
 	--font-display: var(--font-sora);

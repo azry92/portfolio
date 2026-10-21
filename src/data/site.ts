@@ -57,8 +57,8 @@ export const contact = {
 export const footerLine = 'Designed and built by Ismail Azry with Astro. © 2026';
 
 export const work = {
+	label: '01 / Selected work',
 	heading: 'See the Work',
-	cv: 'Download CV',
 	more: [
 		{ label: 'Other Works', href: '/other-works' },
 		{ label: 'Fun', href: '/fun' },
@@ -66,8 +66,20 @@ export const work = {
 } as const;
 
 export const intro = {
-	greeting: 'Hello, I’m Azry.',
 	title: 'Product Designer, Web & E-commerce',
+	status: 'Open to roles, Kuala Lumpur',
+	/** The h1: name, then the claim in the accent. */
+	name: 'Ismail Azry,',
+	claim: 'designing stores, then building them.',
+	cta: 'See the work ↓',
+	cv: 'CV ↓',
 	about:
 		'Product designer who designs and builds e-commerce storefronts end to end, from information architecture and product search to custom Shopify code. Interface Design graduate, formerly a medical student.',
+	/** What I'm doing now; `link` is the words that open the case study. */
+	current: {
+		before: 'Currently designing and building the ',
+		link: 'AT Auto Shoppe store',
+		href: '/work/at-auto-shoppe',
+		after: '.',
+	},
 } as const;
