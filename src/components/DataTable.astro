@@ -37,7 +37,6 @@ const labels = head.map((cell) => cell.replace(/<[^>]+>/g, ''));
 	.data-table {
 		inline-size: 100%;
 		border-collapse: collapse;
-		background-color: var(--color-surface);
 		font-size: var(--text-16);
 		line-height: 1.4;
 		text-align: start;
@@ -51,10 +50,21 @@ const labels = head.map((cell) => cell.replace(/<[^>]+>/g, ''));
 		vertical-align: top;
 	}
 
+	/* A plain header over a 2px rule; the body rows keep the hairlines. */
+	/* Flush left: the first column starts on the text edge. */
+	th:first-child,
+	td:first-child {
+		padding-inline-start: 0;
+	}
+
 	thead th {
-		background-color: var(--accent, var(--color-surface-inverse));
-		color: var(--on-accent, var(--color-text-inverse));
+		padding-block-start: 0;
+		border-block-end: 2px solid var(--color-text);
+		color: var(--color-text-muted);
+		font-size: var(--text-14);
 		font-weight: var(--weight-semibold);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
 	}
 
 	tbody th {

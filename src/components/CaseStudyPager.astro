@@ -1,5 +1,6 @@
 ---
-// Previous and next case study, by `order`, wrapping at both ends. Next is the lead.
+// Previous and next case study, by `order`, wrapping at both ends. Next is the lead: a
+// hairline-topped row with the label in columns 1 to 4 and the project name from column 5.
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -12,11 +13,11 @@ const { prev, next } = Astro.props;
 const name = (entry: CollectionEntry<'caseStudies'>) => entry.data.title.split(':')[0].trim();
 ---
 
-<nav class="pager accent-band" aria-label="Case studies">
-	<ul class="pager__inner container" role="list">
-		<li class="pager__next">
-			<a href={`/work/${next.id}`} rel="next">
-				<span class="pager__label">Next read</span>
+<nav class="pager container" aria-label="Case studies">
+	<ul class="pager__inner" role="list">
+		<li>
+			<a class="pager__next" href={`/work/${next.id}`} rel="next">
+				<span class="pager__label section-label">Next read</span>
 				<span class="pager__name">
 					{name(next)}
 					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg>
@@ -35,48 +36,37 @@ const name = (entry: CollectionEntry<'caseStudies'>) => entry.data.title.split('
 <style>
 	.pager__inner {
 		display: grid;
-		gap: var(--space-32);
-		justify-items: center;
-		padding-block: var(--space-64);
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--space-8);
+		padding: var(--space-32) 0 var(--space-48);
+		border-block-start: var(--rule);
 		list-style: none;
-		text-align: center;
 	}
 
 	.pager a {
+		color: var(--color-text);
 		text-decoration: none;
 	}
 
-	.pager__next a {
+	.pager__next {
 		display: grid;
-		gap: var(--space-8);
-		justify-items: center;
-	}
-
-	.pager__label {
-		font-family: var(--font-display);
-		font-size: var(--text-display);
-		font-weight: var(--weight-bold);
-		line-height: var(--leading-heading);
-		text-transform: uppercase;
-	}
-
-	/* The pill swaps the band's colours, so its contrast is the band's own. */
-	.pager__name {
-		display: inline-flex;
 		gap: var(--space-12);
+	}
+
+	.pager__name {
+		display: flex;
+		gap: var(--space-16);
 		align-items: center;
-		min-block-size: var(--space-48);
-		padding: var(--space-12) var(--space-24);
-		border-radius: var(--radius-pill);
-		background-color: var(--on-accent, var(--color-text-inverse));
-		color: var(--accent, var(--color-surface-inverse));
+		font-family: var(--font-display);
+		/* 24px on a phone keeps PLANETSTEWARDS and its arrow on one line at 360px. */
 		font-size: var(--text-24);
-		font-weight: var(--weight-semibold);
+		font-weight: var(--weight-bold);
 		line-height: var(--leading-heading);
 	}
 
 	.pager__name svg {
-		inline-size: 1.5em;
+		flex: none;
+		inline-size: 0.75em;
 		fill: none;
 		stroke: currentColor;
 		stroke-width: 2;
@@ -84,18 +74,63 @@ const name = (entry: CollectionEntry<'caseStudies'>) => entry.data.title.split('
 		stroke-linejoin: round;
 	}
 
-	.pager__next a:hover .pager__name,
-	.pager__prev a:hover {
+	.pager__next:hover .pager__name,
+	.pager__next:focus-visible .pager__name {
+		color: var(--color-accent);
 		text-decoration: underline;
+		text-decoration-thickness: 2px;
+		text-underline-offset: 0.15em;
 	}
 
 	.pager__prev a {
 		display: inline-block;
 		padding-block: var(--space-8);
+		color: var(--color-text-muted);
+	}
+
+	.pager__prev a:hover {
+		color: var(--color-accent);
+		text-decoration: underline;
 	}
 
 	.pager__small {
 		margin-inline-end: var(--space-4);
+	}
+
+	@media (min-width: 600px) {
+		.pager__name {
+			font-size: var(--text-section);
+		}
+	}
+
+	/* From 900px the label holds columns 1 to 4 and the name and Previous start at 5. */
+	@media (min-width: 900px) {
+		.pager__inner {
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			column-gap: var(--gutter);
+			padding-block: var(--space-48) var(--space-64);
+		}
+
+		.pager__inner > li,
+		.pager__next {
+			display: grid;
+			grid-column: 1 / -1;
+			grid-template-columns: subgrid;
+		}
+
+		.pager__next {
+			align-items: baseline;
+		}
+
+		.pager__label {
+			grid-column: 1 / span 4;
+		}
+
+		.pager__name,
+		.pager__prev a {
+			grid-column: 5 / -1;
+			justify-self: start;
+		}
 	}
 
 	@media (prefers-reduced-motion: no-preference) {
@@ -103,7 +138,7 @@ const name = (entry: CollectionEntry<'caseStudies'>) => entry.data.title.split('
 			transition: transform 150ms ease-out;
 		}
 
-		.pager__next a:hover svg {
+		.pager__next:hover svg {
 			transform: translateX(var(--space-4));
 		}
 	}

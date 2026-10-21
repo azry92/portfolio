@@ -1,15 +1,18 @@
 ---
 // "Rows of phones, one labelled row per stage": each subsection becomes a row of
-// phones on the accent band, labelled by its heading and described by its caption.
+// phones under a hairline, labelled by its heading and described by its caption.
 import FigureGrid from './FigureGrid.astro';
 import Prose from './Prose.astro';
+import SectionLabel from './SectionLabel.astro';
 import type { Section } from '../lib/case-study/parse';
 
 interface Props {
 	section: Section;
+	/** The section's place on the page, for its numbered label. */
+	number: number;
 }
 
-const { section } = Astro.props;
+const { section, number } = Astro.props;
 
 const stages = section.subsections.map((stage) => {
 	const figures = stage.blocks.filter((block) => block.kind === 'figures');
@@ -23,9 +26,12 @@ const stages = section.subsections.map((stage) => {
 const columns = Math.max(...stages.map((stage) => stage.row.items.length));
 ---
 
-<section class="stages accent-band" aria-labelledby={section.id}>
-	<div class="stages__inner container">
-		<h2 id={section.id} class="stages__title">{section.heading}</h2>
+<section class="stages" aria-labelledby={section.id}>
+	<div class="stages__inner container container-rule">
+		<div class="stages__header">
+			<SectionLabel number={number} marker="var(--accent)" />
+			<h2 id={section.id} class="stages__title">{section.heading}</h2>
+		</div>
 		{section.blocks.length > 0 && <Prose html={section.blocks.map((b) => (b.kind === 'prose' ? b.html : '')).join('')} />}
 		<ol class="stages__list" role="list">
 			{
@@ -51,8 +57,13 @@ const columns = Math.max(...stages.map((stage) => stage.row.items.length));
 		padding-block: var(--space-48);
 	}
 
+	.stages__header {
+		display: grid;
+		gap: var(--space-12);
+	}
+
 	.stages__title {
-		font-size: var(--text-display);
+		font-size: var(--text-section);
 	}
 
 	.stages__list {
@@ -62,17 +73,21 @@ const columns = Math.max(...stages.map((stage) => stage.row.items.length));
 		list-style: none;
 	}
 
+	/* A hairline between stages, none above the first (the section's own rule). */
 	.stage {
 		display: grid;
 		gap: var(--space-24);
+	}
+
+	.stage + .stage {
+		padding-block-start: var(--space-48);
+		border-block-start: var(--rule);
 	}
 
 	.stage__label {
 		display: grid;
 		gap: var(--space-8);
 		align-content: start;
-		padding: var(--space-24);
-		background-color: color-mix(in srgb, var(--accent, var(--color-surface-inverse)) 60%, #000);
 	}
 
 	.stage__label h3 {
@@ -88,6 +103,10 @@ const columns = Math.max(...stages.map((stage) => stage.row.items.length));
 		.stages__list {
 			gap: var(--space-64);
 		}
+
+		.stage + .stage {
+			padding-block-start: var(--space-64);
+		}
 	}
 
 	@media (min-width: 1200px) {
@@ -95,14 +114,20 @@ const columns = Math.max(...stages.map((stage) => stage.row.items.length));
 			font-size: var(--text-32);
 		}
 
+		/* Phones in columns 1 to 8, the label in 10 to 12. */
 		.stage {
-			grid-template-columns: minmax(0, 1fr) 20rem;
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			column-gap: var(--gutter);
 			align-items: start;
 		}
 
+		.stage > :global(*) {
+			grid-column: 1 / span 8;
+		}
+
 		/* The label sits to the right of its row, as in the stage reference. */
-		.stage__label {
-			grid-column: 2;
+		.stage > .stage__label {
+			grid-column: 10 / -1;
 			grid-row: 1;
 		}
 	}

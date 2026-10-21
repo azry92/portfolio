@@ -37,10 +37,11 @@ const spoken = (value: string) =>
 </ul>
 
 <style>
+	/* Open cells divided by hairlines: no fill, no box. */
 	.stat-cards {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: var(--space-16);
+		gap: 0 var(--gutter);
 		padding: 0;
 		list-style: none;
 	}
@@ -49,10 +50,8 @@ const spoken = (value: string) =>
 		display: grid;
 		gap: var(--space-8);
 		align-content: start;
-		padding: var(--space-16);
-		border: var(--border-width) solid var(--color-border);
-		border-radius: var(--radius-sm);
-		background-color: var(--color-surface);
+		padding-block: var(--space-16) var(--space-24);
+		border-block-start: var(--rule);
 	}
 
 	.stat-card__value {
@@ -68,6 +67,7 @@ const spoken = (value: string) =>
 
 	.stat-card:first-child .stat-card__value {
 		font-size: var(--text-48);
+		color: var(--color-accent);
 	}
 
 	/* An odd card left after the lead takes the full row, so no cell sits empty. */
@@ -76,40 +76,37 @@ const spoken = (value: string) =>
 		grid-column: 1 / -1;
 	}
 
-	.stat-card:first-child {
-		padding: var(--space-24);
-	}
-
 	@media (min-width: 600px) {
-		.stat-card {
-			padding: var(--space-24);
+		.stat-card__value {
+			font-size: var(--text-48);
 		}
 
-		.stat-card__value {
-			font-size: var(--text-40);
+		.stat-card:first-child .stat-card__value {
+			font-size: var(--text-64);
 		}
 	}
 
 	@media (min-width: 1200px) {
 		.stat-cards {
-			grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
-			gap: var(--space-24);
+			grid-template-columns: repeat(12, minmax(0, 1fr));
 		}
 
-		/* The lead card takes the left column, as tall as the others stacked on the right. */
+		/* The lead takes columns 1 to 7, as tall as the others stacked in 8 to 12. */
+		.stat-card {
+			grid-column: 8 / -1;
+		}
+
 		.stat-card:first-child {
-			grid-column: 1;
+			grid-column: 1 / span 7;
 			grid-row: 1 / span var(--rest);
-			align-content: center;
-			padding: var(--space-48);
 		}
 
 		.stat-card:last-child:nth-child(even) {
-			grid-column: 2;
+			grid-column: 8 / -1;
 		}
 
 		.stat-card:first-child .stat-card__value {
-			font-size: var(--text-64);
+			font-size: var(--text-96);
 		}
 
 		.stat-card:first-child .stat-card__label {

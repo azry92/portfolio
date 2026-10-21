@@ -1,11 +1,12 @@
 ---
-// Full-bleed accent band: title, at-a-glance lines, overview and project facts beside the hero image.
+// The case study's opening on the page cream: title, at-a-glance lines, project facts,
+// the overview and the hero image, placed on the 12-column grid.
 // Below 600px the image sits between the glance and the overview, so the first screen
-// shows the title, the outcome and the work. From 600px it follows the copy, and from
-// 1200px it sits beside it.
-// By default the cover goes in unframed, since it carries its own mockup. With a
-// `hero` field the image sits in a browser or phone frame, centred beside the copy,
-// and the copy alone sets the band's height.
+// shows the title, the outcome and the work. From 600px it follows the copy. From 1200px
+// the title takes columns 1 to 8 with the facts in 9 to 12, then the overview (01) in 1 to 5
+// beside the image in 7 to 12.
+// By default the cover goes in unframed, since it carries its own mockup. With a `hero`
+// field the image sits in a browser or phone frame.
 import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import BrowserFrame from './BrowserFrame.astro';
@@ -13,6 +14,7 @@ import CaseStudyGlance from './CaseStudyGlance.astro';
 import CaseStudyMeta from './CaseStudyMeta.astro';
 import PhoneFrame from './PhoneFrame.astro';
 import Prose from './Prose.astro';
+import SectionLabel from './SectionLabel.astro';
 import type { Section } from '../lib/case-study/parse';
 
 interface Props {
@@ -26,7 +28,7 @@ const { entry, overview, resultsId } = Astro.props;
 const { title, glance, client, role, team, timeline, platform, tools, live_url, cover, cover_alt, hero } = entry.data;
 ---
 
-<header class:list={['hero', 'accent-band', { 'hero--framed': hero }]}>
+<header class="hero">
 	<div class="hero__inner container">
 		<div class="hero__lead">
 			<h1 class="hero__title">{title}</h1>
@@ -40,7 +42,7 @@ const { title, glance, client, role, team, timeline, platform, tools, live_url, 
 							src={hero.image}
 							alt={hero.alt}
 							widths={[480, 720, 960, 1440, 1920]}
-							sizes="(min-width: 1248px) 672px, (min-width: 1200px) 56vw, 100vw"
+							sizes="(min-width: 1248px) 576px, (min-width: 1200px) 48vw, 100vw"
 							loading="eager"
 							fetchpriority="high"
 						/>
@@ -49,94 +51,80 @@ const { title, glance, client, role, team, timeline, platform, tools, live_url, 
 					)}
 				</div>
 			) : (
-				<div class="hero__cover">
+				<div class="hero__media hero__cover">
 					<Picture
 						src={cover}
 						alt={cover_alt}
 						formats={['avif', 'webp']}
 						widths={[480, 720, 960, 1440, 1920].filter((w) => w <= cover.width)}
-						sizes="(min-width: 1200px) 60vw, 100vw"
+						sizes="(min-width: 1248px) 576px, (min-width: 1200px) 48vw, 100vw"
 						loading="eager"
 						fetchpriority="high"
 					/>
 				</div>
 			)
 		}
-		<div class="hero__details">
-			<section class="hero__overview" aria-labelledby={overview.id}>
+		<section class="hero__overview" aria-labelledby={overview.id}>
+			<div class="hero__overview-header">
+				<SectionLabel number={1} marker="var(--accent)" />
 				<h2 id={overview.id}>{overview.heading}</h2>
-				{overview.blocks.map((block) => block.kind === 'prose' && <Prose html={block.html} />)}
-			</section>
+			</div>
+			{overview.blocks.map((block) => block.kind === 'prose' && <Prose html={block.html} />)}
+		</section>
+		<div class="hero__meta">
 			<CaseStudyMeta client={client} role={role} team={team} timeline={timeline} platform={platform} tools={tools} liveUrl={live_url} />
 		</div>
 	</div>
 </header>
 
 <style>
-	.hero {
-		overflow: hidden;
-	}
-
 	.hero__inner {
 		display: grid;
-		grid-template-areas: 'lead' 'media' 'details';
-		gap: var(--space-32);
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-areas: 'lead' 'media' 'overview' 'meta';
+		gap: var(--space-32) var(--gutter);
 		padding-block: var(--space-48);
 	}
 
-	.hero__lead,
-	.hero__details {
+	.hero__lead {
 		display: grid;
 		gap: var(--space-32);
 		align-content: start;
-	}
-
-	.hero__lead {
 		grid-area: lead;
 	}
 
-	.hero__details {
-		grid-area: details;
-	}
-
-	.hero__media,
-	.hero__cover {
+	.hero__media {
 		grid-area: media;
-	}
-
-	.hero__title {
-		font-size: var(--text-display);
 	}
 
 	.hero__overview {
 		display: grid;
 		gap: var(--space-16);
+		align-content: start;
+		grid-area: overview;
+	}
+
+	.hero__meta {
+		grid-area: meta;
+	}
+
+	.hero__title {
+		font-size: var(--text-display);
+		letter-spacing: -0.01em;
+	}
+
+	.hero__overview-header {
+		display: grid;
+		gap: var(--space-12);
 	}
 
 	.hero__overview h2 {
 		font-size: var(--text-24);
 	}
 
-	/* Bleed the cover to the screen edges on small screens. Its backdrop is close to,
-	   not exactly, the accent, so its edges fade into the band: top and bottom while it
-	   sits mid-band, the top only once it ends the band. */
-	.hero__cover {
-		margin-inline: calc(var(--gutter) * -1);
-	}
-
-	.hero__cover :global(picture) {
-		mask-image: linear-gradient(to bottom, transparent, #000 20%, #000 80%, transparent);
-	}
-
 	.hero__cover :global(img) {
 		inline-size: 100%;
 		block-size: auto;
-	}
-
-	/* Framed: the image keeps to the container. */
-	.hero__media--phone {
-		display: grid;
-		justify-items: center;
 	}
 
 	.hero__media--phone :global(.phone) {
@@ -145,56 +133,32 @@ const { title, glance, client, role, team, timeline, platform, tools, live_url, 
 
 	@media (min-width: 600px) {
 		.hero__inner {
-			grid-template-areas: 'lead' 'details' 'media';
-		}
-
-		/* The unframed cover ends the band, so it runs to the band's bottom edge. */
-		.hero:not(.hero--framed) .hero__inner {
-			padding-block-end: 0;
-		}
-
-		.hero__cover :global(picture) {
-			mask-image: linear-gradient(to bottom, transparent, #000 20%);
+			grid-template-areas: 'lead' 'overview' 'meta' 'media';
+			padding-block: var(--space-64);
 		}
 	}
 
 	@media (min-width: 1200px) {
 		.hero__inner {
-			grid-template-areas: 'lead media' 'details media';
-			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-			grid-template-rows: auto 1fr;
-			gap: var(--space-32) var(--space-48);
-			padding-block: var(--space-64) 0;
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			grid-template-areas: none;
+			row-gap: var(--space-64);
 		}
 
-		.hero__details {
-			padding-block-end: var(--space-64);
+		.hero__lead {
+			grid-area: 1 / 1 / 2 / span 8;
 		}
 
-		/* Fill the band's height, centred against the copy, and run out to the right
-		   edge of the viewport. */
-		.hero__cover {
-			display: flex;
-			align-items: center;
-			margin-block-start: calc(var(--space-64) * -1);
-			margin-inline: 0 calc((100vw - min(100vw, var(--content-max) + 2 * var(--gutter))) / -2 - var(--gutter));
+		.hero__meta {
+			grid-area: 1 / 9 / 2 / -1;
 		}
 
-		.hero__cover :global(picture) {
-			inline-size: 100%;
-			/* Centred, the bottom edge sits inside the band too, so it fades like the top. */
-			mask-image: linear-gradient(to right, transparent, #000 25%), linear-gradient(to bottom, transparent, #000 25%, #000 75%, transparent);
-			mask-composite: intersect;
+		.hero__overview {
+			grid-area: 2 / 1 / 3 / span 5;
 		}
 
-		/* contain: size keeps the frame from adding height, so the copy sets the band's
-		   height. The cell reaches up over the top padding to match the copy's bottom
-		   padding, so the frame centres in the band. */
 		.hero__media {
-			display: grid;
-			align-content: center;
-			margin-block-start: calc(var(--space-64) * -1);
-			contain: size;
+			grid-area: 2 / 7 / 3 / -1;
 		}
 	}
 </style>

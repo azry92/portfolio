@@ -1,7 +1,8 @@
 ---
 // Project facts under a project's title: client, project, role, team, timeline, platform, tools, live site.
-// `grid` sets them two across (case study hero); `row` runs them in one line under a
-// hairline from 1200px, two across below that (other works).
+// `grid` sets them as hairline rows, two across below 1200px and one column from 1200px
+// (case study hero); `row` runs them in one line under a hairline from 1200px, two across
+// below that (other works).
 interface Props {
 	client?: string;
 	project?: string;
@@ -83,7 +84,24 @@ const host = liveUrl ? new URL(liveUrl).host.replace(/^www\./, '') : undefined;
 	}
 
 	dt {
+		color: var(--color-text-muted);
 		font-size: var(--text-14);
+	}
+
+	.meta--grid {
+		column-gap: var(--gutter);
+		row-gap: 0;
+	}
+
+	.meta--grid > div {
+		padding-block: var(--space-12);
+		border-block-start: var(--rule);
+	}
+
+	@media (min-width: 1200px) {
+		.meta--grid {
+			grid-template-columns: minmax(0, 1fr);
+		}
 	}
 
 	dd {

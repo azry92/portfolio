@@ -5,6 +5,7 @@ import Figure from './Figure.astro';
 import FigureGrid from './FigureGrid.astro';
 import LabelledStack from './LabelledStack.astro';
 import PhonesThenBrowser from './PhonesThenBrowser.astro';
+import SectionLabel from './SectionLabel.astro';
 import SplitBlocks from './SplitBlocks.astro';
 import StageRows from './StageRows.astro';
 import StepRow from './StepRow.astro';
@@ -13,11 +14,13 @@ import type { Block, Section, Subsection } from '../lib/case-study/parse';
 
 interface Props {
 	section: Section;
+	/** The section's place on the page, for its numbered label (the overview is 01). */
+	number: number;
 }
 
 type Run = Extract<Block, { kind: 'figures' }>;
 
-const { section } = Astro.props;
+const { section, number } = Astro.props;
 const layout: Layout = section.layout ?? { kind: 'stack' };
 
 const frameFor = (own: Layout | undefined, fallback: Frame): Frame =>
@@ -75,12 +78,15 @@ const subsectionClass = (sub: Subsection) => [
 
 {
 	layout.kind === 'stages' ? (
-		<StageRows section={section} />
+		<StageRows section={section} number={number} />
 	) : (
-		<section class:list={['cs-section', 'container', `cs-section--${layout.kind}`]} aria-labelledby={section.id}>
-			<h2 id={section.id} class="cs-section__title">
-				{section.heading}
-			</h2>
+		<section class:list={['cs-section', 'container', 'container-rule', `cs-section--${layout.kind}`]} aria-labelledby={section.id}>
+			<div class="cs-section__header">
+				<SectionLabel number={number} marker="var(--accent)" />
+				<h2 id={section.id} class="cs-section__title">
+					{section.heading}
+				</h2>
+			</div>
 			{layout.kind === 'split' ? (
 				<SplitBlocks blocks={section.blocks} frame={layout.frame} />
 			) : layout.kind === 'phones-then-browser' && run ? (
@@ -176,10 +182,16 @@ const subsectionClass = (sub: Subsection) => [
 		padding-block: var(--space-32);
 	}
 
-	/* Every heading sits 16px above its own content; the grid gap still spaces the blocks. */
-	.cs-section__title {
+	/* A hairline (.container-rule), the number with the project's accent square, then the
+	   heading, 16px above its own content; the grid gap still spaces the blocks. */
+	.cs-section__header {
+		display: grid;
+		gap: var(--space-12);
 		margin-block-end: calc(var(--space-16) - var(--section-gap));
-		font-size: var(--text-32);
+	}
+
+	.cs-section__title {
+		font-size: var(--text-section);
 	}
 
 	.cs-subsection {
@@ -238,30 +250,34 @@ const subsectionClass = (sub: Subsection) => [
 			padding-block: var(--space-64);
 		}
 
-		.cs-section__title {
-			font-size: var(--text-40);
-		}
-
-		.cs-section--headline-desktop-phones .cs-section__title {
-			font-size: var(--text-48);
-		}
-
-		.cs-desktop {
-			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-			gap: var(--space-48);
-			align-items: start;
-		}
-
-		.cs-columns {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			gap: var(--space-48);
-			align-items: start;
-		}
-
+		/* Splits sit on the page's twelve columns, an empty column between the parts where
+		   they are unequal: 5 | 6, 6 | 6, 7 | 4. */
+		.cs-desktop,
+		.cs-columns,
 		.cs-sitemap {
-			grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-			gap: var(--space-48);
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			gap: var(--space-48) var(--gutter);
 			align-items: start;
+		}
+
+		.cs-desktop > :first-child {
+			grid-column: span 5;
+		}
+
+		.cs-desktop > :last-child {
+			grid-column: 7 / -1;
+		}
+
+		.cs-columns > * {
+			grid-column: span 6;
+		}
+
+		.cs-sitemap > :first-child {
+			grid-column: span 7;
+		}
+
+		.cs-sitemap > :last-child {
+			grid-column: 9 / -1;
 		}
 	}
 </style>

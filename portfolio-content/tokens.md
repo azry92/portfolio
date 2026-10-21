@@ -19,7 +19,7 @@
 - Display: Sora, weights 300 and 700
 - Body: Inter, weights 400 and 600
 - Scale (px): 14 / 16 / 18 / 24 / 32 / 40 / 48 / 64 / 80 / 96 / 128
-- Display steps: hero 48 to 128 (home name, About headline); page h1 40 to 80; section h2 32 to 48; labels 14. Contrast comes from scale, not colour.
+- Display steps: hero 48 to 128 (home name, About headline); page h1 32 to 80; section h2 32 to 48; labels 14. Contrast comes from scale, not colour.
 - Line height: body 1.6, headings 1.15
 ## Spacing (px)
 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 / 128

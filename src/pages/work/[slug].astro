@@ -6,7 +6,6 @@ import CaseStudyHero from '../../components/CaseStudyHero.astro';
 import CaseStudyPager from '../../components/CaseStudyPager.astro';
 import CaseStudySection from '../../components/CaseStudySection.astro';
 import Lightbox from '../../components/Lightbox.astro';
-import { readableOn } from '../../lib/case-study/contrast';
 import { parseCaseStudy } from '../../lib/case-study/parse';
 
 export async function getStaticPaths() {
@@ -35,14 +34,8 @@ if (overview?.layout?.kind !== 'hero') {
 }
 const resultsId = sections.find((section) => section.heading === 'Results')?.id;
 
-// Text on the accent band: white where it reaches AA, otherwise cream.
-const onAccent = accent
-	? readableOn(accent, [
-			['--color-surface', '#ffffff'],
-			['--color-text-inverse', '#f0eee9'],
-		])
-	: undefined;
-const accentStyle = accent ? `--accent: ${accent}; --on-accent: var(${onAccent})` : undefined;
+// The project accent marks the section labels; red stays the site's one accent.
+const accentStyle = accent ? `--accent: ${accent}` : undefined;
 const og = ogImageFor(entry.id, entry.data.cover_alt);
 ---
 
@@ -50,7 +43,8 @@ const og = ogImageFor(entry.id, entry.data.cover_alt);
 	<div class="case-study" style={accentStyle}>
 		<article>
 			<CaseStudyHero entry={entry} overview={overview} resultsId={resultsId} />
-			{sections.map((section) => <CaseStudySection section={section} />)}
+			{/* The overview, in the hero, is section 01. */}
+			{sections.map((section, i) => <CaseStudySection section={section} number={i + 2} />)}
 		</article>
 		<CaseStudyPager prev={prev} next={next} />
 	</div>

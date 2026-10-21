@@ -138,6 +138,12 @@ a:active {
 	border-block-start: var(--rule);
 }
 
+/* The same hairline on a .container, drawn across its content width only (inside the
+   gutters), so it lines up with the text. */
+.container-rule {
+	background: linear-gradient(var(--color-border) 0 0) top center / calc(100% - 2 * var(--gutter)) var(--border-width) no-repeat;
+}
+
 /* The numbered label over a section heading: "02 / Process". */
 .section-label {
 	display: flex;
@@ -335,24 +341,4 @@ html {
 		position: relative;
 		scroll-snap-align: start;
 	}
-}
-
-/* Case study accent: the page sets --accent and picks --on-accent for contrast */
-.accent-band {
-	background-color: var(--accent, var(--color-surface-inverse));
-	color: var(--on-accent, var(--color-text-inverse));
-}
-
-.accent-band a,
-.accent-band a:hover {
-	color: inherit;
-}
-
-.accent-band :focus-visible {
-	outline-color: currentColor;
-}
-
-/* Captions are muted on the page background; on an accent band they take the band's text colour. */
-.accent-band figcaption {
-	color: inherit;
 }

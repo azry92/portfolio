@@ -39,8 +39,8 @@
 	/* Display steps, each from 360px wide to 1440px. Contrast comes from scale, not colour. */
 	/* Hero: the home name and the About headline, 48px to 128px */
 	--text-hero: clamp(var(--text-48), 1.333rem + 7.41vw, var(--text-128));
-	/* Page h1: 40px to 80px */
-	--text-display: clamp(var(--text-40), 1.667rem + 3.7vw, var(--text-80));
+	/* Page h1: 32px to 80px (32px keeps "PLANETSTEWARDS:" on one line at 360px) */
+	--text-display: clamp(var(--text-32), 1rem + 4.44vw, var(--text-80));
 	/* Section h2: 32px to 48px */
 	--text-section: clamp(var(--text-32), 1.667rem + 1.48vw, var(--text-48));
 	--leading-body: 1.6;
