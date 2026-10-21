@@ -83,6 +83,8 @@ a:active {
 .inverse {
 	--color-text-muted: color-mix(in srgb, var(--color-text-inverse) 72%, var(--color-surface-inverse));
 	--color-border: color-mix(in srgb, var(--color-text-inverse) 22%, var(--color-surface-inverse));
+	/* Re-declared so the hairline picks up the remixed border colour. */
+	--rule: var(--border-width) solid var(--color-border);
 
 	background-color: var(--color-surface-inverse);
 	color: var(--color-text-inverse);
@@ -105,6 +107,47 @@ a:active {
 	padding-inline: var(--gutter);
 }
 
+/* The page grid: one column below 600px, four from 600px, twelve from 900px.
+   Components place their parts by span on it rather than with their own fractions. */
+.grid-12 {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	column-gap: var(--gutter);
+}
+
+@media (min-width: 600px) {
+	.grid-12 {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+
+	.grid-12 > * {
+		grid-column: 1 / -1;
+	}
+}
+
+@media (min-width: 900px) {
+	.grid-12 {
+		grid-template-columns: repeat(12, minmax(0, 1fr));
+	}
+}
+
+/* A page section opens with a hairline. */
+.section-rule {
+	border-block-start: var(--rule);
+}
+
+/* The numbered label over a section heading: "02 / Process". */
+.section-label {
+	display: flex;
+	gap: var(--space-8);
+	align-items: center;
+	font-size: var(--text-14);
+	font-weight: var(--weight-semibold);
+	letter-spacing: 0.08em;
+	line-height: var(--leading-heading);
+	text-transform: uppercase;
+}
+
 .visually-hidden:not(:focus-within, :active) {
 	position: absolute;
 	inline-size: 1px;
@@ -125,7 +168,6 @@ main[tabindex='-1']:focus {
 	inset-inline-start: var(--space-8);
 	z-index: 100;
 	padding: var(--space-8) var(--space-16);
-	border-radius: var(--radius-pill);
 	background-color: var(--color-surface);
 	color: var(--color-text);
 	font-weight: var(--weight-semibold);
@@ -134,6 +176,104 @@ main[tabindex='-1']:focus {
 
 .skip-link:focus-visible {
 	transform: none;
+}
+
+/* The primary CTA, and the only pill on the site ("See the work"). */
+.button-primary {
+	display: inline-flex;
+	gap: var(--space-8);
+	align-items: center;
+	min-block-size: var(--space-48);
+	padding: var(--space-12) var(--space-24);
+	border-radius: var(--radius-pill);
+	background-color: var(--color-accent);
+	color: var(--color-text-inverse);
+	font-weight: var(--weight-semibold);
+	line-height: var(--leading-heading);
+	text-decoration: none;
+}
+
+.button-primary:focus-visible {
+	background-color: var(--color-accent-deep);
+	color: var(--color-text-inverse);
+}
+
+@media (hover: hover) {
+	.button-primary:hover {
+		background-color: var(--color-accent-deep);
+		color: var(--color-text-inverse);
+	}
+}
+
+/* A square control: Shuffle, the lightbox close, video play, the contact icons. Square
+   corners, a 1px border, black fill on hover and focus. */
+.button-square {
+	display: inline-flex;
+	gap: var(--space-8);
+	align-items: center;
+	justify-content: center;
+	min-block-size: var(--space-48);
+	padding: var(--space-12) var(--space-24);
+	border: var(--border-width) solid currentColor;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--color-text);
+	cursor: pointer;
+	font-weight: var(--weight-semibold);
+	line-height: var(--leading-heading);
+	text-decoration: none;
+}
+
+/* Touch screens keep a tapped control in its hover state, so the fill follows focus there. */
+.button-square:focus-visible {
+	background-color: var(--color-surface-inverse);
+	color: var(--color-text-inverse);
+}
+
+@media (hover: hover) {
+	.button-square:hover {
+		background-color: var(--color-surface-inverse);
+		color: var(--color-text-inverse);
+	}
+}
+
+/* A text link with a trailing arrow that steps right on hover: Other Works, Fun, a live
+   site, the 404's way back. Put the arrow in a span.link-arrow__arrow. */
+.link-arrow {
+	display: inline-flex;
+	gap: var(--space-8);
+	align-items: baseline;
+	padding-block: var(--space-8);
+	color: var(--color-text);
+	font-weight: var(--weight-semibold);
+	text-decoration: none;
+}
+
+.link-arrow__arrow {
+	display: inline-block;
+}
+
+.link-arrow:focus-visible,
+.link-arrow:hover {
+	color: var(--color-accent);
+	text-decoration: underline;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	.button-primary,
+	.button-square {
+		transition:
+			background-color 150ms ease-out,
+			color 150ms ease-out;
+	}
+
+	.link-arrow__arrow {
+		transition: transform 150ms ease-out;
+	}
+
+	.link-arrow:hover .link-arrow__arrow {
+		transform: translateX(var(--space-4));
+	}
 }
 
 /* Outline pill: a secondary button or button-styled link (Other Works and Fun on home,
