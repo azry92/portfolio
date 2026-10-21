@@ -1,7 +1,8 @@
 ---
-// "See the Work": numbered label and heading, case study cards in frontmatter order,
-// then Other Works and Fun as pills.
+// "See the Work": a hairline, the numbered label and heading, the case study cards in
+// frontmatter order, then Other Works and Fun as text-link rows.
 import { getCollection } from 'astro:content';
+import SectionLabel from './SectionLabel.astro';
 import WorkCard from './WorkCard.astro';
 import ShortCard from './ShortCard.astro';
 import { work } from '../data/site';
@@ -9,31 +10,29 @@ import { work } from '../data/site';
 const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order);
 ---
 
-<section id="work" class="work" aria-labelledby="work-title">
+<section id="work" class="work section-rule grid-12" aria-labelledby="work-title">
 	<div class="work__header">
-		<p class="work__label">{work.label}</p>
+		<SectionLabel number={1} label={work.label} />
 		<h2 id="work-title" class="work__heading">{work.heading}</h2>
 	</div>
-	<div class="work__body">
-		<ul class="work__cases" role="list">
-			{
-				caseStudies.map((entry) => (
-					<li>
-						<WorkCard entry={entry} />
-					</li>
-				))
-			}
-		</ul>
-		<ul class="work__more" role="list">
-			{
-				work.more.map((item) => (
-					<li>
-						<ShortCard {...item} />
-					</li>
-				))
-			}
-		</ul>
-	</div>
+	<ul class="work__cases" role="list">
+		{
+			caseStudies.map((entry) => (
+				<li>
+					<WorkCard entry={entry} />
+				</li>
+			))
+		}
+	</ul>
+	<ul class="work__more" role="list">
+		{
+			work.more.map((item) => (
+				<li>
+					<ShortCard {...item} />
+				</li>
+			))
+		}
+	</ul>
 </section>
 
 <style>
@@ -43,129 +42,74 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 		list-style: none;
 	}
 
-	.work__heading {
-		font-size: var(--text-24);
-	}
-
-	/* Matches the hero's labels: numbering over the heading. */
-	.work__label {
-		margin-block-end: var(--space-8);
-		font-size: var(--text-14);
-		font-weight: var(--weight-semibold);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-	}
-
-	/* Below 600px: header on top, then one row per case study, hairlines between, and
-	   Other Works and Fun as pills underneath. */
 	.work {
-		--work-gap: var(--space-12);
-
-		padding-block-start: var(--space-64);
+		row-gap: var(--space-24);
+		padding-block-start: var(--space-48);
 	}
 
-	.work__body {
-		display: grid;
-		gap: var(--space-24);
-		margin-block-start: var(--space-24);
+	.work__heading {
+		margin-block-start: var(--space-8);
+		font-size: var(--text-section);
 	}
 
-	.work__cases > li {
-		padding-block: var(--space-16);
-		border-block-start: var(--border-width) solid var(--color-border);
+	/* Below 600px: one row per case study, hairlines between the rows. */
+	.work__cases > li + li {
+		margin-block-start: var(--space-16);
+		padding-block-start: var(--space-16);
+		border-block-start: var(--rule);
 	}
 
-	.work__cases > li:last-child {
-		border-block-end: var(--border-width) solid var(--color-border);
+	/* Other Works and Fun: one text link per row, a hairline above each. */
+	.work__more > li {
+		border-block-start: var(--rule);
 	}
 
-	.work__more {
+	.work__more :global(.short-card) {
 		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-12);
+		justify-content: space-between;
+		inline-size: 100%;
+		padding-block: var(--space-16);
+		font-family: var(--font-display);
+		font-size: var(--text-18);
 	}
 
-	/* From 600px: one two-column grid. The header takes the first cell, the cards flow
-	   after it, and the pills run under them. */
+	/* From 600px the three cards share one row; the hairlines between them go. */
 	@media (min-width: 600px) {
 		.work {
-			display: grid;
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			gap: var(--work-gap);
-		}
-
-		.work__header {
-			position: relative;
-			z-index: 1;
-			grid-column: 1;
-			grid-row: 1;
-			align-self: center;
-		}
-
-		/* The body's lists join the section grid directly; the div adds no semantics. */
-		.work__body {
-			display: contents;
+			row-gap: var(--space-32);
+			padding-block-start: var(--space-64);
 		}
 
 		.work__cases {
 			display: grid;
-			grid-template-columns: subgrid;
-			grid-template-rows: subgrid;
-			grid-column: 1 / -1;
-			grid-row: 1 / span 2;
-			gap: var(--work-gap);
-			/* Its first cell sits under the header, so let clicks fall through to it. */
-			pointer-events: none;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: var(--gutter);
 		}
 
-		.work__cases > li,
-		.work__cases > li:last-child {
-			padding-block: 0;
+		.work__cases > li + li {
+			margin-block-start: 0;
+			padding-block-start: 0;
 			border: 0;
-			pointer-events: auto;
 		}
 
-		.work__cases > li:first-child {
-			grid-column: 2;
-		}
-
-		.work__more {
-			grid-column: 1 / -1;
-			margin-block-start: var(--space-12);
+		.work__more :global(.short-card) {
+			font-size: var(--text-24);
 		}
 	}
 
-	/* Tablet: header above, three case cards in a row, then the pills. */
-	@media (min-width: 768px) {
-		.work {
-			--work-gap: var(--space-24);
-
-			display: block;
-		}
-
-		.work__heading {
-			font-size: var(--text-32);
-		}
-
-		.work__body {
-			display: grid;
-			gap: var(--work-gap);
-			margin-block-start: var(--space-32);
-		}
-
+	/* From 900px each card takes four of the twelve columns, and the two links sit
+	   under the second and third cards. */
+	@media (min-width: 900px) {
 		.work__cases {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
-			grid-template-rows: none;
-			grid-row: auto;
-			pointer-events: auto;
+			grid-template-columns: subgrid;
 		}
 
-		.work__cases > li:first-child {
-			grid-column: auto;
+		.work__cases > li {
+			grid-column: span 4;
 		}
 
 		.work__more {
-			margin-block-start: 0;
+			grid-column: 5 / -1;
 		}
 	}
 </style>
