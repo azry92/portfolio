@@ -1,0 +1,28 @@
+---
+// The numbered label over a section heading: "02 / Process". Pages pass the number from
+// the section's position, never a hand-typed one. With `marker`, a small square in that
+// colour sits before it (the case study's project accent).
+interface Props {
+	number: number;
+	label: string;
+	marker?: string;
+	class?: string;
+}
+
+const { number, label, marker, class: className } = Astro.props;
+const index = String(number).padStart(2, '0');
+---
+
+<p class:list={['section-label', className]}>
+	{marker && <span class="section-label__marker" style={`--marker: ${marker}`} aria-hidden="true"></span>}
+	<span>{index} / {label}</span>
+</p>
+
+<style>
+	.section-label__marker {
+		flex: none;
+		inline-size: 0.625rem;
+		block-size: 0.625rem;
+		background-color: var(--marker);
+	}
+</style>

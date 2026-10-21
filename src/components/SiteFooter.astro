@@ -10,8 +10,8 @@ interface Props {
 const { showNav = true } = Astro.props;
 ---
 
-<footer id="contact" class="site-footer">
-	<div class="container site-footer__inner">
+<footer id="contact" class="site-footer container">
+	<div class="site-footer__inner grid-12">
 		<ContactLinks />
 		<div class="site-footer__meta">
 			{
@@ -40,12 +40,27 @@ const { showNav = true } = Astro.props;
 </footer>
 
 <style>
-	/* Two groups, 32px apart: the contact line with its circles (16px apart, set in
-	   ContactLinks), then the nav with the credit line. */
+	/* A hairline, then two groups 32px apart: the contact line with its squares (16px
+	   apart, set in ContactLinks), then the nav with the credit line. From 900px they sit
+	   side by side on the grid, the second from column 7, bottoms aligned. */
 	.site-footer__inner {
-		display: grid;
-		gap: var(--space-32);
+		row-gap: var(--space-32);
 		padding-block: var(--space-48) var(--space-32);
+		border-block-start: var(--rule);
+	}
+
+	@media (min-width: 900px) {
+		.site-footer__inner {
+			align-items: end;
+		}
+
+		.site-footer__inner > :first-child {
+			grid-column: 1 / span 6;
+		}
+
+		.site-footer__meta {
+			grid-column: 7 / -1;
+		}
 	}
 
 	/* The links' 8px block padding keeps their tap targets tall, so a 4px gap leaves

@@ -61,8 +61,8 @@ const { title, client, project, role, team, timeline, platform, tools, live_url,
 			{
 				live_url && (
 					<p class="ow-hero__live">
-						<a class="pill-outline" href={live_url}>
-							Visit the live site
+						<a class="link-arrow" href={live_url}>
+							Visit the live site <span class="link-arrow__arrow" aria-hidden="true">→</span>
 						</a>
 					</p>
 				)
@@ -186,10 +186,6 @@ const { title, client, project, role, team, timeline, platform, tools, live_url,
 			border-radius: 0;
 		}
 
-		.ow-hero__live .pill-outline {
-			display: flex;
-			justify-content: center;
-		}
 	}
 
 	@media (min-width: 600px) {

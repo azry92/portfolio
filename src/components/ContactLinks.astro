@@ -69,13 +69,7 @@ const links: ContactLink[] = [
 
 <style>
 	.contact {
-		--contact-size: 44px;
-	}
-
-	@media (min-width: 1200px) {
-		.contact {
-			--contact-size: 60px;
-		}
+		--contact-size: var(--space-48);
 	}
 
 	.contact__heading {
@@ -92,7 +86,7 @@ const links: ContactLink[] = [
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: flex-start;
-		gap: var(--space-24);
+		gap: var(--space-12);
 		margin-block-start: var(--space-16);
 		padding: 0;
 		list-style: none;
@@ -103,13 +97,13 @@ const links: ContactLink[] = [
 		place-items: center;
 		inline-size: var(--contact-size);
 		block-size: var(--contact-size);
-		border-radius: var(--radius-pill);
-		background-color: var(--color-pattern-grey);
+		border: var(--border-width) solid currentColor;
 		color: var(--color-text);
 	}
 
 	.contact__link:hover,
 	.contact__link:focus-visible {
+		border-color: var(--color-accent);
 		background-color: var(--color-accent);
 		color: var(--color-text-inverse);
 	}
@@ -117,6 +111,7 @@ const links: ContactLink[] = [
 	@media (prefers-reduced-motion: no-preference) {
 		.contact__link {
 			transition:
+				border-color 150ms ease-out,
 				background-color 150ms ease-out,
 				color 150ms ease-out;
 		}

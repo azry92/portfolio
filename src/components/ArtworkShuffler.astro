@@ -59,7 +59,7 @@ const pieces = items.map((item) => {
 			))
 		}
 	</ul>
-	<button class="pill-outline shuffler__button" type="button" data-shuffle hidden>Shuffle</button>
+	<button class="button-square shuffler__button" type="button" data-shuffle hidden>Shuffle</button>
 	<p class="visually-hidden" aria-live="polite" data-shuffle-status></p>
 	<script is:inline>
 		(() => {
@@ -155,7 +155,7 @@ const pieces = items.map((item) => {
 		font-size: var(--text-14);
 	}
 
-	/* .pill-outline sets display, which would beat the hidden attribute. */
+	/* .button-square sets display, which would beat the hidden attribute. */
 	.shuffler__button[hidden] {
 		display: none;
 	}

@@ -276,60 +276,6 @@ main[tabindex='-1']:focus {
 	}
 }
 
-/* Outline pill: a secondary button or button-styled link (Other Works and Fun on home,
-   Shuffle, a live site link). */
-.pill-outline {
-	display: inline-flex;
-	align-items: center;
-	min-block-size: var(--space-48);
-	padding: var(--space-12) var(--space-24);
-	border: var(--border-width) solid currentColor;
-	border-radius: var(--radius-pill);
-	background-color: transparent;
-	color: var(--color-text);
-	cursor: pointer;
-	font-weight: var(--weight-semibold);
-	line-height: var(--leading-heading);
-	text-decoration: none;
-}
-
-/* Touch screens keep a tapped link in its hover state, so the fill follows focus there. */
-.pill-outline:focus-visible {
-	background-color: var(--color-surface-inverse);
-	color: var(--color-text-inverse);
-}
-
-@media (hover: hover) {
-	.pill-outline:hover {
-		background-color: var(--color-surface-inverse);
-		color: var(--color-text-inverse);
-	}
-}
-
-/* Other Works and Fun fill with the accent red instead, as the contact circles do. */
-.pill-outline--accent:focus-visible {
-	border-color: var(--color-accent);
-	background-color: var(--color-accent);
-	color: var(--color-text-inverse);
-}
-
-@media (hover: hover) {
-	.pill-outline--accent:hover {
-		border-color: var(--color-accent);
-		background-color: var(--color-accent);
-		color: var(--color-text-inverse);
-	}
-}
-
-@media (prefers-reduced-motion: no-preference) {
-	.pill-outline {
-		transition:
-			border-color 150ms ease-out,
-			background-color 150ms ease-out,
-			color 150ms ease-out;
-	}
-}
-
 /* Anchor jumps (/#work, #contact, skip link) stop below the sticky header:
    one line of nav from 600px, the name above the nav below it. */
 html {

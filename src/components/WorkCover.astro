@@ -1,7 +1,7 @@
 ---
-// A project's card cover, drawn from its frontmatter: the project accent as the
-// backdrop, with the hero screenshot in its browser or phone frame rising from the bottom
-// edge. One recipe for every project, case study or other work. Without a `hero`, the
+// A project's card cover, drawn from its frontmatter: a square, hairline-bordered tile on
+// the page cream, with the hero screenshot in its browser or phone frame rising from the
+// bottom edge. One recipe for every project, case study or other work. Without a `hero`, the
 // cover image fills the tile.
 import { Picture } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
@@ -24,12 +24,11 @@ const {
 	priority = false,
 } = Astro.props;
 const { cover, cover_alt } = data;
-const accent = 'accent' in data ? data.accent : undefined;
 const hero = 'hero' in data ? data.hero : undefined;
 const kind = hero ? hero.frame : 'plain';
 ---
 
-<div class:list={['work-cover', `work-cover--${kind}`]} style={accent ? `--cover-accent: ${accent}` : undefined}>
+<div class:list={['work-cover', `work-cover--${kind}`]}>
 	{
 		hero?.frame === 'browser' && (
 			<BrowserFrame
@@ -74,21 +73,13 @@ const kind = hero ? hero.frame : 'plain';
 		justify-items: center;
 		overflow: hidden;
 		aspect-ratio: 6 / 5;
-		border-radius: var(--radius-sm);
-		background-color: var(--cover-accent, var(--color-accent));
-	}
-
-	@media (min-width: 600px) {
-		.work-cover {
-			border-radius: var(--radius-lg);
-		}
+		border: var(--rule);
 	}
 
 	/* Frames keep their full width; the tile edge clips them at the bottom only. */
 	.work-cover--browser :global(.browser) {
 		inline-size: 84%;
 		margin-block-end: -12%;
-		box-shadow: 0 12px 32px color-mix(in srgb, var(--color-surface-inverse) 28%, transparent);
 	}
 
 	.work-cover--phone :global(.phone) {
