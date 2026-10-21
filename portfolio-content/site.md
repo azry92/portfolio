@@ -12,41 +12,34 @@ nav:
   - Contact: #contact
   - CV: /ismail-azry-cv.pdf
 ## Home layout
-<!-- layout: home page. Reference: references/brand/glyph-ia.svg and references/brand/logo.svg -->
-### 1. Pattern band (full width, top of page)
-- Full-bleed band built from references/glyph-ia.svg (two paths, id="I" and id="A"), repeated in rows as inline SVG. Not a raster image.
-- Height: about one third of the viewport on desktop (≈360px at 1080 tall), about 165px on mobile. The pattern runs edge to edge and may crop at the sides.
-- Colours: glyphs in accent red on a #D9D9D9 band; the page below is the bg token.
-- Motion:
-  - On load, play once through the states in references/home-state-01.png to -06.png (outline on red, solid red on grey, layered red/grey/cream, sheared and extruded), then settle on the solid red on grey state.
-  - After that, page scroll scrubs through the same states while the band is in view.
-  - On hover, a glyph under the cursor flips from fill to outline (fill: none; stroke: currentColor) and back.
-  - prefers-reduced-motion: no animation, show the solid red on grey state only.
-- Decorative: aria-hidden="true", no focusable elements inside.
-### 2. Intro (desktop: left column, about one third width; mobile: full width, stacked)
-- Logo mark (portfolio-content/brand/logo.svg), about 80px desktop, 60px mobile.
-- Status line: "Ismail Azry · Open to roles, Kuala Lumpur" (Inter 600, 16px, muted; a small green dot before "Open to roles"). It names the person in the first screen and says they're available.
-- Title, the h1: "Product Designer, Web & E-commerce" (Sora, about 48px desktop, at least 32px mobile). This is the largest text on the page.
-- About paragraph from site.md, Inter 400, max width about 36ch, left-aligned at every breakpoint.
-- Under it, the current line: "Currently designing and building the AT Auto Shoppe store.", with "AT Auto Shoppe store" linking to its case study.
-- Desktop only: the contact block ("Let's brew something together.", three labelled icon links: Email, LinkedIn, CV) and the footer line sit at the bottom of this left column.
-### 3. Work (desktop: right two thirds; mobile: full width below the intro)
-- Heading "See the Work" (Sora, right-aligned on desktop, left on mobile), an h2, smaller than the h1.
-- Directly under it: "Download CV" link, styled as an accent-red highlight, linking to /cv/ismail-azry-cv.pdf with the download attribute.
-- Case study cards, in frontmatter `order`: AT Auto Shoppe, PLANETSTEWARDS, Precious Wedding.
-  - Desktop: three equal cards in one row.
-  - Mobile: two-column grid. The "See the Work" heading and CV link take the first cell, AT Auto Shoppe the second, then PLANETSTEWARDS and Precious Wedding.
-  - Each card is one link to /work/[slug], showing the frontmatter `cover` image (with cover_alt), the title, and on hover or focus the one-line `summary`. Visible focus ring in the accent colour.
-- Below the cards, two shorter cards: Other Works (links to /other-works) and Fun (links to /fun).
-  - Desktop: aligned under the second and third case study cards, about 40% of a case card's height.
-  - Mobile: one row of two, same short height.
-### 4. Footer
-- Mobile: centred at the bottom, "Let's brew something together.", the three labelled icon links, then "Designed and built by Ismail Azry with Astro. © 2026".
-- Desktop: lives in the left column, see section 2.
+<!-- layout: home page. Reference: portfolio-content/brand/glyph-ia.svg -->
+### 1. Hero (fills the first screen under the sticky header)
+- Full-width section, at least the viewport height minus the header (100svh). Three rows: labels at the top, the intro in the middle, the h1 along the bottom edge.
+- Labels (Inter 600, 14px, uppercase, wide tracking), one row with space between from 600px, stacked on a phone:
+  - Left: "Product Designer, Web & E-commerce". On a phone it wraps after the comma, never inside "Web & E-commerce".
+  - Right: "Open to roles, Kuala Lumpur", with a small green dot (the status token) before it.
+- Intro: the about paragraph (Inter 400, 18px), then two calls to action, then the current line.
+  - "See the work" (accent-red pill, links to #work) and "CV" (text link, downloads the PDF). Each has a decorative ↓ after the label, hidden from screen readers.
+  - Current line (14px, muted): "Currently designing and building the AT Auto Shoppe store.", with "AT Auto Shoppe store" linking to its case study.
+  - Below 900px it sits full width under the labels; from 900px it takes the right half, beside empty ground.
+- Title, the h1, in two parts (Sora bold, the largest text on the site):
+  - "Ismail Azry," in black, 48px on a phone rising to 128px.
+  - "designing stores, then building them." in the accent red, 32px rising to 72px, balanced so it breaks after "stores,".
+- Glyph texture behind the hero: the IA glyph (portfolio-content/brand/glyph-ia.svg, paths id="I" and id="A") as faint outlines in the border colour, tiled with a brick offset in inline SVG. Static, decorative, aria-hidden. It is clear under the labels and fades out before the headline; from 900px it also fades out before the intro's right half, so no text sits on it.
+- The animated glyph band (load sequence, scroll scrub, hover flip) is not on home; it moves to the About page.
+### 2. Work (id="work")
+- Label "01 / Selected work" (same style as the hero labels) over the h2 "See the Work" (Sora, 24px, 32px from 768px).
+- Case study cards in frontmatter `order`: AT Auto Shoppe, PLANETSTEWARDS, Precious Wedding. Each comes from WorkCover (see CLAUDE.md, Home work cards).
+  - Below 600px: one row per case study, cover about 40% on the left, name and card line on the right, hairlines between rows.
+  - 600px to 767px: two-column grid, the label and heading in the first cell, then the three cards.
+  - From 768px: label and heading above, three cards in one row.
+- Under the cards, Other Works (/other-works) and Fun (/fun) as outline pills in one row.
+### 3. Footer
+- "Let's brew something together.", the contact circles, then the credit line. No footer nav and no Back to top on home: the sticky header carries the nav and the page is short.
 ### Breakpoints
-- Below 768px: mobile layout above.
-- 768px to 1199px: intro stacks above the work section; case cards in a row of three; Other Works and Fun in a row of two.
-- 1200px and up: the two-column desktop layout, content capped at the max content width from tokens.md, with the pattern band staying full bleed.
+- Below 600px: everything stacks; work cards as rows.
+- 600px to 899px: hero stacks; work grid as above.
+- 900px and up: hero intro in the right half. Content is capped at the max content width from tokens.md; the hero background and texture run full bleed.
 ## About
 <!-- layout: portrait left, copy right, then experience list -->
 Product designer who designs and builds e-commerce storefronts end to end, from information architecture and product search to custom Shopify code. Interface Design graduate, formerly a medical student.
