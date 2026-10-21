@@ -38,6 +38,10 @@ export const ogDefault: OgImage = {
 
 export const nav: NavItem[] = [
 	{ label: 'Work', href: '/#work' },
+	{ label: 'Other Works', href: '/other-works' },
+	{ label: 'Fun', href: '/fun' },
+	// The footer is on every page, so the fragment works without a path.
+	{ label: 'Contact', href: '#contact' },
 	{ label: 'CV', href: site.cv, newTab: true, ariaLabel: cvLabel },
 ];
 

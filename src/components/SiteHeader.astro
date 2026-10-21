@@ -30,6 +30,16 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 </header>
 
 <style>
+	/* Sticky on every page so Work, Contact and the CV are one tap away at any depth.
+	   global.css offsets anchor jumps by --header-h so headings don't land under it. */
+	.site-header {
+		position: sticky;
+		inset-block-start: 0;
+		z-index: 10;
+		background-color: var(--color-bg);
+		border-block-end: 1px solid var(--color-border);
+	}
+
 	.site-header__inner {
 		display: flex;
 		flex-wrap: wrap;
@@ -47,9 +57,10 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 		text-decoration: none;
 	}
 
+	/* Five links fit one line at 360px with the 16px gap; the name wraps above them. */
 	.site-header__nav {
 		display: flex;
-		gap: var(--space-24);
+		gap: var(--space-16);
 		padding: 0;
 		list-style: none;
 	}
@@ -61,6 +72,12 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 		color: var(--color-text);
 		font-weight: var(--weight-semibold);
 		text-decoration: none;
+	}
+
+	@media (min-width: 600px) {
+		.site-header__nav {
+			gap: var(--space-24);
+		}
 	}
 
 	.site-header__nav a:hover,

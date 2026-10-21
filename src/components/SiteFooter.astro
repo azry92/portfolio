@@ -13,7 +13,7 @@ interface Props {
 const { variant = 'site' } = Astro.props;
 ---
 
-<footer class:list={['site-footer', `site-footer--${variant}`]}>
+<footer id="contact" class:list={['site-footer', `site-footer--${variant}`]}>
 	<div class:list={['site-footer__inner', { container: variant === 'site' }]}>
 		<ContactLinks />
 		<div class="site-footer__meta">

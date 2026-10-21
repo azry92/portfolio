@@ -190,6 +190,20 @@ main[tabindex='-1']:focus {
 	}
 }
 
+/* Anchor jumps (/#work, #contact, skip link) stop below the sticky header:
+   one line of nav from 600px, the name above the nav below it. */
+html {
+	--header-h: 6.5rem;
+
+	scroll-padding-block-start: var(--header-h);
+}
+
+@media (min-width: 600px) {
+	html {
+		--header-h: 4rem;
+	}
+}
+
 /* Motion */
 @media (prefers-reduced-motion: no-preference) {
 	html {

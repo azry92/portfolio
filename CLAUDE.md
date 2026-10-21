@@ -23,7 +23,7 @@ Personal portfolio for "Product Designer, Web & E-commerce | Shopify Design & Bu
 - `/other-works`: short index listing Atlas IHU and MBFW as cards. Built in the Other Works session.
 - `/other-works/[slug]`: MBFW, Atlas IHU Theme.
 - `/fun`: illustrations and concepts, grid with lightbox.
-- CV PDF download, 404. There is no About page; the header nav is Work and CV.
+- CV PDF download, 404. There is no About page. The header nav (Work, Other Works, Fun, Contact, CV) is sticky on every page, home included; the footer nav repeats it.
 
 ## Rules
 - Semantic HTML: one `h1` per page, landmarks, real lists, `figure`/`figcaption` for images.
