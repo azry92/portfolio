@@ -68,10 +68,16 @@
 	--border-width: 1px;
 	/* The hairline between sections and between list rows. */
 	--rule: var(--border-width) solid var(--color-border);
-	--content-max: 75rem;
 
 	/* Layout */
+	/* The column gap on the page grid. Side padding is --page-gutter, set by .container. */
 	--gutter: var(--space-16);
+	/* The frame for case studies, Other Works, Fun and the 404; home and the header run full width. */
+	--content-wide: 100rem;
+	/* The wide frame's side gutter from 1200px (24px below 900px, 48px from 900px). */
+	--gutter-wide: 6.25rem;
+	/* Running text stays at a readable line length inside the wider frame. */
+	--measure: 68ch;
 }
 
 @media (min-width: 768px) {

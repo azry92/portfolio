@@ -22,6 +22,8 @@ interface Props {
 	showBackToTop?: boolean;
 	/** Set false to drop the footer's nav links (home). */
 	showFooterNav?: boolean;
+	/** The footer runs full width, like the page above it (home). */
+	fullWidth?: boolean;
 }
 
 const {
@@ -34,6 +36,7 @@ const {
 	noindex = false,
 	showBackToTop = true,
 	showFooterNav = true,
+	fullWidth = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -84,7 +87,7 @@ const ogImageUrl = new URL(ogImage.src, Astro.site).href;
 						<slot />
 					</main>
 					{showBackToTop && <BackToTop />}
-					<SiteFooter showNav={showFooterNav} />
+					<SiteFooter showNav={showFooterNav} fullWidth={fullWidth} />
 				</>
 			) : (
 				<slot />

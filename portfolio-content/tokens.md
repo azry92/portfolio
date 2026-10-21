@@ -25,10 +25,13 @@
 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 / 128
 ## Shape
 - Radius: 0 on cards, frames, covers, figures and controls. Pill (999) only on the primary CTA ("See the work"). Device frames (PhoneFrame, DisplayFrame) keep their own hardware corners; colour swatches stay circles.
-- Max content width: 1200
 - Border width: 1
 - Rule: 1px solid border colour, between sections and between list rows (never above and below every row).
 ## Grid
 - 12 columns from 900px, 4 columns from 600px, 1 column below. Column gap = gutter (16px, 24px from 768px).
+## Layout
+- Content width (`--content-wide`): 1600, the default frame for case studies, Other Works, Fun, the 404 and their footer. Side gutter 24 below 900px, 48 from 900px, 100 (`--gutter-wide`) from 1200px.
+- Home (hero, Selected work, footer) and the sticky header: full width, no cap. Side gutter 16 below 600px, 24 from 600px.
+- Running text: max 68ch (`--measure`) inside either frame. Only images, figure grids, headings and the hero headline use the full width.
 - Text is flush left, ragged right. No centring, no justification.
 - Sections open with a hairline and a numbered label ("02 / Process"), numbered per page from 01.

@@ -16,7 +16,7 @@ const { items, caption } = Astro.props;
 if (items.length !== 4) throw new Error(`IdentityBento: needs four images, got ${items.length}`);
 
 const areas = ['wide', 'tall', 'left', 'right'];
-const sizes = ['(min-width: 1248px) 800px, (min-width: 600px) 66vw, 84vw', '(min-width: 1248px) 400px, (min-width: 600px) 33vw, 84vw'];
+const sizes = ['(min-width: 1800px) 1067px, (min-width: 600px) 66vw, 84vw', '(min-width: 1800px) 533px, (min-width: 600px) 33vw, 84vw'];
 const Tag = caption ? 'figure' : 'div';
 ---
 

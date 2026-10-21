@@ -5,12 +5,14 @@ import { footerLine, nav } from '../data/site';
 interface Props {
 	/** Off on home, where the sticky header nav sits a short scroll away. */
 	showNav?: boolean;
+	/** Full width on home; elsewhere it keeps the page's wide frame. */
+	fullWidth?: boolean;
 }
 
-const { showNav = true } = Astro.props;
+const { showNav = true, fullWidth = false } = Astro.props;
 ---
 
-<footer id="contact" class="site-footer container">
+<footer id="contact" class:list={['site-footer', 'container', { 'container--full': fullWidth }]}>
 	<div class="site-footer__inner grid-12">
 		<ContactLinks />
 		<div class="site-footer__meta">
@@ -40,8 +42,8 @@ const { showNav = true } = Astro.props;
 </footer>
 
 <style>
-	/* A hairline, then two groups 32px apart: the contact line with its squares (16px
-	   apart, set in ContactLinks), then the nav with the credit line. From 900px they sit
+	/* A hairline, then two groups 32px apart: the contact line, the address and the
+	   labelled contact buttons (set in ContactLinks), then the nav with the credit line. From 900px they sit
 	   side by side on the grid, the second from column 7, bottoms aligned. */
 	.site-footer__inner {
 		row-gap: var(--space-32);

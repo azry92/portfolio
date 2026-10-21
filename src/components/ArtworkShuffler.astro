@@ -13,13 +13,14 @@ interface Props {
 const { items } = Astro.props;
 
 // The piece fills the stage height unless the column is narrower. The stage is the viewport less
-// what sits around it, measured at about 368px from 600px and 386px below (see --stage), inside
-// the gutters (16px, 24px from 768px) and the 1200px content width.
+// what sits around it, measured at about 384px from 600px and 402px below (see --stage), inside
+// the page gutters (24px, 48px from 900px, 100px from 1200px) and the 1600px frame.
 const sizesFor = (ratio: number) =>
 	[
-		`(min-width: 768px) min(calc((100vh - 368px) * ${ratio}), calc(100vw - 48px), 1200px)`,
-		`(min-width: 600px) min(calc((100vh - 368px) * ${ratio}), calc(100vw - 32px))`,
-		`min(calc((100vh - 386px) * ${ratio}), calc(100vw - 32px))`,
+		`(min-width: 1200px) min(calc((100vh - 384px) * ${ratio}), calc(100vw - 200px), 1600px)`,
+		`(min-width: 900px) min(calc((100vh - 384px) * ${ratio}), calc(100vw - 96px))`,
+		`(min-width: 600px) min(calc((100vh - 384px) * ${ratio}), calc(100vw - 48px))`,
+		`min(calc((100vh - 402px) * ${ratio}), calc(100vw - 48px))`,
 	].join(', ');
 
 const pieces = items.map((item) => {
@@ -138,9 +139,11 @@ const pieces = items.map((item) => {
 		block-size: auto;
 	}
 
+	/* The caption row spans the stage; the Shuffle button sits at its end. */
 	.shuffler__caption {
 		display: grid;
 		gap: var(--space-4);
+		max-inline-size: none;
 	}
 
 	.shuffler__title {

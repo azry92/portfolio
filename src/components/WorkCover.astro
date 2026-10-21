@@ -12,7 +12,8 @@ type Data = CollectionEntry<'caseStudies'>['data'] | CollectionEntry<'otherWorks
 
 interface Props {
 	data: Data;
-	/** Sizes for a cover that fills the tile; the home grid's by default. */
+	/** Sizes for a cover that fills the tile; the home grid's by default (a third of the
+	    full-width row from 600px). */
 	sizes?: string;
 	/** Eager for a cover that's the page's largest image (the first on the Other Works index). */
 	priority?: boolean;
@@ -20,7 +21,7 @@ interface Props {
 
 const {
 	data,
-	sizes = '(min-width: 1200px) 240px, (min-width: 768px) 33vw, (min-width: 600px) 50vw, 40vw',
+	sizes = '(min-width: 600px) 32vw, 40vw',
 	priority = false,
 } = Astro.props;
 const { cover, cover_alt } = data;
@@ -34,8 +35,8 @@ const kind = hero ? hero.frame : 'plain';
 			<BrowserFrame
 				src={hero.image}
 				alt={hero.alt}
-				widths={[240, 400, 600, 800]}
-				sizes="(min-width: 1200px) 202px, (min-width: 768px) 28vw, (min-width: 600px) 42vw, 34vw"
+				widths={[240, 400, 600, 800, 1200]}
+				sizes="(min-width: 600px) 27vw, 34vw"
 			/>
 		)
 	}
@@ -44,8 +45,8 @@ const kind = hero ? hero.frame : 'plain';
 			<PhoneFrame
 				src={hero.image}
 				alt={hero.alt}
-				widths={[240, 360, 540]}
-				sizes="(min-width: 1200px) 110px, (min-width: 768px) 15vw, (min-width: 600px) 23vw, 18vw"
+				widths={[240, 360, 540, 720]}
+				sizes="(min-width: 600px) 15vw, 18vw"
 			/>
 		)
 	}

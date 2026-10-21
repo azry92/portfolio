@@ -19,7 +19,7 @@ const snap = count >= 3;
 const sizes =
 	frame === 'phone'
 		? `(min-width: 1200px) 240px, (min-width: 600px) ${Math.round(100 / count)}vw, ${snap ? 40 : 45}vw`
-		: `(min-width: 1248px) ${Math.round(1200 / count)}px, (min-width: 600px) ${Math.round(100 / count)}vw, ${snap ? 84 : 45}vw`;
+		: `(min-width: 1800px) ${Math.round(1600 / count)}px, (min-width: 600px) ${Math.round(100 / count)}vw, ${snap ? 84 : 45}vw`;
 const Tag = run.caption ? 'figure' : 'div';
 ---
 
@@ -87,7 +87,7 @@ const Tag = run.caption ? 'figure' : 'div';
 			grid-template-columns: none;
 			column-gap: var(--space-16);
 			/* The list reset above outranks the utility's padding; put it back. */
-			padding: var(--space-8) var(--gutter) var(--space-16);
+			padding: var(--space-8) var(--page-gutter) var(--space-16);
 		}
 
 		.step-row--phone .step-row__list.snap-row {

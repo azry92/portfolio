@@ -20,7 +20,7 @@ interface Props {
 const { figure, frame, bleed = false, blocks } = Astro.props;
 const { image, alt, caption, zoomCaption } = figure;
 const widths = [480, 960, 1440, 1920].filter((w) => w <= image.width);
-const sizes = bleed ? '100vw' : '(min-width: 1248px) 1200px, 100vw';
+const sizes = bleed ? '100vw' : '(min-width: 1800px) 1600px, 100vw';
 const formats: ('avif' | 'webp')[] = ['avif', 'webp'];
 ---
 

@@ -11,8 +11,9 @@ interface Props {
 
 const { items } = Astro.props;
 
-// Stacked, the piece is at most 480px (or half the viewport) tall inside the 16px gutters.
-// From 900px it sits in the right half of the 1200px column (64px gap, 24px gutters), up to 560px tall.
+// Stacked, the piece is at most 480px (or half the viewport) tall inside the 24px gutters.
+// From 900px it sits in columns 7 to 12 of the frame (48px gutters, 100px from 1200px, and
+// the 1600px cap), up to 560px tall.
 const pieces = items.map((item) => {
 	const ratio = Number((item.image.width / item.image.height).toFixed(4));
 	const widths = [320, 480, 720, 960, 1120].filter((w) => w <= item.image.width);
@@ -21,8 +22,9 @@ const pieces = items.map((item) => {
 		ratio,
 		widths: widths.length ? widths : [item.image.width],
 		sizes: [
-			`(min-width: 900px) min(calc(560px * ${ratio}), calc((min(100vw, 1248px) - 112px) / 2))`,
-			`min(calc(min(480px, 50vh) * ${ratio}), calc(100vw - 32px))`,
+			`(min-width: 1200px) min(calc(560px * ${ratio}), calc((min(100vw, 1800px) - 224px) / 2))`,
+			`(min-width: 900px) min(calc(560px * ${ratio}), calc((100vw - 120px) / 2))`,
+			`min(calc(min(480px, 50vh) * ${ratio}), calc(100vw - 48px))`,
 		].join(', '),
 	};
 });

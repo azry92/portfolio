@@ -24,7 +24,7 @@ const snap = items.length >= 3;
 const sizeFor = (frame: Frame, span: number) =>
 	frame === 'phone'
 		? '240px'
-		: `(min-width: 1248px) ${Math.round((1200 * span) / 12)}px, (min-width: 600px) ${Math.round((100 * span) / 12)}vw, ${snap ? 80 : 100}vw`;
+		: `(min-width: 1800px) ${Math.round((1600 * span) / 12)}px, (min-width: 600px) ${Math.round((100 * span) / 12)}vw, ${snap ? 80 : 100}vw`;
 const Tag = caption ? 'figure' : 'div';
 ---
 

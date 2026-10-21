@@ -5,7 +5,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
 <header class="site-header">
-	<div class="container site-header__inner">
+	<div class="container container--full site-header__inner">
 		<a class="site-header__name" href="/">{site.name}</a>
 		<nav aria-label="Primary">
 			<ul class="site-header__nav" role="list">
@@ -46,7 +46,8 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--space-8) var(--space-24);
-		padding-block: var(--space-8);
+		/* With the links' own 8px, about 24px of air above and below the text. */
+		padding-block: var(--space-16);
 	}
 
 	.site-header__name {
@@ -65,7 +66,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 		list-style: none;
 	}
 
-	/* Padded like the footer nav for a taller tap target; the bar's padding is smaller to match. */
+	/* Padded like the footer nav for a taller tap target; the bar's padding allows for it. */
 	.site-header__nav a {
 		display: inline-block;
 		padding-block: var(--space-8);

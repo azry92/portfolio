@@ -28,8 +28,8 @@ const sizes =
 	frame === 'phone'
 		? `(min-width: 1200px) 240px, (min-width: 600px) ${Math.round(100 / columns)}vw, ${snap ? 40 : 45}vw`
 		: across === 1
-			? '(min-width: 1248px) 1200px, 100vw'
-			: `(min-width: 1248px) ${Math.round(1200 / across)}px, (min-width: 600px) ${Math.round(100 / across)}vw, ${snap ? 84 : 100}vw`;
+			? '(min-width: 1800px) 1600px, 100vw'
+			: `(min-width: 1800px) ${Math.round(1600 / across)}px, (min-width: 600px) ${Math.round(100 / across)}vw, ${snap ? 84 : 100}vw`;
 
 const Tag = caption ? 'figure' : 'div';
 ---

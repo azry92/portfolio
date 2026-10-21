@@ -49,7 +49,7 @@ const { title, client, project, role, team, timeline, platform, tools, live_url,
 						alt={cover_alt}
 						formats={['avif', 'webp']}
 						widths={[480, 720, 960, 1440, 1920].filter((w) => w <= cover.width)}
-						sizes="(min-width: 1248px) 1000px, (min-width: 1200px) 83vw, 100vw"
+						sizes="(min-width: 1200px) 1000px, 100vw"
 						loading="eager"
 						fetchpriority="high"
 					/>
@@ -147,7 +147,7 @@ const { title, client, project, role, team, timeline, platform, tools, live_url,
 
 	@media (min-width: 600px) and (max-width: 1199.98px) {
 		.ow-hero--photo .ow-hero__media {
-			margin-inline: calc(var(--gutter) * -1);
+			margin-inline: calc(var(--page-gutter) * -1);
 		}
 
 		.ow-hero--photo .ow-hero__media :global(img) {
@@ -182,7 +182,7 @@ const { title, client, project, role, team, timeline, platform, tools, live_url,
 	   the mockup's own black never meets the band's. */
 	@media (max-width: 599.98px) {
 		.ow-hero__stage {
-			margin-inline: calc(var(--gutter) * -1);
+			margin-inline: calc(var(--page-gutter) * -1);
 			padding-block-end: 0;
 		}
 
@@ -230,7 +230,7 @@ const { title, client, project, role, team, timeline, platform, tools, live_url,
 		/* The photo runs to the right edge of the viewport and fades in from the copy side. */
 		.ow-hero--photo .ow-hero__media {
 			align-self: center;
-			margin-inline: 0 calc((100vw - min(100vw, var(--content-max) + 2 * var(--gutter))) / -2 - var(--gutter));
+			margin-inline: 0 calc((100vw - min(100vw, var(--content-wide) + 2 * var(--page-gutter))) / -2 - var(--page-gutter));
 			mask-image: linear-gradient(to right, transparent, #000 20%), linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent);
 			mask-composite: intersect;
 		}

@@ -1,6 +1,8 @@
 ---
 // Home hero: role and availability on top, the short about with the two calls to
 // action, then the name and claim as the page h1 across the bottom of the first screen.
+// The h1 comes first in the markup, so a screen reader hears the name before the about;
+// grid rows put it back at the bottom. It holds no links, so tab order is unchanged.
 import GlyphTexture from './GlyphTexture.astro';
 import { intro, site } from '../data/site';
 
@@ -12,7 +14,11 @@ const [role, field] = intro.title.split(', ');
 
 <section class="hero" aria-labelledby="home-title">
 	<GlyphTexture />
-	<div class="container hero__inner grid-12">
+	<div class="container container--full hero__inner grid-12">
+		<h1 id="home-title" class="hero__title">
+			<span class="hero__name">{intro.name}</span>
+			<span class="hero__claim">{intro.claim}</span>
+		</h1>
 		<div class="hero__top grid-12">
 			<p class="hero__label">{role}, <span class="hero__nowrap">{field}</span></p>
 			<p class="hero__label hero__status">
@@ -31,10 +37,6 @@ const [role, field] = intro.title.split(', ');
 				{intro.current.before}<a href={intro.current.href}>{intro.current.link}</a>{intro.current.after}
 			</p>
 		</div>
-		<h1 id="home-title" class="hero__title">
-			<span class="hero__name">{intro.name}</span>
-			<span class="hero__claim">{intro.claim}</span>
-		</h1>
 	</div>
 </section>
 
@@ -56,6 +58,7 @@ const [role, field] = intro.title.split(', ');
 	}
 
 	.hero__top {
+		grid-row: 1;
 		grid-column: 1 / -1;
 		grid-template-columns: subgrid;
 		row-gap: var(--space-8);
@@ -78,8 +81,9 @@ const [role, field] = intro.title.split(', ');
 	}
 
 	.hero__intro {
+		grid-row: 2;
 		align-self: end;
-		max-inline-size: 36rem;
+		max-inline-size: var(--measure);
 	}
 
 	.hero__about {
@@ -111,6 +115,7 @@ const [role, field] = intro.title.split(', ');
 
 	/* The largest text on the site: name in black, the claim under it in the accent. */
 	.hero__title {
+		grid-row: 3;
 		font-family: var(--font-display);
 		font-weight: var(--weight-bold);
 		line-height: 0.95;
@@ -155,7 +160,6 @@ const [role, field] = intro.title.split(', ');
 
 		.hero__intro {
 			grid-column: 7 / -1;
-			max-inline-size: none;
 		}
 
 		.hero__title {

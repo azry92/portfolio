@@ -14,7 +14,7 @@ const { html, class: className } = Astro.props;
 	.prose {
 		display: grid;
 		gap: var(--space-16);
-		max-inline-size: 68ch;
+		max-inline-size: var(--measure);
 	}
 
 	@media (min-width: 1200px) {

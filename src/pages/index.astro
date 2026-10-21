@@ -4,9 +4,9 @@ import HomeHero from '../components/HomeHero.astro';
 import WorkGrid from '../components/WorkGrid.astro';
 ---
 
-<BaseLayout showBackToTop={false} showFooterNav={false}>
+<BaseLayout showBackToTop={false} showFooterNav={false} fullWidth>
 	<HomeHero />
-	<div class="container">
+	<div class="container container--full">
 		<WorkGrid />
 	</div>
 </BaseLayout>

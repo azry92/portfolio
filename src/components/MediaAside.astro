@@ -35,7 +35,7 @@ const share = span / Math.max(1, frames.filter((frame) => frame !== 'phone').len
 const sizeFor = (frame: Frame) =>
 	frame === 'phone'
 		? '240px'
-		: `(min-width: 1248px) ${Math.round((1200 * share) / 12)}px, (min-width: 768px) ${Math.round((100 * share) / 12)}vw, ${mixed ? 100 : Math.round(100 / items.length)}vw`;
+		: `(min-width: 1800px) ${Math.round((1600 * share) / 12)}px, (min-width: 768px) ${Math.round((100 * share) / 12)}vw, ${mixed ? 100 : Math.round(100 / items.length)}vw`;
 const Tag = caption ? 'figure' : 'div';
 ---
 

@@ -30,7 +30,7 @@ const Tag = run.caption ? 'figure' : 'div';
 					<h4 class="labelled-stack__label">{group.label}</h4>
 					<div class="labelled-stack__figures">
 						{group.items.map((item) => (
-							<Figure figure={item} frame="browser" sizes={`(min-width: 1248px) 588px, (min-width: 768px) 50vw, (min-width: 600px) 100vw, ${snap ? 84 : 100}vw`} />
+							<Figure figure={item} frame="browser" sizes={`(min-width: 1800px) 788px, (min-width: 768px) 50vw, (min-width: 600px) 100vw, ${snap ? 84 : 100}vw`} />
 						))}
 					</div>
 				</li>
@@ -77,7 +77,7 @@ const Tag = run.caption ? 'figure' : 'div';
 		.labelled-stack__list.snap-row {
 			column-gap: var(--space-16);
 			/* The list reset above outranks the utility's padding; put it back. */
-			padding: var(--space-8) var(--gutter) var(--space-16);
+			padding: var(--space-8) var(--page-gutter) var(--space-16);
 		}
 	}
 

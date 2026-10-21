@@ -2,7 +2,10 @@
 import { contact, cvLabel, site } from '../data/site';
 
 interface ContactLink {
+	/** The visible label. */
 	label: string;
+	/** The accessible name when the link opens a new tab; it starts with the visible label. */
+	ariaLabel?: string;
 	href: string;
 	icon: 'email' | 'linkedin' | 'cv' | 'github';
 	/** Opens in a new tab with rel="noopener" (the CV PDF, this site's repository). */
@@ -12,9 +15,10 @@ interface ContactLink {
 const links: ContactLink[] = [
 	{ label: 'Email', href: `mailto:${contact.email}`, icon: 'email' },
 	{ label: 'LinkedIn', href: contact.linkedin, icon: 'linkedin' },
-	{ label: cvLabel, href: site.cv, icon: 'cv', newTab: true },
+	{ label: 'CV', ariaLabel: cvLabel, href: site.cv, icon: 'cv', newTab: true },
 	{
-		label: 'GitHub repository for this site, opens in a new tab',
+		label: 'GitHub',
+		ariaLabel: 'GitHub repository for this site, opens in a new tab',
 		href: contact.github,
 		icon: 'github',
 		newTab: true,
@@ -24,6 +28,8 @@ const links: ContactLink[] = [
 
 <div class="contact">
 	<p class="contact__heading">{contact.heading}</p>
+	{/* The address in full, so it can be copied without a mail app; one click selects it. */}
+	<p class="contact__address">{contact.email}</p>
 	<ul class="contact__links" role="list">
 		{
 			links.map((link) => (
@@ -33,7 +39,7 @@ const links: ContactLink[] = [
 						href={link.href}
 						target={link.newTab ? '_blank' : undefined}
 						rel={link.newTab ? 'noopener' : undefined}
-						aria-label={link.newTab ? link.label : undefined}
+						aria-label={link.ariaLabel}
 					>
 						<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
 							{link.icon === 'email' && (
@@ -59,7 +65,7 @@ const links: ContactLink[] = [
 								<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
 							)}
 						</svg>
-						<span class="visually-hidden">{link.label}</span>
+						{link.label}
 					</a>
 				</li>
 			))
@@ -68,10 +74,6 @@ const links: ContactLink[] = [
 </div>
 
 <style>
-	.contact {
-		--contact-size: var(--space-48);
-	}
-
 	.contact__heading {
 		font-size: var(--text-16);
 	}
@@ -79,6 +81,21 @@ const links: ContactLink[] = [
 	@media (min-width: 768px) {
 		.contact__heading {
 			font-size: var(--text-18);
+		}
+	}
+
+	.contact__address {
+		margin-block-start: var(--space-8);
+		font-family: var(--font-display);
+		font-size: var(--text-18);
+		font-weight: var(--weight-semibold);
+		overflow-wrap: anywhere;
+		user-select: all;
+	}
+
+	@media (min-width: 768px) {
+		.contact__address {
+			font-size: var(--text-24);
 		}
 	}
 
@@ -92,13 +109,18 @@ const links: ContactLink[] = [
 		list-style: none;
 	}
 
+	/* Outline buttons with an icon and a label, 48px tall. */
 	.contact__link {
-		display: grid;
-		place-items: center;
-		inline-size: var(--contact-size);
-		block-size: var(--contact-size);
+		display: inline-flex;
+		gap: var(--space-8);
+		align-items: center;
+		min-block-size: var(--space-48);
+		padding-inline: var(--space-16);
 		border: var(--border-width) solid currentColor;
 		color: var(--color-text);
+		font-weight: var(--weight-semibold);
+		line-height: var(--leading-heading);
+		text-decoration: none;
 	}
 
 	.contact__link:hover,
@@ -118,8 +140,9 @@ const links: ContactLink[] = [
 	}
 
 	.contact__link svg {
-		inline-size: 45%;
-		block-size: 45%;
+		flex: none;
+		inline-size: 1.25em;
+		block-size: 1.25em;
 		fill: none;
 		stroke: currentColor;
 		stroke-width: 1.75;

@@ -24,7 +24,7 @@ if (items.length !== labels.length) {
 			items.map((figure, i) => (
 				<li class="labelled__item">
 					<p class="labelled__label">{labels[i]}</p>
-					<Figure figure={figure} frame={frame} sizes="(min-width: 1248px) 1040px, 100vw" />
+					<Figure figure={figure} frame={frame} sizes="(min-width: 1800px) 1400px, 100vw" />
 				</li>
 			))
 		}
@@ -71,6 +71,7 @@ if (items.length !== labels.length) {
 		}
 
 		.labelled__caption {
+			max-inline-size: calc(var(--measure) + 8rem + var(--space-32));
 			padding-inline-start: calc(8rem + var(--space-32));
 		}
 	}

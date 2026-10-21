@@ -106,7 +106,7 @@ if (section.subsections.length && layout.kind !== 'columns' && layout.kind !== '
 
 	/* Text sections keep to a reading measure. */
 	.ow-section--text :global(.prose) {
-		max-inline-size: 65ch;
+		max-inline-size: var(--measure);
 	}
 
 	@media (min-width: 600px) {

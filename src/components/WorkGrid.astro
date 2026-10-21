@@ -97,8 +97,8 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 		}
 	}
 
-	/* From 900px each card takes four of the twelve columns, and the two links sit
-	   under the second and third cards. */
+	/* From 900px each card takes four of the twelve columns; the two links run the
+	   full content width. */
 	@media (min-width: 900px) {
 		.work__cases {
 			grid-template-columns: subgrid;
@@ -106,10 +106,6 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 
 		.work__cases > li {
 			grid-column: span 4;
-		}
-
-		.work__more {
-			grid-column: 5 / -1;
 		}
 	}
 </style>
