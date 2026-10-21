@@ -6,13 +6,15 @@ import { intro, site } from '../data/site';
 
 // Keep "e-commerce" whole: browsers otherwise break inside.
 const aboutParts = intro.about.split(/(e-commerce)/);
+// On a phone the role wraps after its comma, not inside "Web & E-commerce".
+const [role, field] = intro.title.split(', ');
 ---
 
 <section class="hero" aria-labelledby="home-title">
 	<GlyphTexture />
 	<div class="container hero__inner">
 		<div class="hero__top">
-			<p class="hero__label">{intro.title}</p>
+			<p class="hero__label">{role}, <span class="hero__nowrap">{field}</span></p>
 			<p class="hero__label hero__status">
 				<span class="hero__dot" aria-hidden="true"></span>{intro.status}
 			</p>
@@ -22,8 +24,8 @@ const aboutParts = intro.about.split(/(e-commerce)/);
 				{aboutParts.map((part) => (part === 'e-commerce' ? <span class="hero__nowrap">{part}</span> : part))}
 			</p>
 			<div class="hero__actions">
-				<a class="hero__primary" href="#work">{intro.cta}</a>
-				<a class="hero__cv" href={site.cv} download>{intro.cv}</a>
+				<a class="hero__primary" href="#work">{intro.cta} <span aria-hidden="true">↓</span></a>
+				<a class="hero__cv" href={site.cv} download>{intro.cv} <span aria-hidden="true">↓</span></a>
 			</div>
 			<p class="hero__current">
 				{intro.current.before}<a href={intro.current.href}>{intro.current.link}</a>{intro.current.after}
@@ -145,6 +147,8 @@ const aboutParts = intro.about.split(/(e-commerce)/);
 		color: var(--color-accent);
 		font-size: clamp(var(--text-32), 0.75rem + 4.4vw, 4.5rem);
 		line-height: 1;
+		/* Breaks after "stores," at every width rather than wherever the line runs out. */
+		text-wrap: balance;
 	}
 
 	@media (hover: hover) {

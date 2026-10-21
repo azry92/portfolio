@@ -18,8 +18,10 @@ interface Props {
 	bodyClass?: string;
 	/** Keep the page out of search results (the 404); it also drops the canonical URL. */
 	noindex?: boolean;
-	/** Set false on a page too short for Back to top to have a purpose (the 404). */
+	/** Set false on a page too short for Back to top to have a purpose (home, the 404). */
 	showBackToTop?: boolean;
+	/** Set false to drop the footer's nav links (home). */
+	showFooterNav?: boolean;
 }
 
 const {
@@ -31,6 +33,7 @@ const {
 	bodyClass,
 	noindex = false,
 	showBackToTop = true,
+	showFooterNav = true,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -81,7 +84,7 @@ const ogImageUrl = new URL(ogImage.src, Astro.site).href;
 						<slot />
 					</main>
 					{showBackToTop && <BackToTop />}
-					<SiteFooter />
+					<SiteFooter showNav={showFooterNav} />
 				</>
 			) : (
 				<slot />

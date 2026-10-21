@@ -71,8 +71,9 @@ export const intro = {
 	/** The h1: name, then the claim in the accent. */
 	name: 'Ismail Azry,',
 	claim: 'designing stores, then building them.',
-	cta: 'See the work ↓',
-	cv: 'CV ↓',
+	/** The hero adds a decorative ↓ after each, hidden from screen readers. */
+	cta: 'See the work',
+	cv: 'CV',
 	about:
 		'Product designer who designs and builds e-commerce storefronts end to end, from information architecture and product search to custom Shopify code. Interface Design graduate, formerly a medical student.',
 	/** What I'm doing now; `link` is the words that open the case study. */

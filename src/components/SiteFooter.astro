@@ -1,28 +1,39 @@
 ---
 import ContactLinks from './ContactLinks.astro';
 import { footerLine, nav } from '../data/site';
+
+interface Props {
+	/** Off on home, where the sticky header nav sits a short scroll away. */
+	showNav?: boolean;
+}
+
+const { showNav = true } = Astro.props;
 ---
 
 <footer id="contact" class="site-footer">
 	<div class="container site-footer__inner">
 		<ContactLinks />
 		<div class="site-footer__meta">
-			<nav aria-label="Footer">
-				<ul class="site-footer__nav" role="list">
-					{nav.map((item) => (
-						<li>
-							<a
-								href={item.href}
-								target={item.newTab ? '_blank' : undefined}
-								rel={item.newTab ? 'noopener' : undefined}
-								aria-label={item.ariaLabel}
-							>
-								{item.label}
-							</a>
-						</li>
-					))}
-				</ul>
-			</nav>
+			{
+				showNav && (
+					<nav aria-label="Footer">
+						<ul class="site-footer__nav" role="list">
+							{nav.map((item) => (
+								<li>
+									<a
+										href={item.href}
+										target={item.newTab ? '_blank' : undefined}
+										rel={item.newTab ? 'noopener' : undefined}
+										aria-label={item.ariaLabel}
+									>
+										{item.label}
+									</a>
+								</li>
+							))}
+						</ul>
+					</nav>
+				)
+			}
 			<p class="site-footer__line">{footerLine}</p>
 		</div>
 	</div>

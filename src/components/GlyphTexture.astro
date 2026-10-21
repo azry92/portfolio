@@ -28,9 +28,27 @@ const TILE = 192;
 		z-index: -1;
 		inline-size: 100%;
 		block-size: 100%;
-		/* Fades out towards the headline so the big type sits on plain ground. */
-		mask-image: linear-gradient(to bottom, #000 40%, transparent 85%);
+		/* Clear under the labels, then fades out towards the headline so the big type
+		   sits on plain ground. */
+		mask-image: linear-gradient(
+			to bottom,
+			transparent var(--space-64),
+			#000 var(--space-128),
+			#000 40%,
+			transparent 85%
+		);
 		pointer-events: none;
+	}
+
+	/* From 900px the intro takes the right half, so the texture stays in the empty
+	   left ground and fades out before the text. */
+	@media (min-width: 900px) {
+		.glyph-texture {
+			mask-image:
+				linear-gradient(to bottom, transparent var(--space-64), #000 var(--space-128), #000 40%, transparent 85%),
+				linear-gradient(to right, #000 30%, transparent 48%);
+			mask-composite: intersect;
+		}
 	}
 
 	.glyph-texture use {
