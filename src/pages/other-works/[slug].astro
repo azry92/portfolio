@@ -38,7 +38,10 @@ const og = ogImageFor(entry.id, entry.data.cover_alt);
 	<div class:list={['other-work', { inverse: composition.theme === 'inverse' }]}>
 		<article>
 			<OtherWorksHero entry={entry} overview={overview} variant={composition.hero} />
-			{sections.map((section) => <OtherWorkSection section={section} layout={layoutFor(composition, entry.id, section.id)} />)}
+			{/* The overview, in the hero, is section 01. */}
+			{sections.map((section, i) => (
+				<OtherWorkSection section={section} layout={layoutFor(composition, entry.id, section.id)} number={i + 2} />
+			))}
 		</article>
 		<OtherWorksPager next={next} />
 	</div>

@@ -1,5 +1,5 @@
 ---
-// One piece of artwork at a time on a fixed stage, with a Shuffle pill under it.
+// One piece of artwork at a time on a fixed stage, with a Shuffle button under it.
 // The markup is the full list; without JS it shows as a grid. An inline bootstrap
 // picks a random piece before first paint, so the grid never flashes.
 import { Picture } from 'astro:assets';
@@ -99,7 +99,7 @@ const pieces = items.map((item) => {
 </script>
 
 <style>
-	/* The first screen holds the h1, intro, stage, caption and pill: the stage gets what is
+	/* The first screen holds the h1, intro, stage, caption and button: the stage gets what is
 	   left of the viewport after the measured space above it (--stage-above) and the caption
 	   row under it (--stage-below), less 16px at the bottom edge. The tallest caption sets the
 	   row, so the footer stays put from piece to piece. */
@@ -112,7 +112,7 @@ const pieces = items.map((item) => {
 		display: grid;
 	}
 
-	/* Width queries for the stage and pill (cqi below) measure the shuffler's column. */
+	/* Width queries for the stage and button (cqi below) measure the shuffler's column. */
 	.shuffler.is-enhanced {
 		container-type: inline-size;
 	}
@@ -207,7 +207,6 @@ const pieces = items.map((item) => {
 	.is-enhanced .shuffler__stage :global(.zoom) {
 		inline-size: min(100cqi, var(--stage) * var(--ratio));
 		block-size: 100%;
-		margin-inline: auto;
 	}
 
 	.is-enhanced .shuffler__stage :global(picture),
@@ -220,12 +219,12 @@ const pieces = items.map((item) => {
 		object-fit: contain;
 	}
 
-	/* Room for the pill, which sits at the end of the caption row. */
+	/* Room for the Shuffle button, which sits at the end of the caption row. */
 	.is-enhanced .shuffler__caption {
 		padding-inline-end: calc(7rem + var(--space-16));
 	}
 
-	/* The pill keeps to the current piece's caption row: the script copies that piece's
+	/* The button keeps to the current piece's caption row: the script copies that piece's
 	   --ratio onto the shuffler. */
 	.is-enhanced .shuffler__button {
 		align-self: start;

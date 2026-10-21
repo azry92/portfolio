@@ -47,12 +47,22 @@ if (!fun) throw new Error('portfolio-content/fun/index.md is missing');
 		}
 	}
 
-	/* Text left, piece right, centred on each other; stacked below 900px. */
+	/* Text in columns 1 to 6, the piece from column 7, centred on each other; stacked
+	   below 900px. */
 	@media (min-width: 900px) {
 		.not-found {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
-			gap: var(--space-64);
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			gap: var(--space-64) var(--gutter);
 			align-items: center;
+		}
+
+		.not-found__header {
+			grid-column: 1 / span 6;
+		}
+
+		/* By class: the piece's script follows it, so it is not the last child. */
+		.not-found > :global(.fun-piece) {
+			grid-column: 7 / -1;
 		}
 	}
 </style>

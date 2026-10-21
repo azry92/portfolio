@@ -54,7 +54,7 @@ const { showNav = true } = Astro.props;
 			align-items: end;
 		}
 
-		.site-footer__inner > :first-child {
+		.site-footer__inner > :global(:first-child) {
 			grid-column: 1 / span 6;
 		}
 

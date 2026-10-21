@@ -260,23 +260,23 @@ const subsectionClass = (sub: Subsection) => [
 			align-items: start;
 		}
 
-		.cs-desktop > :first-child {
+		.cs-desktop > :global(:first-child) {
 			grid-column: span 5;
 		}
 
-		.cs-desktop > :last-child {
+		.cs-desktop > :global(:last-child) {
 			grid-column: 7 / -1;
 		}
 
-		.cs-columns > * {
+		.cs-columns > :global(*) {
 			grid-column: span 6;
 		}
 
-		.cs-sitemap > :first-child {
+		.cs-sitemap > :global(:first-child) {
 			grid-column: span 7;
 		}
 
-		.cs-sitemap > :last-child {
+		.cs-sitemap > :global(:last-child) {
 			grid-column: 9 / -1;
 		}
 	}

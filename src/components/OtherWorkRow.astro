@@ -53,7 +53,6 @@ const { title, summary, timeline, platform } = entry.data;
 		content: '';
 		position: absolute;
 		inset: 0;
-		border-radius: var(--radius-sm);
 	}
 
 	.ow-row__link:focus-visible {
@@ -88,13 +87,18 @@ const { title, summary, timeline, platform } = entry.data;
 	}
 
 	@media (min-width: 768px) {
+		/* Cover in columns 1 to 7, text from column 9. */
 		.ow-row {
-			grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-			gap: var(--space-48);
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			gap: var(--gutter);
 		}
 
-		.ow-row__link::after {
-			border-radius: var(--radius-lg);
+		.ow-row > :global(.work-cover) {
+			grid-column: 1 / span 7;
+		}
+
+		.ow-row__text {
+			grid-column: 9 / -1;
 		}
 
 		.ow-row__title {
