@@ -5,10 +5,10 @@ glance:
   problem: "No way to search by vehicle."
   did: "Built a Shopify store around a vehicle finder."
   outcome: "A custom finder replaced a paid app."
-role: "Product Designer & Shopify Developer"
+role: "Product design + Shopify development"
 card_line: "Shopify webstore"
 team: "Solo, with the sales team"
-timeline: "Apr 2026 – Present"
+timeline: "Feb 2026 – Present"
 platform: "Shopify"
 tools: ["Figma", "Shopify CLI", "Liquid", "Adobe Photoshop"]
 live_url: "https://atautoshoppe.com/"
