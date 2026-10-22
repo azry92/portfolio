@@ -97,7 +97,7 @@ The fairs brought couples to Precious Wedding Emporium at IOI Mall Damansara (fo
 *Photos: Zach Photography Team, Precious Wedding.*
 ## One kit, five campaigns
 <!-- layout: stat cards, RSVP card first -->
->June 2024 – July 2025, Wix Analytics and Google Forms.
+>Five campaigns from one set of sections.
 June 2024 – July 2025 · Wix Analytics; RSVP from Google Forms
 - **82** RSVP form responses, Precious Wedding Fair 4.0, April 2025
 - **55,728** site sessions
