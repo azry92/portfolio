@@ -1,9 +1,10 @@
 ---
 // A titled list for the About section: Experience (role, company, dates) or Education
-// (one line each). Newest first, in frontmatter order; hairlines between rows only.
+// (qualification, institution, years). Newest first, in frontmatter order; hairlines
+// between rows only.
 interface Entry {
 	title: string;
-	/** The company. Links to `href` when there is one. */
+	/** The company or institution. Links to `href` when there is one. */
 	org?: string;
 	href?: string;
 	dates?: string;

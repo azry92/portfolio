@@ -1,6 +1,7 @@
 ---
-// "02 / About" on home: a hairline, the numbered label as the h2, then the headshot,
-// the bio and Experience with Education on the grid. Copy comes from portfolio-content/about.
+// "02 / About" on home: the numbered label as the h2, then the headshot, the bio and
+// Experience with Education on the grid. Copy comes from portfolio-content/about.
+// No hairline: the GlyphBand above is the section's divider.
 import { getEntry } from 'astro:content';
 import SectionLabel from './SectionLabel.astro';
 import Headshot from './Headshot.astro';
@@ -21,10 +22,14 @@ const bio = (about.rendered?.html ?? '').replace(/<!--[\s\S]*?-->\s*/g, '');
 if (!bio.trim()) throw new Error('portfolio-content/about/index.md has no bio');
 
 const experienceEntries = experience.map(({ role, org, href, dates }) => ({ title: role, org, href, dates }));
-const educationEntries = education.map((line) => ({ title: line }));
+const educationEntries = education.map(({ qualification, institution, years }) => ({
+	title: qualification,
+	org: institution,
+	dates: years,
+}));
 ---
 
-<section id="about" class="about section-rule grid-12" aria-labelledby="about-heading">
+<section id="about" class="about grid-12" aria-labelledby="about-heading">
 	<SectionLabel as="h2" id="about-heading" number={number} label={title} class="about__label" />
 	<Headshot image={headshot} alt={headshot_alt} class="about__photo" />
 	<div class="about__bio" set:html={bio} />

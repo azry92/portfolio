@@ -11,7 +11,7 @@ import AboutSection from '../components/AboutSection.astro';
 	<div class="container container--full">
 		<WorkGrid />
 	</div>
-	<!-- The animated band divides Selected work from About, with air on both sides. -->
+	<!-- The animated band divides Selected work from About; About's own top padding sets the gap below it. -->
 	<div class="home__band">
 		<GlyphBand />
 	</div>
@@ -22,12 +22,12 @@ import AboutSection from '../components/AboutSection.astro';
 
 <style>
 	.home__band {
-		margin-block: var(--space-48);
+		margin-block-start: var(--space-48);
 	}
 
 	@media (min-width: 600px) {
 		.home__band {
-			margin-block: var(--space-64);
+			margin-block-start: var(--space-64);
 		}
 	}
 </style>

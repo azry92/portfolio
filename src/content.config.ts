@@ -129,8 +129,17 @@ const about = defineCollection({
 					}),
 				)
 				.min(1),
-			/** Newest first, each line as written. */
-			education: z.array(z.string().min(1)).min(1),
+			/** Newest first. */
+			education: z
+				.array(
+					z.object({
+						qualification: z.string().min(1),
+						institution: z.string().min(1),
+						/** With "(did not complete)" where it applies. */
+						years: z.string().min(1),
+					}),
+				)
+				.min(1),
 		}),
 });
 
