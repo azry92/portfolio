@@ -1,7 +1,8 @@
 ---
-// One case study on the home grid: its cover, then the project name and card line as
-// plain text. Below 600px the card is a row (cover left, text right); from 600px the
-// text sits under the cover. The summary is the link's description, not shown.
+// One case study on the home grid: its cover, then the project name, card line and
+// outcome as plain text. Below 600px the card is a row (cover left, text right); from
+// 600px the text sits under the cover. The link's name is the project name; its
+// description, not shown, is the outcome and then the summary.
 import type { CollectionEntry } from 'astro:content';
 import WorkCover from './WorkCover.astro';
 
@@ -10,7 +11,8 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { title, summary, card_line } = entry.data;
+const { title, summary, card_line, glance } = entry.data;
+const outcome = glance?.outcome;
 // The card shows the project name: the part of the title before the colon.
 const name = title.split(':')[0].trim();
 const id = `work-card-${entry.id}`;
@@ -26,8 +28,19 @@ const id = `work-card-${entry.id}`;
 	<div class="work-card__text">
 		<h3 id={`${id}-title`} class="work-card__title">{name}</h3>
 		{card_line && <p class="work-card__line" aria-hidden="true">{card_line}</p>}
+		{
+			outcome && (
+				<p class="work-card__outcome" aria-hidden="true">
+					<span class="work-card__outcome-label">Outcome</span>
+					{outcome}
+				</p>
+			)
+		}
 	</div>
-	<p id={`${id}-summary`} class="visually-hidden">{summary}</p>
+	<p id={`${id}-summary`} class="visually-hidden">
+		{outcome && `Outcome: ${outcome} `}
+		{summary}
+	</p>
 </a>
 
 <style>
@@ -59,6 +72,35 @@ const id = `work-card-${entry.id}`;
 		color: var(--color-text-muted);
 		font-size: var(--text-14);
 		line-height: var(--leading-heading);
+	}
+
+	/* The label stacks above the outcome so the line gets the column's full width. One
+	   accent square is the card's only colour. Screen readers get the outcome from the
+	   description instead, as plain "Outcome: …" text. */
+	.work-card__outcome {
+		margin-block-start: var(--space-4);
+		font-size: var(--text-14);
+		line-height: var(--leading-heading);
+	}
+
+	.work-card__outcome-label {
+		display: block;
+		margin-block-end: var(--space-4);
+		color: var(--color-text-muted);
+		font-size: var(--text-14);
+		font-weight: var(--weight-semibold);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.work-card__outcome-label::before {
+		content: '';
+		display: inline-block;
+		inline-size: 0.5rem;
+		block-size: 0.5rem;
+		margin-inline-end: 0.375rem;
+		vertical-align: 0.05em;
+		background-color: var(--color-accent);
 	}
 
 	@media (min-width: 600px) {
