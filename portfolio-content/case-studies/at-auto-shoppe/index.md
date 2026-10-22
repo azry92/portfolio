@@ -51,7 +51,7 @@ hero:
 *Reference: ARB, Iconic Builds. The model for Our Builds.*
 ![Alpinestars collection page with image-led category tiles](./images/requirements-reference-03-alpinestars.png)
 *Reference: Alpinestars, image-led category navigation.*
-## Design rules
+## Four rules every screen was checked against
 <!-- layout: numbered rules -->
 - Vehicle before category: every entry point asks for the truck first.
 - A fitment doubt is one tap from WhatsApp.
@@ -95,7 +95,7 @@ I mapped every path from vehicle selection to checkout before building. The flow
 ![Checkout step choosing delivery and payment method](./images/checkout-page-finalize-method.png "Checkout step choosing delivery and payment method.")
 ![Payment step](./images/checkout-page-payment.png "Payment step.")
 *The payment gateway is still being finalised; these screens show the current setup.*
-## One store, three solutions
+## One store, three finders
 <!-- layout: one headline, body below, row of phones -->
 > Parts, wheels and tyres, each from the vehicle.
 I designed and built the store on Shopify: a Make, Model and Generation/Year finder, navigation by product, vehicle and brand, dedicated wheel and tyre finders, an Our Builds showcase, and WhatsApp enquiry for fitment questions.
@@ -110,7 +110,7 @@ I designed and built the store on Shopify: a Make, Model and Generation/Year fin
 ![Mobile menu with parts, wheel and tyre finders](./images/menu-mobile-parts-wheel-tyre-finder.png)
 *All three finders reachable from the mobile menu.*
 ## Sales feedback reshaped the finders
-> Five issues raised, one in progress.
+> Five issues raised, four shipped, one in progress.
 | Feedback | Source | Response |
 |---|---|---|
 | "Wheel Finder is hard to read; J-width is shown first." | Sales Manager, several rounds | Removed J-width as the first step and narrowed the Wheel and Tyre Finders to 4 main branches. |
@@ -126,7 +126,7 @@ I designed and built the store on Shopify: a Make, Model and Generation/Year fin
 *Each change answers a row in the table above.*
 ## Every change reviewed before it reaches the live store
 <!-- layout: copy left, terminal screenshot and code screenshot right -->
-> Theme under version control, AI code reviewed line by line.
+> Theme under version control, AI code reviewed and debugged.
 The store runs on Shopify's Dawn 16 theme, extended with custom sections. Before changing the live store I pulled the theme locally with Shopify CLI and kept it under version control, so every edit can be reviewed and rolled back.
 The code was written with AI assistance. I specified the metaobject schema and the selection rules, then reviewed and debugged every section.
 ![Shopify CLI pulling the live theme into a local folder before any edits](./images/cli-theme-pull-success.png)
