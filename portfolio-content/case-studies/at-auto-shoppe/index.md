@@ -25,7 +25,7 @@ hero:
 ---
 ## Customers shop by truck, not by category
 <!-- layout: hero, title and overview left, browser mockup right -->
-> Make model and year come before anything else.
+> Make, model and year come before anything else.
  4×4 customers shop by vehicle first (make, model, year) and only then by category, so the store had to work the same way.
 ## Four requirements set the brief
 <!-- layout: requirements list, then palette swatches, then reference images in a row -->
@@ -34,16 +34,16 @@ hero:
 - Customers must find parts that fit their vehicle across 10+ makes.
 - The sales team must be able to update products and builds without a developer.
 - Fitment questions must reach sales directly over WhatsApp.
-### Colour palette.
+### Colour palette
 <!-- layout: swatch row -->
 - Brand Blue #2A72BA: brand and every primary action
 - Soft Blue #BDD3EA: vehicle finder (make, model, year) background
 - White #FFFFFF: section backgrounds, Our Builds cards
 - WhatsApp green #25D366: enquiry button
 - Sale red #D71920: sale badges
-### Typography.
+### Typography
 - Inter: Heading, body text
-### References.
+### References
 <!-- layout: three images in a row -->
 ![RAYS Wheels collection page with a sliding transition between wheel ranges](./images/requirements-reference-01-rays-wheels.png)
 *Reference: RAYS Wheels, slider transition between collections.*
@@ -71,7 +71,7 @@ I mapped every path from vehicle selection to checkout before building. The flow
 *Every route into a product, and the WhatsApp exit when fitment is uncertain.*
 ## Five steps from truck to part
 <!-- layout: rows of phones, one labelled row per stage -->
-### Find parts for your vehicle.
+### Find parts for your vehicle
 <!-- layout: scrolling steps, sticky phone left -->
 ![Vehicle finder with make, model and year selected](./images/product-finder-vehicle-select.png)
 *Pick the truck. Make, model and year, before anything else.*
@@ -84,13 +84,13 @@ I mapped every path from vehicle selection to checkout before building. The flow
 ![Product page with description and fitment notes](./images/product-finder-page-product-description.png)
 *Check the fitment notes. The product page repeats the fit, with WhatsApp one tap away.*
 *Vehicle first, then category, then only the parts that fit.*
-### Our Builds.
+### Our Builds
 ![Our Builds page header introducing customer vehicle builds](./images/our-builds-header.png)
 ![Gallery of a modified 4x4 from several angles](./images/our-builds-explore-vehicle.png)
 ![List of every part used in the build, each linked to its product](./images/our-builds-build-components.png)
 ![Build page call to action with the WhatsApp enquiry button](./images/our-builds-page-cta.png)
 *Each build lists its parts, so a customer can buy the whole look.*
-### Checkout.
+### Checkout
 ![Cart with the selected product](./images/checkout-page-select-product.png "Cart with the selected product.")
 ![Checkout step choosing delivery and payment method](./images/checkout-page-finalize-method.png "Checkout step choosing delivery and payment method.")
 ![Payment step](./images/checkout-page-payment.png "Payment step.")
