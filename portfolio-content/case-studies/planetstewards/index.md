@@ -1,6 +1,7 @@
 ---
-title: "PLANETSTEWARDS: identity and website design"
+title: "PLANETSTEWARDS"
 summary: "A visual identity and website for an academic space-governance project, redesigned to put human activity in orbit, on the Moon and on Mars at the centre of the story while staying credible to academic partners."
+subtitle: "An academic space-governance project that needed people in its pictures."
 glance:
   problem: "The imagery showed no human activity."
   did: "Co-designed the identity, site and motion piece."
@@ -23,11 +24,13 @@ hero:
   image: ./images/home-page-hero.png
   alt: "PLANETSTEWARDS homepage hero on desktop"
 ---
-## Overview
+## The pictures showed planets, not people
 <!-- layout: hero, title and overview left, browser mockup right -->
+>A reviewer asked where the human interventions were.
 PLANETSTEWARDS studies how human activity in space should be governed. The first imagery read as astronomy: planets, no people, no hardware. A reviewer asked where the human interventions were, and the PI flagged that the pictures didn't form a storyline. The redesign had to put human presence in orbit, on the Moon and on Mars at the centre of the visual narrative, while staying credible to academic partners.
-## Requirements and process
+## Credible to a professor, inviting to a student
 <!-- layout: requirements list, then palette swatches, then reference images in a row -->
+>Three requirements from the research team.
 - Credible to institutions, approachable to students.
 - White-led, even though space is conventionally shown dark.
 - A clear path from landing page to abstract submission and registration.
@@ -44,8 +47,15 @@ PLANETSTEWARDS studies how human activity in space should be governed. The first
 *Reference: Redshift Sky, logo construction.*
 ![Earth System Governance project page layout](./images/requirements-reference-03-earth-system-governance.png)
 *Reference: Earth System Governance, academic project layout.*
-## Information architecture
+## Four rules every page was checked against
+<!-- layout: numbered rules -->
+- Every planet on the homepage appears with human activity beside it.
+- White-led pages, with space imagery kept to strips.
+- Blue for the brand and primary actions, yellow only for events and submissions.
+- Every event page is built from one template.
+## A navigation that grows with every event
 <!-- layout: initial sitemap diagram left, shipped navigation (rendered as live HTML from the list below) right -->
+>From the research proposal's outline to outputs and a calendar.
 The first sitemap mirrored the research proposal: Home, The Project, Key Objectives, Methodology and an International Advisory Board. It described the project but gave it nowhere to grow. Once the project started publishing papers and running events, the site had to carry outputs and a calendar, not just a description.
 The shipped navigation expanded these pages and added Publications, News and an Annual Events branch. Each year's event becomes a new page under Annual Events, so the menu never has to be restructured.
 ![Initial sitemap: PLANETSTEWARDS with Home, The Project, Key Objectives, Methodology and International Advisory Board, each with sub-pages](./images/sitemap-initial.png)
@@ -62,8 +72,9 @@ The shipped navigation expanded these pages and added Publications, News and an 
   - Earth-Space System Workshop 2025
   - ESS 2026
   - Earth-Space Academy 2026
-## The Solution
+## An identity that puts people in orbit
 <!-- layout: one headline, body below, desktop view next to body and a row of phones under -->
+>Logo, palette, layout and motion, with September Khu.
 With September Khu, I shaped the site's visual identity and layout: moodboards and logo concepts, a blue-and-yellow palette with Roboto, and a structure built around the project, team, publications and symposium. I worked on visual hierarchy, image placement and icon styling, and produced the space-debris motion piece.
 ![Desktop event page for the 2024 Earth-Space Symposium, with the event title, dates and venue](./images/events-page.png)
 *2024 Earth-Space Symposium event page on desktop.*
@@ -80,8 +91,9 @@ The symposium needed a route from first visit to submitted abstract. The menu hi
 ![Call for Papers announcement on mobile](./images/page-call-for-papers-news.png "Call for Papers banner for the Earth System Governance special issue.")
 ![Mobile menu with the symposium highlighted](./images/menu-mobile-symposium-highlight.png "Mobile menu with the Earth-Space Symposium highlighted.")
 *From left: symposium registration page, Call for Papers, mobile menu. 2024 pages captured from the Wayback Machine.*
-## Feedback and iteration
+## Reviewer feedback brought the people in
 <!-- layout: table, then logo revisions row, then Earth-Moon-Mars sequence -->
+>Five rounds of feedback, five changes shipped.
 | Feedback | Source | Response |
 |---|---|---|
 | Logo "very busy"; fewer globe grid lines, or replace the grid with constellation lines and dots. | External reviewer, via the Principal Investigator | Removed the globe grid and kept the constellation lines and dots, the reviewer's second option. |
@@ -110,6 +122,7 @@ The symposium needed a route from first visit to submitted abstract. The menu hi
 A reviewer asked where the human activity was. The imagery showed planets, not what people have put around them. I produced a short loop of Earth surrounded by orbital debris. The footage was sourced from Freepik and composited and animated in CapCut. It is illustrative, not data-driven. Used on the homepage.
 ## Built to be maintained by researchers
 <!-- layout: two columns; left: copy then publications screenshot; right: news screenshots -->
+>25 news entries and three events published without design support.
 I designed three content templates: publication entry, news entry and event page. The research team has since published 25 news entries and three more events on them without design support. The site has run from 2024 to 2026.
 ![Publications page listing foundational publications](./images/page-publications.png)
 *Publication entries.*
@@ -117,8 +130,9 @@ I designed three content templates: publication entry, news entry and event page
 *News entries.*
 ![Embassy of The Moon page entry](./images/page-news-blog.png)
 *Page entry.*
-## Results
+## An audience well beyond Utrecht
 <!-- layout: stat cards, first card largest -->
+>Measured over the site's first year.
 Jun 2024 – Jun 2025 · Wix Analytics
 - **6m 2s** average session length
 - **1,679** unique visitors across 3,295 sessions

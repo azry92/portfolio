@@ -16,8 +16,6 @@ export type Layout =
 	| { kind: 'row'; frame: Frame; uniform: boolean }
 	/** Several captioned rows of images, one after another, each holding the given number. */
 	| { kind: 'rows'; counts: number[] }
-	/** One run of figures as numbered steps with arrows between them, the body below. */
-	| { kind: 'steps'; frame: Frame }
 	/** Copy, then one figure at full content width. */
 	| { kind: 'full' }
 	/** Copy in one column, figures in the other: stacked, or a row of phones. */
@@ -42,7 +40,7 @@ export type Layout =
 	| { kind: 'stats' }
 	/** A list drawn as numbered rules, hairlines between them. */
 	| { kind: 'rules' }
-	/** A stage's run of phones as steps; from 900px one sticky phone shows the step in view. */
+	/** A run of phones as steps (a stage's or a chapter's); from 900px one sticky phone shows the step in view. */
 	| { kind: 'scroll-steps' };
 
 const numbers: Record<string, number> = { two: 2, three: 3, four: 4, five: 5 };
@@ -67,6 +65,7 @@ const patterns: [RegExp, (match: RegExpMatchArray) => Layout][] = [
 		/^(?:(?:body|table), then )?(?:two|three|four|five) (images|photos|logos|posters|phones) in a row(, same size)?$/,
 		(m) => ({ kind: 'row', frame: rowNouns[m[1]], uniform: Boolean(m[2]) }),
 	],
+	[/^table, then one phone$/, () => ({ kind: 'row', frame: 'phone', uniform: false })],
 	[/^(?:full-width diagram|diagram full width)$/, () => ({ kind: 'full' })],
 	[
 		/^(?:copy|body) left, ([a-z ]+) right$/,
@@ -90,10 +89,6 @@ const patterns: [RegExp, (match: RegExpMatchArray) => Layout][] = [
 	[
 		/^(?:two|three|four|five) [a-z ]+ in a row(?:, then (?:two|three|four|five) [a-z ]+ in a row)+$/i,
 		(m) => ({ kind: 'rows', counts: [...m[0].matchAll(/\b(two|three|four|five) /g)].map((n) => numbers[n[1]]) }),
-	],
-	[
-		/^(?:two|three|four|five) (images|phones) in a row with numbered step labels and arrows, body under$/,
-		(m) => ({ kind: 'steps', frame: rowNouns[m[1]] }),
 	],
 	[/^full-width video, body below$/, () => ({ kind: 'video-then-body' })],
 	[

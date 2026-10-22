@@ -9,8 +9,6 @@ interface Props {
 }
 
 const { prev, next } = Astro.props;
-// The project name: the part of the title before the colon, as on the home cards.
-const name = (entry: CollectionEntry<'caseStudies'>) => entry.data.title.split(':')[0].trim();
 ---
 
 <nav class="pager container" aria-label="Case studies">
@@ -19,7 +17,7 @@ const name = (entry: CollectionEntry<'caseStudies'>) => entry.data.title.split('
 			<a class="pager__next" href={`/work/${next.id}`} rel="next">
 				<span class="pager__label section-label">Next read</span>
 				<span class="pager__name">
-					{name(next)}
+					{next.data.title}
 					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg>
 				</span>
 			</a>
@@ -27,7 +25,7 @@ const name = (entry: CollectionEntry<'caseStudies'>) => entry.data.title.split('
 		<li class="pager__prev">
 			<a href={`/work/${prev.id}`} rel="prev">
 				<span class="pager__small">Previous:</span>
-				{name(prev)}
+				{prev.data.title}
 			</a>
 		</li>
 	</ul>

@@ -17,6 +17,9 @@ const { run } = Astro.props;
 if (run.items.some((item) => !item.caption)) {
 	throw new Error('Scrolling steps need a caption under every image: the step text');
 }
+// The steps are numbered here, so a number typed into a caption would show twice.
+const typed = run.items.find((item) => /^\d+\.\s/.test(item.caption!));
+if (typed) throw new Error(`Scrolling step caption "${typed.caption}": step numbers come from order, not the caption`);
 
 // "Pick the truck. Make, model and year…": the first sentence leads, in semibold.
 const steps = run.items.map((item) => {

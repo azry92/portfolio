@@ -7,8 +7,8 @@ import FigureGrid from './FigureGrid.astro';
 import LabelledStack from './LabelledStack.astro';
 import PhonesThenBrowser from './PhonesThenBrowser.astro';
 import SplitBlocks from './SplitBlocks.astro';
+import ScrollSteps from './ScrollSteps.astro';
 import StageRows from './StageRows.astro';
-import StepRow from './StepRow.astro';
 import type { Frame, Layout } from '../lib/case-study/layouts';
 import type { Block, Section, Subsection } from '../lib/case-study/parse';
 
@@ -44,8 +44,8 @@ const run =
 			? needsOneRun('desktop view next to body and a row of phones under', 2)
 			: layout.kind === 'two-column'
 				? needsOneRun('two columns', 2)
-				: layout.kind === 'steps'
-					? needsOneRun('phones in a row with numbered step labels and arrows', 2)
+				: layout.kind === 'scroll-steps'
+					? needsOneRun('scrolling steps', 2)
 					: undefined;
 const [lead, ...others] = run?.items ?? [];
 
@@ -109,10 +109,11 @@ const subsectionClass = (sub: Subsection) => [
 					</div>
 					<FigureGrid items={others} frame="phone" />
 				</>
-			) : layout.kind === 'steps' && run ? (
+			) : layout.kind === 'scroll-steps' && run ? (
 				<>
-					<StepRow run={run} frame={layout.frame} />
 					<CaseStudyBlocks blocks={prose} />
+					<ScrollSteps run={run} />
+					{run.caption && <p class="cs-steps__caption" set:html={run.caption} />}
 				</>
 			) : layout.kind === 'two-column' && run ? (
 				<div class="cs-columns">
@@ -230,6 +231,10 @@ const subsectionClass = (sub: Subsection) => [
 		display: grid;
 		gap: var(--space-32);
 		align-content: start;
+	}
+
+	.cs-steps__caption {
+		max-inline-size: var(--measure);
 	}
 
 	.cs-stats__source :global(.prose) {

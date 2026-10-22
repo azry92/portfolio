@@ -13,8 +13,6 @@ interface Props {
 const { entry } = Astro.props;
 const { title, summary, card_line, glance } = entry.data;
 const outcome = glance?.outcome;
-// The card shows the project name: the part of the title before the colon.
-const name = title.split(':')[0].trim();
 const id = `work-card-${entry.id}`;
 ---
 
@@ -26,7 +24,7 @@ const id = `work-card-${entry.id}`;
 >
 	<WorkCover data={entry.data} />
 	<div class="work-card__text">
-		<h3 id={`${id}-title`} class="work-card__title">{name}</h3>
+		<h3 id={`${id}-title`} class="work-card__title">{title}</h3>
 		{card_line && <p class="work-card__line" aria-hidden="true">{card_line}</p>}
 		{
 			outcome && (
