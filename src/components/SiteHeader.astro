@@ -68,7 +68,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 		display: none;
 	}
 
-	/* Five links fit one line at 360px with the 16px gap; the name wraps above them. */
+	/* Without JS the six links wrap under the name; from 600px they fit one line beside it. */
 	.site-header__nav {
 		display: flex;
 		gap: var(--space-16);

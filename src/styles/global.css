@@ -182,6 +182,8 @@ a:active {
 /* The numbered label over a section heading: "02 / Process". */
 .section-label {
 	display: flex;
+	/* Inter even when the label is the section's h2. */
+	font-family: var(--font-body);
 	gap: var(--space-8);
 	align-items: center;
 	font-size: var(--text-14);

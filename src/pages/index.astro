@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeHero from '../components/HomeHero.astro';
 import WorkGrid from '../components/WorkGrid.astro';
+import GlyphBand from '../components/GlyphBand.astro';
+import AboutSection from '../components/AboutSection.astro';
 ---
 
 <BaseLayout showBackToTop={false} showFooterNav={false} fullWidth>
@@ -9,4 +11,23 @@ import WorkGrid from '../components/WorkGrid.astro';
 	<div class="container container--full">
 		<WorkGrid />
 	</div>
+	<!-- The animated band divides Selected work from About, with air on both sides. -->
+	<div class="home__band">
+		<GlyphBand />
+	</div>
+	<div class="container container--full">
+		<AboutSection number={2} />
+	</div>
 </BaseLayout>
+
+<style>
+	.home__band {
+		margin-block: var(--space-48);
+	}
+
+	@media (min-width: 600px) {
+		.home__band {
+			margin-block: var(--space-64);
+		}
+	}
+</style>

@@ -1,0 +1,67 @@
+---
+// A titled list for the About section: Experience (role, company, dates) or Education
+// (one line each). Newest first, in frontmatter order; hairlines between rows only.
+interface Entry {
+	title: string;
+	/** The company. Links to `href` when there is one. */
+	org?: string;
+	href?: string;
+	dates?: string;
+}
+
+interface Props {
+	heading: string;
+	entries: Entry[];
+	class?: string;
+}
+
+const { heading, entries, class: className } = Astro.props;
+---
+
+<div class:list={['cv-list', className]}>
+	<h3 class="cv-list__heading">{heading}</h3>
+	<ol class="cv-list__entries" role="list">
+		{
+			entries.map(({ title, org, href, dates }) => (
+				<li class="cv-list__entry">
+					<p class="cv-list__title">{title}</p>
+					{org && <p class="cv-list__org">{href ? <a href={href}>{org}</a> : org}</p>}
+					{dates && <p class="cv-list__dates">{dates}</p>}
+				</li>
+			))
+		}
+	</ol>
+</div>
+
+<style>
+	.cv-list__heading {
+		padding-block-end: var(--space-12);
+		font-size: var(--text-18);
+	}
+
+	.cv-list__entries {
+		padding: 0;
+		list-style: none;
+		border-block-start: var(--rule);
+	}
+
+	.cv-list__entry {
+		display: grid;
+		gap: var(--space-4);
+		padding-block: var(--space-16);
+	}
+
+	.cv-list__entry + .cv-list__entry {
+		border-block-start: var(--rule);
+	}
+
+	.cv-list__title {
+		font-weight: var(--weight-semibold);
+		line-height: var(--leading-heading);
+	}
+
+	.cv-list__dates {
+		color: var(--color-text-muted);
+		font-size: var(--text-14);
+	}
+</style>

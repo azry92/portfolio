@@ -7,6 +7,7 @@
 - name: Ismail Azry
 nav:
   - Work: /#work
+  - About: /#about
   - Other Works: /other-works
   - Fun: /fun
   - Contact: #contact
@@ -26,7 +27,7 @@ nav:
   - "Ismail Azry," in black, 48px on a phone rising to 128px (--text-hero).
   - "designing stores, then building them." in the accent red, 32px rising to 80px, balanced so it breaks after "stores,".
 - Glyph texture behind the hero: the IA glyph (portfolio-content/brand/glyph-ia.svg, paths id="I" and id="A") as faint outlines in the border colour, tiled with a brick offset in inline SVG. Static, decorative, aria-hidden. It is clear under the labels and fades out before the headline; from 900px it also fades out before the intro's right half, so no text sits on it.
-- The animated glyph band (load sequence, scroll scrub, hover flip) is not on home; it moves to the About page.
+- The animated glyph band (load sequence, scroll scrub, hover flip) is not in the hero; it sits after Selected work as the divider before About.
 ### 2. Work (id="work")
 - A hairline across the content width, then the label "01 / Selected work" (SectionLabel) over the h2 "See the Work" (Sora, 32px rising to 48px).
 - Case study cards in frontmatter `order`: AT Auto Shoppe, PLANETSTEWARDS, Precious Wedding. Each comes from WorkCover: a square tile on the page cream with a 1px hairline border, the hero screenshot's frame rising from the bottom edge, no colour fill and no shadow.

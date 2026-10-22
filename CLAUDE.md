@@ -18,12 +18,12 @@ Personal portfolio for "Product Designer, Web & E-commerce | Shopify Design & Bu
 - `tokens.md` and `references/` override any design skill's defaults. Use skills for craft, not brand choices.
 
 ## Pages
-- `/` home: full-screen hero (role and availability labels, about with See the work and CV, the name and claim as a large two-line h1, a faint static IA glyph texture behind; the h1 comes first in the markup and grid rows place it at the bottom), then "01 / Selected work" with the three case study cards and the Other Works and Fun pills, then the footer. The animated glyph band is off home and moves to the About page.
+- `/` home: full-screen hero (role and availability labels, about with See the work and CV, the name and claim as a large two-line h1, a faint static IA glyph texture behind; the h1 comes first in the markup and grid rows place it at the bottom), then "01 / Selected work" with the three case study cards and the Other Works and Fun pills, then the animated GlyphBand as a full-bleed divider, then "02 / About" (`#about`, the label is the h2): headshot, bio, Experience and Education from `portfolio-content/about/index.md`, then the footer.
 - `/work/[slug]` case studies: AT Auto Shoppe, PlanetStewards, Precious Wedding.
 - `/other-works`: short index listing Atlas IHU and MBFW as cards. Built in the Other Works session.
 - `/other-works/[slug]`: MBFW, Atlas IHU Theme.
 - `/fun`: illustrations and concepts, grid with lightbox.
-- CV PDF download, 404. There is no About page. The header nav (Work, Other Works, Fun, Contact, CV) is sticky on every page, home included; the footer nav repeats it.
+- CV PDF download, 404. There is no About page: About is a section on home, reached by `/#about`. The header nav (Work, About, Other Works, Fun, Contact, CV) is sticky on every page, home included; the footer nav repeats it.
 
 ## Rules
 - Semantic HTML: one `h1` per page, landmarks, real lists, `figure`/`figcaption` for images.

@@ -1,0 +1,121 @@
+---
+// "02 / About" on home: a hairline, the numbered label as the h2, then the headshot,
+// the bio and Experience with Education on the grid. Copy comes from portfolio-content/about.
+import { getEntry } from 'astro:content';
+import SectionLabel from './SectionLabel.astro';
+import Headshot from './Headshot.astro';
+import ExperienceList from './ExperienceList.astro';
+
+interface Props {
+	/** The section's position on the page, for its label. */
+	number: number;
+}
+
+const { number } = Astro.props;
+
+const about = await getEntry('about', 'index');
+if (!about) throw new Error('portfolio-content/about/index.md is missing');
+const { title, headshot, headshot_alt, experience, education } = about.data;
+// The bio is the Markdown body, less its <!-- layout --> note.
+const bio = (about.rendered?.html ?? '').replace(/<!--[\s\S]*?-->\s*/g, '');
+if (!bio.trim()) throw new Error('portfolio-content/about/index.md has no bio');
+
+const experienceEntries = experience.map(({ role, org, href, dates }) => ({ title: role, org, href, dates }));
+const educationEntries = education.map((line) => ({ title: line }));
+---
+
+<section id="about" class="about section-rule grid-12" aria-labelledby="about-heading">
+	<SectionLabel as="h2" id="about-heading" number={number} label={title} class="about__label" />
+	<Headshot image={headshot} alt={headshot_alt} class="about__photo" />
+	<div class="about__bio" set:html={bio} />
+	<div class="about__lists">
+		<ExperienceList heading="Experience" entries={experienceEntries} />
+		<ExperienceList heading="Education" entries={educationEntries} />
+	</div>
+</section>
+
+<style>
+	.about {
+		row-gap: var(--space-32);
+		padding-block: var(--space-48);
+	}
+
+	/* Below 600px the photo is capped so it doesn't fill the first screen. */
+	.about :global(.about__photo) {
+		max-inline-size: 16rem;
+	}
+
+	.about__bio {
+		display: grid;
+		gap: var(--space-16);
+		max-inline-size: var(--measure);
+		font-size: var(--text-18);
+	}
+
+	.about__lists {
+		display: grid;
+		gap: var(--space-32);
+	}
+
+	/* 600px to 899px: photo and bio share the row, two of four columns each; the lists
+	   run across below. */
+	@media (min-width: 600px) {
+		.about {
+			row-gap: var(--space-48);
+			padding-block: var(--space-64);
+		}
+
+		.about :global(.about__photo) {
+			grid-column: 1 / span 2;
+			max-inline-size: none;
+		}
+
+		.about__bio {
+			grid-column: 3 / -1;
+		}
+	}
+
+	/* 900px to 1199px: photo in columns 1 to 4, bio 5 to 12, then Experience and
+	   Education side by side, six columns each. */
+	@media (min-width: 900px) {
+		.about :global(.about__photo) {
+			grid-column: 1 / span 4;
+		}
+
+		.about__bio {
+			grid-column: 5 / -1;
+		}
+
+		.about__lists {
+			grid-template-columns: subgrid;
+		}
+
+		.about__lists > :global(*) {
+			grid-column: span 6;
+		}
+	}
+
+	/* From 1200px: three columns. Photo 1 to 3, bio 4 to 8, lists 9 to 12. */
+	@media (min-width: 1200px) {
+		.about {
+			align-items: start;
+		}
+
+		.about :global(.about__photo) {
+			grid-column: 1 / span 3;
+		}
+
+		.about__bio {
+			grid-column: 4 / span 5;
+		}
+
+		.about__lists {
+			grid-column: 9 / -1;
+			grid-template-columns: minmax(0, 1fr);
+		}
+
+		.about__lists > :global(*) {
+			grid-column: auto;
+		}
+	}
+</style>

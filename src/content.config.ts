@@ -101,4 +101,37 @@ const fun = defineCollection({
 		}),
 });
 
-export const collections = { caseStudies, otherWorks, fun };
+// The About section on home: the bio is the Markdown body, the lists come from the frontmatter.
+const about = defineCollection({
+	loader: glob({ base: './portfolio-content/about', pattern: 'index.md' }),
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			summary: z.string(),
+			/** Not shown on home. */
+			headline: z.string().optional(),
+			headshot: image(),
+			headshot_alt: z.string().min(1),
+			/** Not shown on home. */
+			skills: z.array(z.string()).optional(),
+			/** Not shown on home. */
+			tools: z.array(z.string()).optional(),
+			/** Newest first. */
+			experience: z
+				.array(
+					z.object({
+						role: z.string(),
+						org: z.string(),
+						dates: z.string(),
+						line: z.string().optional(),
+						/** The case study for this role; the company name links to it. */
+						href: z.string().startsWith('/').optional(),
+					}),
+				)
+				.min(1),
+			/** Newest first, each line as written. */
+			education: z.array(z.string().min(1)).min(1),
+		}),
+});
+
+export const collections = { caseStudies, otherWorks, fun, about };
