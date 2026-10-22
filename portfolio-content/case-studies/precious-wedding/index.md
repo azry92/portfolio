@@ -95,16 +95,15 @@ The fairs brought couples to Precious Wedding Emporium at IOI Mall Damansara (fo
 ![Bridal makeup class in session](./images/page-event-blog-02.png)
 ![Audience in the emporium venue](./images/page-event-blog-03.png)
 *Photos: Zach Photography Team, Precious Wedding.*
-## One kit, five campaigns
+## One kit, four campaigns
 <!-- layout: stat cards, RSVP card first -->
->Five campaigns from one set of sections.
-June 2024 – July 2025 · Wix Analytics; RSVP from Google Forms
+> Four campaigns from one set of sections.
 - **82** RSVP form responses, Precious Wedding Fair 4.0, April 2025
 - **55,728** site sessions
 - **68%** of March 2025 sessions included the fair landing page (2,578 of 3,793)
 - **86%** of sessions on mobile
 ### What changed for the business
-- **One kit, many campaigns.** The same section kit carried the June 2024, October 2024 and April 2025 fairs, and the Destination Weddings campaign. Each new page was a content swap, not a redesign.
+- **One kit, many campaigns.** The same section kit carried the June 2024, October 2024 and April 2025 fairs and the January 2025 festive page. Each new page was a content swap, not a redesign.
 - **Emotion with clarity.** Editorial serif type and full-bleed couple photography carry the romance. One primary CTA per screen carries the action.
 - **Conversations, not clicks.** Leads arrived on WhatsApp already tagged as coming from the website, and the April 2025 RSVP form collected 82 responses.
 ## Reflection

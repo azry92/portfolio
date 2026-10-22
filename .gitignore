@@ -25,3 +25,5 @@ pnpm-debug.log*
 portfolio-content/references/
 # AT Auto Shoppe videos are source material, not used on the site
 portfolio-content/case-studies/at-auto-shoppe/videos/
+# Playwright CLI snapshots and logs
+.playwright-cli/
