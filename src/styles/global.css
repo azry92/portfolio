@@ -320,15 +320,21 @@ main[tabindex='-1']:focus {
 }
 
 /* Anchor jumps (/#work, #contact, skip link) stop below the sticky header:
-   one line of nav from 600px, the name above the nav below it. Measured: 111px, then 75px. */
+   a fixed 56px bar with the Menu button below 600px, one line of nav from 600px (75px).
+   Without JS the mobile nav wraps under the name (111px). */
 html {
 	--header-h: 7rem;
 
 	scroll-padding-block-start: var(--header-h);
 }
 
+html.js {
+	--header-h: 3.5rem;
+}
+
 @media (min-width: 600px) {
-	html {
+	html,
+	html.js {
 		--header-h: 4.75rem;
 	}
 }

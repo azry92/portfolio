@@ -4,10 +4,11 @@ import { nav, site } from '../data/site';
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
 
-<header class="site-header">
+<header class="site-header" data-site-header>
 	<div class="container container--full site-header__inner">
 		<a class="site-header__name" href="/">{site.name}</a>
-		<nav aria-label="Primary">
+		<button class="site-header__toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+		<nav id="site-nav" class="site-header__panel" aria-label="Primary">
 			<ul class="site-header__nav" role="list">
 				{
 					nav.map((item) => (
@@ -28,6 +29,10 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 		</nav>
 	</div>
 </header>
+
+<script>
+	import '../scripts/site-menu';
+</script>
 
 <style>
 	/* Sticky on every page so Work, Contact and the CV are one tap away at any depth.
@@ -58,6 +63,11 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 		text-decoration: none;
 	}
 
+	/* Without JS the button does nothing, so it stays out and the links wrap under the name. */
+	.site-header__toggle {
+		display: none;
+	}
+
 	/* Five links fit one line at 360px with the 16px gap; the name wraps above them. */
 	.site-header__nav {
 		display: flex;
@@ -73,6 +83,76 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 		color: var(--color-text);
 		font-weight: var(--weight-semibold);
 		text-decoration: none;
+	}
+
+	/* Below 600px with JS: one 56px bar (the rule included), the nav in a full-width panel. */
+	@media (max-width: 599.98px) {
+		:global(.js) .site-header {
+			block-size: 3.5rem;
+		}
+
+		:global(.js) .site-header__inner {
+			flex-wrap: nowrap;
+			block-size: 100%;
+			padding-block: 0;
+		}
+
+		/* A compact .button-square: square, 1px border, the fill inverts on focus and hover. */
+		:global(.js) .site-header__toggle {
+			display: inline-flex;
+			align-items: center;
+			min-block-size: 2.5rem;
+			padding-inline: var(--space-12);
+			border: var(--border-width) solid currentColor;
+			border-radius: 0;
+			background-color: transparent;
+			color: var(--color-text);
+			cursor: pointer;
+			font-weight: var(--weight-semibold);
+			line-height: var(--leading-heading);
+		}
+
+		:global(.js) .site-header__toggle:focus-visible {
+			background-color: var(--color-surface-inverse);
+			color: var(--color-text-inverse);
+		}
+
+		:global(.js) .site-header__panel {
+			display: none;
+			position: absolute;
+			inset-block-start: 100%;
+			inset-inline: 0;
+			padding-inline: var(--page-gutter);
+			background-color: var(--color-bg);
+			border-block-end: 1px solid var(--color-border);
+		}
+
+		:global(.js) .site-header[data-open] .site-header__panel {
+			display: block;
+		}
+
+		:global(.js) .site-header__nav {
+			flex-direction: column;
+			gap: 0;
+		}
+
+		/* Hairlines between rows only. */
+		:global(.js) .site-header__nav li + li {
+			border-block-start: 1px solid var(--color-border);
+		}
+
+		:global(.js) .site-header__nav a {
+			display: flex;
+			align-items: center;
+			min-block-size: var(--space-48);
+		}
+	}
+
+	@media (max-width: 599.98px) and (hover: hover) {
+		:global(.js) .site-header__toggle:hover {
+			background-color: var(--color-surface-inverse);
+			color: var(--color-text-inverse);
+		}
 	}
 
 	@media (min-width: 600px) {

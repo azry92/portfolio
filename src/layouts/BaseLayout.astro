@@ -49,6 +49,8 @@ const ogImageUrl = new URL(ogImage.src, Astro.site).href;
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!-- Set before first paint so the mobile header collapses to its Menu button without a shift. -->
+		<script is:inline>document.documentElement.classList.add('js');</script>
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
