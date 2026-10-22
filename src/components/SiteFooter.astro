@@ -65,6 +65,19 @@ const { showNav = true, fullWidth = false } = Astro.props;
 		}
 	}
 
+	/* From 1200px the second group sets off against the frame's right edge, under the
+	   header's last link: the only right-aligned text on the site. */
+	@media (min-width: 1200px) {
+		.site-footer__meta {
+			justify-items: end;
+			text-align: end;
+		}
+
+		.site-footer__nav {
+			justify-content: flex-end;
+		}
+	}
+
 	/* The links' 8px block padding keeps their tap targets tall, so a 4px gap leaves
 	   12px between the link text and the credit line. */
 	.site-footer__meta {
