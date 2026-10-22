@@ -61,12 +61,16 @@ export type Block =
 	| { kind: 'figures'; items: Figure[]; caption?: string }
 	| { kind: 'tree'; items: TreeItem[] }
 	| { kind: 'stats'; items: Stat[] }
+	/** Numbered rules, each item's inline HTML. */
+	| { kind: 'rules'; items: string[] }
 	/** A muted, looping motion piece; the poster stands in for it under reduced motion. */
 	| { kind: 'video'; src: string; poster: ImageMetadata; alt: string };
 
 export interface Subsection {
 	id: string;
 	heading: string;
+	/** A chapter's one-line subhead (inline HTML), from a `> line` directly under its ##. */
+	subhead?: string;
 	layout?: Layout;
 	/** The layout note as written, when the template doesn't parse notes. */
 	note?: string;
@@ -160,8 +164,13 @@ function stats(list: List, source: string): Stat[] {
 	return list.children.map((item: ListItem) => {
 		const [paragraph] = item.children;
 		const [first, ...rest] = paragraph?.type === 'paragraph' ? paragraph.children : [];
+		// "RM 80/month: paid app replaced": the figure is everything before the first colon.
+		const plain = first?.type === 'text' ? first.value.match(/^([^:]+): (.*)$/s) : null;
+		if (plain) {
+			return { value: plain[1].trim(), label: inlineHtml([{ type: 'text', value: plain[2] }, ...rest]) };
+		}
 		if (first?.type !== 'strong') {
-			throw new Error(`${source}: a stat card must open with its figure in bold, got "${text(item).trim()}"`);
+			throw new Error(`${source}: a stat card must open with its figure in bold or read "Figure: label", got "${text(item).trim()}"`);
 		}
 		if (rest[0]?.type === 'text') rest[0].value = rest[0].value.trimStart();
 		return { value: text(first), label: inlineHtml(rest) };
@@ -243,7 +252,11 @@ function parseProject(collection: Collection, slug: string, body: string, option
 
 	const caption = (html: string) => {
 		const uncaptioned = run.filter((figure) => !figure.caption).length;
-		if (uncaptioned > 1 && uncaptioned === run.length) {
+		// Every image captioned (numbered steps), so one more caption covers the whole run.
+		if (run.length > 1 && uncaptioned === 0 && !runCaption) {
+			runCaption = html;
+			flush();
+		} else if (uncaptioned > 1 && uncaptioned === run.length) {
 			runCaption = html;
 			flush();
 		} else if (run.length && !run[run.length - 1].caption && uncaptioned === 1) {
@@ -253,12 +266,15 @@ function parseProject(collection: Collection, slug: string, body: string, option
 		}
 	};
 
-	const handle = (node: RootContent) => {
+	/** `src` is the Markdown the node's positions point into: the body, or a part read again. */
+	const handle = (node: RootContent, src = body) => {
 		switch (node.type) {
 			case 'heading': {
 				flush();
 				const heading = text(node).trim();
 				if (node.depth === 2) {
+					// Case study chapters are numbered by the template; an other work's heading may open with a figure.
+					if (options.layouts && /^\d+ /.test(heading)) throw new Error(`${source}: "## ${heading}": chapter numbers come from order, not the heading`);
 					const section: Section = { id: uniqueId(heading), heading, blocks: [], subsections: [] };
 					sections.push(section);
 					current = section;
@@ -309,9 +325,40 @@ function parseProject(collection: Collection, slug: string, body: string, option
 					}
 				}
 				return;
+			case 'blockquote': {
+				// "> Subhead": a chapter's subhead, only as the first thing under its ## (a layout
+				// note may sit above). Lines written under it with no blank line are lazily part of
+				// the quote in Markdown, so they're read again as the blocks they are.
+				flush();
+				const section = sections[sections.length - 1];
+				const [first, ...rest] = src.slice(node.position!.start.offset, node.position!.end.offset).split('\n');
+				if (!section || current !== section || section.blocks.length || section.subsections.length || section.subhead) {
+					throw new Error(`${source}: "${first}": a > line is a subhead and goes directly under its ## heading`);
+				}
+				if (rest.some((line) => line.startsWith('>'))) throw new Error(`${source}: a subhead is one line, under "${section.heading}"`);
+				const line = fromMarkdown(first.replace(/^>\s?/, ''));
+				smartQuotes(line);
+				const [paragraph] = line.children;
+				section.subhead = paragraph?.type === 'paragraph' ? inlineHtml(paragraph.children) : '';
+				if (rest.length) {
+					const markdown = rest.join('\n');
+					const after = fromMarkdown(markdown, { extensions: [gfm()], mdastExtensions: [gfmFromMarkdown()] });
+					smartQuotes(after);
+					after.children.forEach((child) => handle(child, markdown));
+				}
+				return;
+			}
 			case 'list':
 				flush();
-				if (target().layout?.kind === 'swatches' || target().note === 'swatch row') push({ kind: 'swatches', items: swatches(node, source) });
+				if (target().layout?.kind === 'rules')
+					push({
+						kind: 'rules',
+						items: node.children.map((item) => {
+							const [paragraph] = item.children;
+							return paragraph?.type === 'paragraph' ? inlineHtml(paragraph.children) : '';
+						}),
+					});
+				else if (target().layout?.kind === 'swatches' || target().note === 'swatch row') push({ kind: 'swatches', items: swatches(node, source) });
 				else if (target().layout?.kind === 'stats') push({ kind: 'stats', items: stats(node, source) });
 				// Under "shipped navigation", a subsection's list is the menu itself.
 				else if (current !== sections[sections.length - 1] && sections[sections.length - 1].layout?.kind === 'sitemap-nav')
@@ -323,17 +370,17 @@ function parseProject(collection: Collection, slug: string, body: string, option
 				// With no blank line after a table, GFM reads the lines under it as rows. A row
 				// whose source line has no pipe is one of those: hand it and the rest back as blocks.
 				const spill = node.children.findIndex(
-					(row, i) => i > 0 && !body.slice(row.position!.start.offset, row.position!.end.offset).includes('|'),
+					(row, i) => i > 0 && !src.slice(row.position!.start.offset, row.position!.end.offset).includes('|'),
 				);
 				if (spill === -1) {
 					push(table(node));
 					return;
 				}
-				const rest = body.slice(node.children[spill].position!.start.offset, node.position!.end.offset);
+				const rest = src.slice(node.children[spill].position!.start.offset, node.position!.end.offset);
 				push(table({ ...node, children: node.children.slice(0, spill) }));
 				const after = fromMarkdown(rest, { extensions: [gfm()], mdastExtensions: [gfmFromMarkdown()] });
 				smartQuotes(after);
-				after.children.forEach(handle);
+				after.children.forEach((child) => handle(child, rest));
 				return;
 			}
 			default:
@@ -341,7 +388,7 @@ function parseProject(collection: Collection, slug: string, body: string, option
 		}
 	};
 
-	tree.children.forEach(handle);
+	tree.children.forEach((node) => handle(node));
 	flush();
 
 	for (const figure of sections.flatMap((s) => [s, ...s.subsections]).flatMap((s) => s.blocks)) {

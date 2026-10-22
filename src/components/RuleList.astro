@@ -1,0 +1,70 @@
+---
+// Design rules as a numbered list: hairlines between the rules, the number from order.
+// From 900px each rule sits on the twelve columns, its number in 1 and the rule in 2 to 8.
+interface Props {
+	/** Each rule's inline HTML. */
+	items: string[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol class="rule-list" role="list">
+	{
+		items.map((html, i) => (
+			<li class="rule-list__rule grid-12">
+				<span class="rule-list__number" aria-hidden="true">
+					{String(i + 1).padStart(2, '0')}
+				</span>
+				<p class="rule-list__text" set:html={html} />
+			</li>
+		))
+	}
+</ol>
+
+<style>
+	.rule-list {
+		padding: 0;
+		list-style: none;
+	}
+
+	.rule-list__rule {
+		row-gap: var(--space-8);
+		padding-block: var(--space-16);
+	}
+
+	.rule-list__rule + .rule-list__rule {
+		border-block-start: var(--rule);
+	}
+
+	.rule-list__number {
+		font-size: var(--text-14);
+		font-weight: var(--weight-semibold);
+		line-height: 1.6;
+	}
+
+	.rule-list__text {
+		max-inline-size: var(--measure);
+		font-size: var(--text-18);
+		line-height: 1.4;
+	}
+
+	@media (min-width: 600px) {
+		.rule-list__rule {
+			padding-block: var(--space-24);
+		}
+	}
+
+	@media (min-width: 900px) {
+		.rule-list__number {
+			grid-column: 1;
+			/* Level with the first line of the larger rule text. */
+			padding-block-start: 0.35em;
+		}
+
+		.rule-list__text {
+			grid-column: 2 / span 7;
+			font-size: var(--text-24);
+		}
+	}
+</style>

@@ -39,7 +39,11 @@ export type Layout =
 	/** Copy and the first image on the left; the other images on the right. */
 	| { kind: 'two-column' }
 	/** A list of figures drawn as cards, the first one largest. */
-	| { kind: 'stats' };
+	| { kind: 'stats' }
+	/** A list drawn as numbered rules, hairlines between them. */
+	| { kind: 'rules' }
+	/** A stage's run of phones as steps; from 900px one sticky phone shows the step in view. */
+	| { kind: 'scroll-steps' };
 
 const numbers: Record<string, number> = { two: 2, three: 3, four: 4, five: 5 };
 
@@ -97,6 +101,8 @@ const patterns: [RegExp, (match: RegExpMatchArray) => Layout][] = [
 		() => ({ kind: 'two-column' }),
 	],
 	[/^stat cards, (?:first card largest|[A-Za-z]+ card first)$/, () => ({ kind: 'stats' })],
+	[/^numbered rules$/, () => ({ kind: 'rules' })],
+	[/^scrolling steps, sticky phone left$/, () => ({ kind: 'scroll-steps' })],
 ];
 
 /** Returns the layout for a note, or throws naming the note so it can be added or reworded. */

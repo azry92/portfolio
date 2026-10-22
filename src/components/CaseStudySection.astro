@@ -1,11 +1,11 @@
 ---
 // One ## section of a case study, laid out by its layout note.
 import CaseStudyBlocks from './CaseStudyBlocks.astro';
+import ChapterHeader from './ChapterHeader.astro';
 import Figure from './Figure.astro';
 import FigureGrid from './FigureGrid.astro';
 import LabelledStack from './LabelledStack.astro';
 import PhonesThenBrowser from './PhonesThenBrowser.astro';
-import SectionLabel from './SectionLabel.astro';
 import SplitBlocks from './SplitBlocks.astro';
 import StageRows from './StageRows.astro';
 import StepRow from './StepRow.astro';
@@ -69,6 +69,11 @@ for (const part of [section, ...section.subsections]) {
 	}
 }
 
+// Stat cards: a line above them is their source, in small muted type; a line after them is body.
+const statsAt = prose.findIndex((block) => block.kind === 'stats');
+const statsBefore = statsAt === -1 ? [] : prose.slice(0, statsAt).filter((block) => block.kind === 'prose');
+const statsAfter = statsAt === -1 ? [] : prose.slice(statsAt + 1).filter((block) => block.kind === 'prose');
+
 const subsectionClass = (sub: Subsection) => [
 	'cs-subsection',
 	{ 'cs-subsection--headline': layout.kind === 'headline-row' },
@@ -81,12 +86,14 @@ const subsectionClass = (sub: Subsection) => [
 		<StageRows section={section} number={number} />
 	) : (
 		<section class:list={['cs-section', 'container', 'container-rule', `cs-section--${layout.kind}`]} aria-labelledby={section.id}>
-			<div class="cs-section__header">
-				<SectionLabel number={number} marker="var(--accent)" />
-				<h2 id={section.id} class="cs-section__title">
-					{section.heading}
-				</h2>
-			</div>
+			<ChapterHeader
+				class="cs-section__header"
+				number={number}
+				id={section.id}
+				heading={section.heading}
+				subhead={section.subhead}
+				small={layout.kind === 'headline-row'}
+			/>
 			{layout.kind === 'split' ? (
 				<SplitBlocks blocks={section.blocks} frame={layout.frame} />
 			) : layout.kind === 'phones-then-browser' && run ? (
@@ -121,10 +128,13 @@ const subsectionClass = (sub: Subsection) => [
 				</div>
 			) : layout.kind === 'stats' ? (
 				<>
-					<div class="cs-stats__source">
-						<CaseStudyBlocks blocks={prose.filter((block) => block.kind === 'prose')} />
-					</div>
-					<CaseStudyBlocks blocks={prose.filter((block) => block.kind !== 'prose')} />
+					{statsBefore.length > 0 && (
+						<div class="cs-stats__source">
+							<CaseStudyBlocks blocks={statsBefore} />
+						</div>
+					)}
+					<CaseStudyBlocks blocks={prose.filter((block) => block.kind === 'stats')} />
+					<CaseStudyBlocks blocks={statsAfter} />
 				</>
 			) : layout.kind === 'sitemap-nav' ? (
 				<>
@@ -182,16 +192,10 @@ const subsectionClass = (sub: Subsection) => [
 		padding-block: var(--space-32);
 	}
 
-	/* A hairline (.container-rule), the number with the project's accent square, then the
-	   heading, 16px above its own content; the grid gap still spaces the blocks. */
+	/* A hairline (.container-rule), then the chapter header (ChapterHeader), 16px above its
+	   own content; the grid gap still spaces the blocks. */
 	.cs-section__header {
-		display: grid;
-		gap: var(--space-12);
 		margin-block-end: calc(var(--space-16) - var(--section-gap));
-	}
-
-	.cs-section__title {
-		font-size: var(--text-section);
 	}
 
 	.cs-subsection {
@@ -212,10 +216,6 @@ const subsectionClass = (sub: Subsection) => [
 	.cs-subsection--headline .cs-subsection__title {
 		max-inline-size: 18ch;
 		font-size: var(--text-display);
-	}
-
-	.cs-section--headline-row .cs-section__title {
-		font-size: var(--text-24);
 	}
 
 	/* Logo and other uniform rows stay small: a mark doesn't need the full width. */

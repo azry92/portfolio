@@ -38,6 +38,8 @@ const caseStudies = defineCollection({
 	schema: (context) =>
 		workBase(context).extend({
 			role: z.string(),
+			/** One line under the h1 on the case study page; not a heading. The home card and meta description don't use it. */
+			subtitle: z.string().min(1).optional(),
 			/** Who the work was for, when that isn't the project itself. */
 			client: z.string().optional(),
 			/** Brand colour for the hero, stage band and pager. The site palette is used without it. */

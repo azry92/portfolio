@@ -1,0 +1,201 @@
+---
+// "Scrolling steps, sticky phone left": one run of phones as numbered steps, each image's
+// caption its step text. Every step holds its own phone, so without JS (and below 900px)
+// each one reads inline: a snap row below 600px, phone beside text from 600px.
+// From 900px the script (scroll-steps.ts) sets data-enhanced: the phones stack in one sticky
+// cell on the left and the step texts scroll on the right; the step crossing the middle of
+// the viewport gets data-active and CSS shows its phone. Nothing is aria-hidden: each image
+// belongs to its own step, and inactive phones are only faded out.
+import Figure from './Figure.astro';
+import type { Block } from '../lib/case-study/parse';
+
+interface Props {
+	run: Extract<Block, { kind: 'figures' }>;
+}
+
+const { run } = Astro.props;
+if (run.items.some((item) => !item.caption)) {
+	throw new Error('Scrolling steps need a caption under every image: the step text');
+}
+
+// "Pick the truck. Make, model and year…": the first sentence leads, in semibold.
+const steps = run.items.map((item) => {
+	const match = item.caption!.match(/^(.+?\.)\s+(.+)$/s);
+	return { figure: { ...item, caption: undefined }, lead: match ? match[1] : item.caption!, rest: match ? match[2] : '' };
+});
+---
+
+<div class="scroll-steps" data-scroll-steps style={`--count: ${steps.length}`}>
+	<ol class="scroll-steps__list snap-row" role="list">
+		{
+			steps.map((step, i) => (
+				<li class="scroll-steps__step" style={`--row: ${i + 1}`}>
+					<div class="scroll-steps__phone">
+						<Figure figure={step.figure} frame="phone" sizes="(min-width: 900px) 320px, (min-width: 600px) 240px, 45vw" />
+					</div>
+					<div class="scroll-steps__text">
+						<span class="scroll-steps__number" aria-hidden="true">
+							{String(i + 1).padStart(2, '0')}
+						</span>
+						<p>
+							<strong set:html={step.lead} /> <Fragment set:html={step.rest} />
+						</p>
+					</div>
+				</li>
+			))
+		}
+	</ol>
+</div>
+
+<script>
+	import '../scripts/scroll-steps';
+</script>
+
+<style>
+	.scroll-steps__list {
+		display: grid;
+		gap: var(--space-32) var(--space-16);
+		padding: 0;
+		list-style: none;
+	}
+
+	.scroll-steps__step {
+		display: grid;
+		gap: var(--space-16);
+		align-content: start;
+	}
+
+	.scroll-steps__text {
+		display: grid;
+		gap: var(--space-8);
+		align-content: start;
+		max-inline-size: 40ch;
+	}
+
+	.scroll-steps__number {
+		color: var(--color-accent);
+		font-size: var(--text-14);
+		font-weight: var(--weight-semibold);
+	}
+
+	.scroll-steps__text strong {
+		font-weight: var(--weight-semibold);
+	}
+
+	/* Snap row: two phones and a peek, each step's text under its phone. */
+	@media (max-width: 599.98px) {
+		.scroll-steps__list.snap-row {
+			--slide: calc((100% - var(--space-16)) / 2.3);
+
+			grid-template-columns: none;
+			column-gap: var(--space-16);
+			/* The list reset above outranks the utility's padding; put it back. */
+			padding: var(--space-8) var(--page-gutter) var(--space-16);
+		}
+
+		.scroll-steps__text {
+			font-size: var(--text-14);
+		}
+	}
+
+	/* From 600px: one step per row, phone left, text beside it, hairlines between. */
+	@media (min-width: 600px) {
+		.scroll-steps__list {
+			row-gap: 0;
+		}
+
+		.scroll-steps__step {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			column-gap: var(--gutter);
+			align-items: center;
+			padding-block: var(--space-32);
+		}
+
+		.scroll-steps__step:first-child {
+			padding-block-start: 0;
+		}
+
+		.scroll-steps__step + .scroll-steps__step {
+			border-block-start: var(--rule);
+		}
+
+		.scroll-steps__phone {
+			grid-column: 1 / span 2;
+			inline-size: 100%;
+			max-inline-size: 15rem;
+		}
+
+		.scroll-steps__text {
+			grid-column: 3 / -1;
+			font-size: var(--text-18);
+		}
+	}
+
+	@media (min-width: 900px) {
+		.scroll-steps__step {
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+		}
+
+		.scroll-steps__phone {
+			grid-column: 1 / span 4;
+		}
+
+		.scroll-steps__text {
+			grid-column: 6 / span 6;
+		}
+
+		/* Enhanced: the phones share one sticky cell beside the scrolling texts. */
+		.scroll-steps[data-enhanced] .scroll-steps__list {
+			grid-template-columns: repeat(12, minmax(0, 1fr));
+			column-gap: var(--gutter);
+		}
+
+		.scroll-steps[data-enhanced] .scroll-steps__step {
+			display: contents;
+		}
+
+		.scroll-steps[data-enhanced] .scroll-steps__phone {
+			position: sticky;
+			inset-block-start: calc(var(--header-h) + var(--space-48));
+			grid-column: 1 / span 4;
+			grid-row: 1 / span var(--count);
+			align-self: start;
+			/* Tall enough to see whole: about 2.25 times its width, under the header. */
+			inline-size: min(100%, 20rem, calc((100svh - var(--header-h) - 6rem) / 2.25));
+			max-inline-size: none;
+			opacity: 0;
+			pointer-events: none;
+		}
+
+		.scroll-steps[data-enhanced] .scroll-steps__step[data-active] .scroll-steps__phone {
+			z-index: 1;
+			opacity: 1;
+			pointer-events: auto;
+		}
+
+		.scroll-steps[data-enhanced] .scroll-steps__text {
+			grid-column: 6 / span 6;
+			grid-row: var(--row);
+			align-content: center;
+			min-block-size: 70svh;
+			color: var(--color-text-muted);
+			font-size: var(--text-24);
+			line-height: 1.4;
+		}
+
+		.scroll-steps[data-enhanced] .scroll-steps__step + .scroll-steps__step .scroll-steps__text {
+			border-block-start: var(--rule);
+		}
+
+		.scroll-steps[data-enhanced] .scroll-steps__step[data-active] .scroll-steps__text {
+			color: var(--color-text);
+		}
+	}
+
+	/* A crossfade only for those who haven't asked for less motion; otherwise the swap is instant. */
+	@media (min-width: 900px) and (prefers-reduced-motion: no-preference) {
+		.scroll-steps[data-enhanced] .scroll-steps__phone {
+			transition: opacity 300ms ease;
+		}
+	}
+</style>

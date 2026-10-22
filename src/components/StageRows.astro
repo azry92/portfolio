@@ -1,9 +1,11 @@
 ---
 // "Rows of phones, one labelled row per stage": each subsection becomes a row of
-// phones under a hairline, labelled by its heading and described by its caption.
+// phones under a hairline, labelled by its heading and described by its caption. A stage
+// with the "scrolling steps" note draws its row as ScrollSteps instead, its label above.
+import ChapterHeader from './ChapterHeader.astro';
 import FigureGrid from './FigureGrid.astro';
 import Prose from './Prose.astro';
-import SectionLabel from './SectionLabel.astro';
+import ScrollSteps from './ScrollSteps.astro';
 import type { Section } from '../lib/case-study/parse';
 
 interface Props {
@@ -19,29 +21,31 @@ const stages = section.subsections.map((stage) => {
 	if (figures.length !== 1 || stage.blocks.length !== 1) {
 		throw new Error(`Stage "${stage.heading}" must hold exactly one row of images and nothing else`);
 	}
-	return { ...stage, row: figures[0] };
+	return { ...stage, row: figures[0], scroll: stage.layout?.kind === 'scroll-steps' };
 });
 // Every stage shares the longest row's column count, so phones are the same size in every row
 // (shorter rows leave columns empty on the right). Below 600px all phone rows go 2 per row.
+// A scrolling stage still counts, so the rows keep the size they had beside a row of five.
 const columns = Math.max(...stages.map((stage) => stage.row.items.length));
 ---
 
 <section class="stages" aria-labelledby={section.id}>
 	<div class="stages__inner container container-rule">
-		<div class="stages__header">
-			<SectionLabel number={number} marker="var(--accent)" />
-			<h2 id={section.id} class="stages__title">{section.heading}</h2>
-		</div>
+		<ChapterHeader number={number} id={section.id} heading={section.heading} subhead={section.subhead} />
 		{section.blocks.length > 0 && <Prose html={section.blocks.map((b) => (b.kind === 'prose' ? b.html : '')).join('')} />}
 		<ol class="stages__list" role="list">
 			{
 				stages.map((stage) => (
-					<li class="stage">
+					<li class:list={['stage', { 'stage--scroll': stage.scroll }]}>
 						<div class="stage__label">
 							<h3 id={stage.id}>{stage.heading}</h3>
 							{stage.row.caption && <p set:html={stage.row.caption} />}
 						</div>
-						<FigureGrid items={stage.row.items} frame="phone" columns={columns} />
+						{stage.scroll ? (
+							<ScrollSteps run={stage.row} />
+						) : (
+							<FigureGrid items={stage.row.items} frame="phone" columns={columns} />
+						)}
 					</li>
 				))
 			}
@@ -57,17 +61,10 @@ const columns = Math.max(...stages.map((stage) => stage.row.items.length));
 		padding-block: var(--space-48);
 	}
 
-	.stages__header {
-		display: grid;
-		gap: var(--space-12);
-	}
-
-	.stages__title {
-		font-size: var(--text-section);
-	}
-
+	/* minmax(0, 1fr) keeps a snap row inside the page instead of widening its column. */
 	.stages__list {
 		display: grid;
+		grid-template-columns: minmax(0, 1fr);
 		gap: var(--space-48);
 		padding: 0;
 		list-style: none;
@@ -76,6 +73,7 @@ const columns = Math.max(...stages.map((stage) => stage.row.items.length));
 	/* A hairline between stages, none above the first (the section's own rule). */
 	.stage {
 		display: grid;
+		grid-template-columns: minmax(0, 1fr);
 		gap: var(--space-24);
 	}
 
@@ -115,18 +113,18 @@ const columns = Math.max(...stages.map((stage) => stage.row.items.length));
 		}
 
 		/* Phones in columns 1 to 8, the label in 10 to 12. */
-		.stage {
+		.stage:not(.stage--scroll) {
 			grid-template-columns: repeat(12, minmax(0, 1fr));
 			column-gap: var(--gutter);
 			align-items: start;
 		}
 
-		.stage > :global(*) {
+		.stage:not(.stage--scroll) > :global(*) {
 			grid-column: 1 / span 8;
 		}
 
 		/* The label sits to the right of its row, as in the stage reference. */
-		.stage > .stage__label {
+		.stage:not(.stage--scroll) > .stage__label {
 			grid-column: 10 / -1;
 			grid-row: 1;
 		}

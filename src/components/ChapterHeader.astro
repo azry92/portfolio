@@ -1,0 +1,53 @@
+---
+// A case study chapter's opening: its number (from order, with the project's accent square),
+// the h2, and the optional one-line subhead under it, a paragraph rather than a heading.
+import SectionLabel from './SectionLabel.astro';
+
+interface Props {
+	number: number;
+	id: string;
+	heading: string;
+	/** Inline HTML, from the chapter's `> line`. */
+	subhead?: string;
+	/** A 24px h2, for chapters whose headline is a subsection (or the hero overview). */
+	small?: boolean;
+	class?: string;
+}
+
+const { number, id, heading, subhead, small = false, class: className } = Astro.props;
+---
+
+<div class:list={['chapter-header', className]}>
+	<SectionLabel number={number} marker="var(--accent)" />
+	<h2 id={id} class:list={['chapter-header__title', { 'chapter-header__title--small': small }]}>{heading}</h2>
+	{subhead && <p class="subhead" set:html={subhead} />}
+</div>
+
+<style>
+	.chapter-header {
+		display: grid;
+		gap: var(--space-12);
+	}
+
+	.chapter-header__title {
+		font-size: var(--text-section);
+	}
+
+	.chapter-header__title--small {
+		font-size: var(--text-24);
+	}
+
+	.subhead {
+		max-inline-size: var(--measure);
+		color: var(--color-text-muted);
+		font-size: var(--text-18);
+		line-height: 1.4;
+	}
+
+	/* Under a 24px h2 the subhead stays at 18, so it never matches the heading. */
+	@media (min-width: 900px) {
+		.chapter-header__title:not(.chapter-header__title--small) + .subhead {
+			font-size: var(--text-24);
+		}
+	}
+</style>

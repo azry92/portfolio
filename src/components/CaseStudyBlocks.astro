@@ -5,6 +5,7 @@ import FigureGrid from './FigureGrid.astro';
 import MenuTree from './MenuTree.astro';
 import MotionVideo from './MotionVideo.astro';
 import Prose from './Prose.astro';
+import RuleList from './RuleList.astro';
 import StatCards from './StatCards.astro';
 import SwatchRow from './SwatchRow.astro';
 import type { Frame } from '../lib/case-study/layouts';
@@ -34,6 +35,8 @@ const { blocks, frame, columns, uniform } = Astro.props;
 			<MenuTree items={block.items} />
 		) : block.kind === 'stats' ? (
 			<StatCards items={block.items} />
+		) : block.kind === 'rules' ? (
+			<RuleList items={block.items} />
 		) : block.kind === 'video' ? (
 			<MotionVideo src={block.src} poster={block.poster} alt={block.alt} />
 		) : (

@@ -1,10 +1,11 @@
 ---
-title: "AT Auto Shoppe: catalogue and webstore design"
+title: "AT Auto Shoppe"
+subtitle: "A 4×4 parts store rebuilt around one question: does it fit my truck?"
 summary: "A Shopify store for a 4x4 parts dealer, built around vehicle-first search so customers find parts that fit their make and model, and the sales team updates products without a developer."
 glance:
   problem: "No way to search by vehicle."
   did: "Built a Shopify store around a vehicle finder."
-  outcome: "A custom finder replaced a paid app."
+  outcome: "Replaced a RM 80/month app with a custom finder."
 role: "Product design + Shopify development"
 card_line: "Shopify webstore"
 team: "Solo, with the sales team"
@@ -22,25 +23,27 @@ hero:
   image: ./images/hero.png
   alt: "AT Auto Shoppe homepage with the make, model and year vehicle finder above a before-and-after slider of a red 4×4"
 ---
-## Overview
+## Customers shop by truck, not by category
 <!-- layout: hero, title and overview left, browser mockup right -->
+> Make model and year come before anything else.
  4×4 customers shop by vehicle first (make, model, year) and only then by category, so the store had to work the same way.
-## Requirements and process
+## Four requirements set the brief
 <!-- layout: requirements list, then palette swatches, then reference images in a row -->
+> From a template catalogue to a store the sales team runs.
 - Move the brand from a template catalogue to its own Shopify store.
 - Customers must find parts that fit their vehicle across 10+ makes.
 - The sales team must be able to update products and builds without a developer.
 - Fitment questions must reach sales directly over WhatsApp.
-### Colour palette
+### Colour palette.
 <!-- layout: swatch row -->
 - Brand Blue #2A72BA: brand and every primary action
 - Soft Blue #BDD3EA: vehicle finder (make, model, year) background
 - White #FFFFFF: section backgrounds, Our Builds cards
 - WhatsApp green #25D366: enquiry button
 - Sale red #D71920: sale badges
-### Typography
+### Typography.
 - Inter: Heading, body text
-### References
+### References.
 <!-- layout: three images in a row -->
 ![RAYS Wheels collection page with a sliding transition between wheel ranges](./images/requirements-reference-01-rays-wheels.png)
 *Reference: RAYS Wheels, slider transition between collections.*
@@ -48,39 +51,53 @@ hero:
 *Reference: ARB, Iconic Builds. The model for Our Builds.*
 ![Alpinestars collection page with image-led category tiles](./images/requirements-reference-03-alpinestars.png)
 *Reference: Alpinestars, image-led category navigation.*
-## Fitment logic
+## Design rules
+<!-- layout: numbered rules -->
+- Vehicle before category: every entry point asks for the truck first.
+- A fitment doubt is one tap from WhatsApp.
+- Colour means action: brand blue for primary actions, green only for WhatsApp, red only for sale.
+- Checkout stays standard Shopify, so buyers see a flow they already trust.
+## A part only shows if it fits your truck
 <!-- layout: full-width diagram -->
+> One metafield decides what each customer sees.
 "Shop by vehicle" in the main navigation opens a make, model and year finder. Each product carries the vehicles it fits in a metafield (`custom.compatible_vehicles`), so the finder returns only parts that fit. Wheels follow a second rule: selecting a diameter refreshes the width, PCD, offset and colour options, disables impossible combinations and keeps valid selections.
 ![Diagram: main navigation expands Shop by vehicle into make, model and year, which filters products by their compatible-vehicle metafield](./images/fitment-logic-diagram.svg)
 *Every product is tagged with the vehicles it fits, so search results contain only compatible parts.*
-## The build
+## Every route mapped before the build
 <!-- layout: diagram full width -->
+> Finder, categories, brands and the WhatsApp exit.
 I mapped every path from vehicle selection to checkout before building. The flow covers the vehicle finder, category and brand entry points, the wheel and tyre finders, product pages with fitment notes, and the WhatsApp hand-off when a customer is unsure a part fits.
 ![Flow diagram of every customer path from vehicle selection to checkout, including the WhatsApp hand-off](./images/initial-flow-customer-experience.png)
 *Every route into a product, and the WhatsApp exit when fitment is uncertain.*
-## Vehicle to checkout
+## Five steps from truck to part
 <!-- layout: rows of phones, one labelled row per stage -->
-### Find parts for your vehicle
+### Find parts for your vehicle.
+<!-- layout: scrolling steps, sticky phone left -->
 ![Vehicle finder with make, model and year selected](./images/product-finder-vehicle-select.png)
+*Pick the truck. Make, model and year, before anything else.*
 ![Category selection after choosing a vehicle](./images/product-finder-collection-select.png)
+*Choose a category. Only categories with parts for that vehicle.*
 ![Part type selection within the chosen category](./images/product-finder-part-select.png)
+*Narrow to a part type. Within the chosen category.*
 ![Product list showing only parts compatible with the selected vehicle](./images/product-finder-product-list.png)
+*See only what fits. The list is filtered by each product's compatible vehicles.*
 ![Product page with description and fitment notes](./images/product-finder-page-product-description.png)
+*Check the fitment notes. The product page repeats the fit, with WhatsApp one tap away.*
 *Vehicle first, then category, then only the parts that fit.*
-### Our Builds
+### Our Builds.
 ![Our Builds page header introducing customer vehicle builds](./images/our-builds-header.png)
 ![Gallery of a modified 4x4 from several angles](./images/our-builds-explore-vehicle.png)
 ![List of every part used in the build, each linked to its product](./images/our-builds-build-components.png)
 ![Build page call to action with the WhatsApp enquiry button](./images/our-builds-page-cta.png)
 *Each build lists its parts, so a customer can buy the whole look.*
-### Checkout
-![Cart with the selected product](./images/checkout-page-select-product.png)
-![Checkout step choosing delivery and payment method](./images/checkout-page-finalize-method.png)
-![Payment step](./images/checkout-page-payment.png)
-*Standard Shopify checkout, unchanged so buyers see a flow they trust.*
-## The Solution
+### Checkout.
+![Cart with the selected product](./images/checkout-page-select-product.png "Cart with the selected product.")
+![Checkout step choosing delivery and payment method](./images/checkout-page-finalize-method.png "Checkout step choosing delivery and payment method.")
+![Payment step](./images/checkout-page-payment.png "Payment step.")
+*The payment gateway is still being finalised; these screens show the current setup.*
+## One store, three solutions
 <!-- layout: one headline, body below, row of phones -->
-### Rebuilt to ease customers' search for 4x4 parts.
+> Parts, wheels and tyres, each from the vehicle.
 I designed and built the store on Shopify: a Make, Model and Generation/Year finder, navigation by product, vehicle and brand, dedicated wheel and tyre finders, an Our Builds showcase, and WhatsApp enquiry for fitment questions.
 ![Homepage hero with a before-and-after transformation slider](./images/home-hero-slider.png)
 *Transformation slider on entry.*
@@ -92,7 +109,8 @@ I designed and built the store on Shopify: a Make, Model and Generation/Year fin
 *Quick add to cart.*
 ![Mobile menu with parts, wheel and tyre finders](./images/menu-mobile-parts-wheel-tyre-finder.png)
 *All three finders reachable from the mobile menu.*
-## Feedback and iteration
+## Sales feedback reshaped the finders
+> Five issues raised, one in progress.
 | Feedback | Source | Response |
 |---|---|---|
 | "Wheel Finder is hard to read; J-width is shown first." | Sales Manager, several rounds | Removed J-width as the first step and narrowed the Wheel and Tyre Finders to 4 main branches. |
@@ -106,15 +124,23 @@ I designed and built the store on Shopify: a Make, Model and Generation/Year fin
 ![Interior accessories collection page with its own filter set](./images/collection-page-interior-accessories.png "Interior accessories collection with its own filters.")
 ![Product finder page with the vehicle selected and matching parts listed](./images/product-finder-page.png "Product finder on desktop, starting from the vehicle.")
 *Each change answers a row in the table above.*
-## Building on a live store safely
+## Every change reviewed before it reaches the live store
 <!-- layout: copy left, terminal screenshot and code screenshot right -->
+> Theme under version control, AI code reviewed line by line.
 The store runs on Shopify's Dawn 16 theme, extended with custom sections. Before changing the live store I pulled the theme locally with Shopify CLI and kept it under version control, so every edit can be reviewed and rolled back.
 The code was written with AI assistance. I specified the metaobject schema and the selection rules, then reviewed and debugged every section.
 ![Shopify CLI pulling the live theme into a local folder before any edits](./images/cli-theme-pull-success.png)
 *Live theme pulled locally before any change.*
 ![at-brand-related-builds.liquid open in VS Code, lines 1 to 47](./images/vscode-brand-related-builds-liquid.png)
 *Custom Liquid section linking brands to the builds that use them.*
-## Status
-Launched in 2026. Finder usage, conversion and WhatsApp enquiries are being tracked from launch; results will be added here.
+## What's measured next
+<!-- layout: stat cards, first card largest -->
+> Counted today, before analytics.
+- RM 80/month: paid YMM app replaced by a custom finder
+- 10+ makes: covered by the vehicle finder
+- 3 finders: parts, wheels, tyres
+- 5: sales and owner requests answered, 4 shipped
+
+Next: tracking finder use and WhatsApp enquiries to measure fit-led sales.
 ## Reflection
 Building the store myself showed how much the structure decisions drive everything downstream, from navigation to sales. Using AI to write code taught me to specify behaviour precisely and to review what I ship. Next, I would track how often customers use the finder and whether its compatibility results lead to purchases or WhatsApp enquiries.

@@ -1,5 +1,5 @@
 ---
-// The case study's opening on the page cream: title, at-a-glance lines, project facts,
+// The case study's opening on the page cream: title and subtitle, at-a-glance lines, project facts,
 // the overview and the hero image, placed on the 12-column grid.
 // Below 600px the image sits between the glance and the overview, so the first screen
 // shows the title, the outcome and the work. From 600px it follows the copy. From 1200px
@@ -12,9 +12,9 @@ import type { CollectionEntry } from 'astro:content';
 import BrowserFrame from './BrowserFrame.astro';
 import CaseStudyGlance from './CaseStudyGlance.astro';
 import CaseStudyMeta from './CaseStudyMeta.astro';
+import ChapterHeader from './ChapterHeader.astro';
 import PhoneFrame from './PhoneFrame.astro';
 import Prose from './Prose.astro';
-import SectionLabel from './SectionLabel.astro';
 import type { Section } from '../lib/case-study/parse';
 
 interface Props {
@@ -25,13 +25,16 @@ interface Props {
 }
 
 const { entry, overview, resultsId } = Astro.props;
-const { title, glance, client, role, team, timeline, platform, tools, live_url, cover, cover_alt, hero } = entry.data;
+const { title, subtitle, glance, client, role, team, timeline, platform, tools, live_url, cover, cover_alt, hero } = entry.data;
 ---
 
 <header class="hero">
 	<div class="hero__inner container">
 		<div class="hero__lead">
-			<h1 class="hero__title">{title}</h1>
+			<div class="hero__heading">
+				<h1 class="hero__title">{title}</h1>
+				{subtitle && <p class="hero__subtitle">{subtitle}</p>}
+			</div>
 			{glance && <CaseStudyGlance {...glance} resultsId={resultsId} />}
 		</div>
 		{
@@ -65,10 +68,7 @@ const { title, glance, client, role, team, timeline, platform, tools, live_url, 
 			)
 		}
 		<section class="hero__overview" aria-labelledby={overview.id}>
-			<div class="hero__overview-header">
-				<SectionLabel number={1} marker="var(--accent)" />
-				<h2 id={overview.id}>{overview.heading}</h2>
-			</div>
+			<ChapterHeader number={1} id={overview.id} heading={overview.heading} subhead={overview.subhead} small />
 			{overview.blocks.map((block) => block.kind === 'prose' && <Prose html={block.html} />)}
 		</section>
 		<div class="hero__meta">
@@ -113,13 +113,23 @@ const { title, glance, client, role, team, timeline, platform, tools, live_url, 
 		letter-spacing: -0.01em;
 	}
 
-	.hero__overview-header {
+	/* The subtitle is a line under the name, not a heading. */
+	.hero__heading {
 		display: grid;
-		gap: var(--space-12);
+		gap: var(--space-16);
 	}
 
-	.hero__overview h2 {
+	.hero__subtitle {
+		max-inline-size: 36ch;
+		color: var(--color-text-muted);
 		font-size: var(--text-24);
+		line-height: 1.3;
+	}
+
+	@media (min-width: 1200px) {
+		.hero__subtitle {
+			font-size: var(--text-32);
+		}
 	}
 
 	.hero__cover :global(img) {
