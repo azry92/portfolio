@@ -32,6 +32,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
 <script>
 	import '../scripts/site-menu';
+	import '../scripts/header-autohide';
 </script>
 
 <style>
@@ -117,6 +118,11 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 			color: var(--color-text-inverse);
 		}
 
+		/* header-autohide.ts sets it while scrolling down; the translate covers the rule too. */
+		:global(.js) .site-header[data-hidden] {
+			transform: translateY(-100%);
+		}
+
 		:global(.js) .site-header__panel {
 			display: none;
 			position: absolute;
@@ -170,6 +176,13 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 	@media (prefers-reduced-motion: no-preference) {
 		.site-header__nav a {
 			transition: color 150ms ease-out;
+		}
+	}
+
+	/* Only the slide eases; with reduced motion it shows or hides at once. */
+	@media (max-width: 599.98px) and (prefers-reduced-motion: no-preference) {
+		:global(.js) .site-header {
+			transition: transform 200ms ease-out;
 		}
 	}
 </style>
