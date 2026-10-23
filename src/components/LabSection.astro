@@ -1,6 +1,8 @@
 ---
-// "02 / Lab" on home: a hairline, the numbered label as the h2, then the build clips
-// in frontmatter order. One column below 600px, two per row from 600px.
+// "02 / Lab" on home: a full-bleed field of the accent red, then a cream hairline, the
+// numbered label as the h2 and the build clips in frontmatter order. One column below
+// 600px, two per row from 600px. Everything on the red is cream (5.75:1); black on the
+// accent would be 3.15:1.
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { getCollection } from 'astro:content';
@@ -23,23 +25,53 @@ for (const { id, data } of entries) {
 }
 ---
 
-<section id="lab" class="lab section-rule grid-12" aria-labelledby="lab-heading">
-	<SectionLabel as="h2" id="lab-heading" number={number} label={lab.label} />
-	<ul class="lab__entries" role="list">
-		{
-			entries.map((entry) => (
-				<li>
-					<LabCard entry={entry} />
-				</li>
-			))
-		}
-	</ul>
+<section id="lab" class="lab" aria-labelledby="lab-heading">
+	<div class="container container--full lab__inner grid-12">
+		<SectionLabel as="h2" id="lab-heading" number={number} label={lab.label} />
+		<ul class="lab__entries" role="list">
+			{
+				entries.map((entry) => (
+					<li>
+						<LabCard entry={entry} />
+					</li>
+				))
+			}
+		</ul>
+	</div>
 </section>
 
 <style>
+	/* Cream on the accent. --color-text stays black for the clip's toggle, which sits on
+	   its own cream fill. */
 	.lab {
+		margin-block-start: var(--space-48);
+		padding-block: var(--space-32) var(--space-64);
+		background-color: var(--color-accent);
+		color: var(--color-text-inverse);
+	}
+
+	/* The section's hairline, cream, across the content width. */
+	.lab__inner {
 		row-gap: var(--space-24);
 		padding-block-start: var(--space-48);
+		background: linear-gradient(var(--color-text-inverse) 0 0) top center / calc(100% - 2 * var(--page-gutter))
+			var(--border-width) no-repeat;
+	}
+
+	.lab :global(.link-arrow),
+	.lab :global(.link-arrow:hover),
+	.lab :global(.link-arrow:focus-visible) {
+		color: var(--color-text-inverse);
+	}
+
+	/* The ring goes cream on the red (5.75:1); the toggle keeps its own ring on the clip. */
+	.lab :global(:focus-visible:not(.motion-video__toggle)) {
+		outline-color: var(--color-text-inverse);
+	}
+
+	/* Light frames on the red. */
+	.lab :global(.browser) {
+		border-color: var(--color-bg);
 	}
 
 	.lab__entries {
@@ -51,12 +83,17 @@ for (const { id, data } of entries) {
 	.lab__entries > li + li {
 		margin-block-start: var(--space-32);
 		padding-block-start: var(--space-32);
-		border-block-start: var(--rule);
+		border-block-start: var(--border-width) solid var(--color-text-inverse);
 	}
 
 	/* From 600px: two per row. */
 	@media (min-width: 600px) {
 		.lab {
+			margin-block-start: var(--space-64);
+			padding-block-start: var(--space-48);
+		}
+
+		.lab__inner {
 			row-gap: var(--space-32);
 			padding-block-start: var(--space-64);
 		}
