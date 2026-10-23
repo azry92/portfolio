@@ -191,11 +191,18 @@ const [role, field] = intro.title.split(', ');
 		}
 	}
 
-	/* Below 600px: name and claim, then the labels bottom left beside the panel, which
-	   rises under the claim's last line. The intro follows with a full-width pill. */
+	/* Below 600px: name and claim, then the labels bottom left beside a square panel, which
+	   starts under the claim. The intro follows with a full-width pill. */
 	@media (max-width: 599.98px) {
 		.hero__inner {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		/* ISMAIL's ink is 3.46em wide: 0.26 of the content width sets it at 90%, with air
+		   before the gutter, at every phone width. */
+		.hero__name,
+		.hero__panel {
+			font-size: calc((100vw - 2 * var(--page-gutter)) * 0.26);
 		}
 
 		.hero__labels {
@@ -204,15 +211,16 @@ const [role, field] = intro.title.split(', ');
 			align-self: end;
 		}
 
-		/* Here only the claim's last line crosses the panel (red on grey, 4.73:1). */
+		/* Nothing crosses the panel here, so it stays short enough to bring the about into
+		   the first screen. */
 		.hero__panel {
 			grid-column: 2;
 			grid-row: 2;
-			margin-block-start: calc(var(--space-48) * -1);
+			aspect-ratio: 1 / 1;
 		}
 
 		.hero__glyph {
-			--glyph-top: var(--space-48);
+			--glyph-top: 8%;
 		}
 
 		.hero__intro {
