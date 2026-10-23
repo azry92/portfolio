@@ -17,19 +17,22 @@ interface Props {
 	sizes?: string;
 	/** Eager for a cover that's the page's largest image (the first on the Other Works index). */
 	priority?: boolean;
+	/** Hide the cover from assistive tech, for a link whose name is the project's visible text. */
+	decorative?: boolean;
 }
 
 const {
 	data,
 	sizes = '(min-width: 600px) 32vw, 40vw',
 	priority = false,
+	decorative = false,
 } = Astro.props;
 const { cover, cover_alt } = data;
 const hero = 'hero' in data ? data.hero : undefined;
 const kind = hero ? hero.frame : 'plain';
 ---
 
-<div class:list={['work-cover', `work-cover--${kind}`]}>
+<div class:list={['work-cover', `work-cover--${kind}`]} aria-hidden={decorative ? 'true' : undefined}>
 	{
 		hero?.frame === 'browser' && (
 			<BrowserFrame

@@ -1,8 +1,10 @@
 ---
 // One case study on the home grid: its cover, then the project name, card line and
 // outcome as plain text. Below 600px the card is a row (cover left, text right); from
-// 600px the text sits under the cover. The link's name is the project name; its
-// description, not shown, is the outcome and then the summary.
+// 600px the text sits under the cover. The link's name is its visible text, starting with
+// the project name (WCAG 2.5.3); the cover is hidden from assistive tech, and the summary,
+// not shown, is the description, kept outside the link (hidden) so it stays out of the name.
+// WorkGrid's list item holds both.
 import type { CollectionEntry } from 'astro:content';
 import WorkCover from './WorkCover.astro';
 
@@ -16,30 +18,23 @@ const outcome = glance?.outcome;
 const id = `work-card-${entry.id}`;
 ---
 
-<a
-	class="work-card"
-	href={`/work/${entry.id}`}
-	aria-labelledby={`${id}-title`}
-	aria-describedby={`${id}-summary`}
->
-	<WorkCover data={entry.data} />
+<a class="work-card" href={`/work/${entry.id}`} aria-describedby={`${id}-summary`}>
+	<WorkCover data={entry.data} decorative />
 	<div class="work-card__text">
-		<h3 id={`${id}-title`} class="work-card__title">{title}</h3>
-		{card_line && <p class="work-card__line" aria-hidden="true">{card_line}</p>}
+		<h3 class="work-card__title">{title}</h3>
+		{card_line && <p class="work-card__line">{card_line}</p>}
 		{
 			outcome && (
-				<p class="work-card__outcome" aria-hidden="true">
+				<p class="work-card__outcome">
 					<span class="work-card__outcome-label">Outcome</span>
 					{outcome}
 				</p>
 			)
 		}
 	</div>
-	<p id={`${id}-summary`} class="visually-hidden">
-		{outcome && `Outcome: ${outcome} `}
-		{summary}
-	</p>
 </a>
+<!-- Hidden: read only as the link's description, not again in browse mode. -->
+<p id={`${id}-summary`} hidden>{summary}</p>
 
 <style>
 	.work-card {
@@ -73,8 +68,7 @@ const id = `work-card-${entry.id}`;
 	}
 
 	/* The label stacks above the outcome so the line gets the column's full width. One
-	   accent square is the card's only colour. Screen readers get the outcome from the
-	   description instead, as plain "Outcome: …" text. */
+	   accent square is the card's only colour. */
 	.work-card__outcome {
 		margin-block-start: var(--space-4);
 		font-size: var(--text-14);
