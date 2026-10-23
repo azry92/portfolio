@@ -13,23 +13,10 @@ import AboutSection from '../components/AboutSection.astro';
 		<WorkGrid />
 	</div>
 	<LabSection number={2} />
-	<!-- The animated band divides Lab from About; About's own top padding sets the gap below it. -->
-	<div class="home__band">
-		<GlyphBand />
-	</div>
+	<!-- The band sits flush under the red Lab section and hands over to About, whose own top
+	     padding sets the gap below it. -->
+	<GlyphBand />
 	<div class="container container--full">
 		<AboutSection number={3} />
 	</div>
 </BaseLayout>
-
-<style>
-	.home__band {
-		margin-block-start: var(--space-48);
-	}
-
-	@media (min-width: 600px) {
-		.home__band {
-			margin-block-start: var(--space-64);
-		}
-	}
-</style>

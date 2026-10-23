@@ -1,34 +1,24 @@
 ---
-// Full-bleed IA pattern band on home, the divider between Selected work and About. Decorative.
-// Six stacked layers, one per reference state; layer 1 is the resting state
-// and the only one that takes hover. Motion lives in ../scripts/glyph-band.ts.
+// Full-bleed IA pattern band on home, between the red Lab section and About. Decorative.
+// It opens flush with Lab as a cream outline on the same red (state 03), and as it scrolls
+// through the viewport the red drains away from the bottom, leaving the glyphs solid red
+// on grey (state 01), the rest state that hands over to the cream About.
+// CSS only: a scroll-driven animation. Under reduced motion, or where scroll timelines
+// aren't supported, the band rests on solid red on grey, still flush under the red.
 import { glyph, tileRows, viewBox } from '../lib/glyphPattern';
 
 const vb = `0 0 ${viewBox.width} ${viewBox.height}`;
-const bg = { width: viewBox.width, height: viewBox.height };
-// Back to front: slice 24 is nearest the vanishing point.
-const slices = Array.from({ length: 24 }, (_, i) => 24 - i);
 ---
 
-<div
-	class="glyph-band"
-	aria-hidden="true"
-	data-glyph-band
-	style={`--band-aspect: ${viewBox.width} / ${viewBox.height}; --mid-x: ${viewBox.width / 2}px`}
->
-	<svg class="glyph-band__layer glyph-band__layer--s1" viewBox={vb} focusable="false">
+<div class="glyph-band" aria-hidden="true" style={`--band-aspect: ${viewBox.width} / ${viewBox.height}`}>
+	<svg class="glyph-band__layer glyph-band__rest" viewBox={vb} focusable="false">
 		<defs>
 			<g id="glyph-ia">
 				<path d={glyph.I} vector-effect="non-scaling-stroke"></path>
 				<path d={glyph.A} vector-effect="non-scaling-stroke"></path>
 			</g>
-			{
-				tileRows.map((row, r) => (
-					<g id={`glyph-row-${r + 4}`}>{row.flat().map((t) => <use href="#glyph-ia" transform={t} />)}</g>
-				))
-			}
 			<g id="glyph-art">
-				{tileRows.map((_, r) => <use href={`#glyph-row-${r + 4}`} />)}
+				{tileRows.flat().map((copies) => copies.map((t) => <use href="#glyph-ia" transform={t} />))}
 			</g>
 		</defs>
 		{
@@ -42,72 +32,19 @@ const slices = Array.from({ length: 24 }, (_, i) => 24 - i);
 		}
 	</svg>
 
-	<svg class="glyph-band__layer glyph-band__layer--s2" viewBox={vb} focusable="false">
-		<rect class="glyph-band__bg" {...bg}></rect>
-		<use class="glyph-band__art" href="#glyph-art"></use>
-	</svg>
-
-	<svg class="glyph-band__layer glyph-band__layer--s3" viewBox={vb} focusable="false">
-		<rect class="glyph-band__bg" {...bg}></rect>
-		<g class="glyph-band__art">
-			<!-- Stroke every copy, then fill over it: only the outer edge of the union stays visible. -->
-			<use class="glyph-band__outline" href="#glyph-art"></use>
-			<use class="glyph-band__knockout" href="#glyph-art"></use>
-		</g>
-	</svg>
-
-	<svg class="glyph-band__layer glyph-band__layer--s4" viewBox={vb} focusable="false">
-		<rect class="glyph-band__bg" {...bg}></rect>
-		{slices.map((i) => <use class="glyph-band__slice" href="#glyph-row-5" style={`--i: ${i}`} />)}
-		<use class="glyph-band__face" href="#glyph-row-5"></use>
-	</svg>
-
-	<svg class="glyph-band__layer glyph-band__layer--s5" viewBox={vb} focusable="false">
-		<rect class="glyph-band__bg" {...bg}></rect>
+	<svg class="glyph-band__layer glyph-band__field" viewBox={vb} focusable="false">
+		<rect class="glyph-band__red" width={viewBox.width} height={viewBox.height}></rect>
+		<!-- Stroke every copy, then fill over it: only the outer edge of the union stays visible. -->
+		<use class="glyph-band__outline" href="#glyph-art"></use>
 		<use class="glyph-band__red" href="#glyph-art"></use>
-		<use class="glyph-band__cream" href="#glyph-art"></use>
-		<use class="glyph-band__grey" href="#glyph-art"></use>
-	</svg>
-
-	<svg class="glyph-band__layer glyph-band__layer--s6" viewBox={vb} focusable="false">
-		<rect class="glyph-band__bg" {...bg}></rect>
-		<!-- Four horizontal stripes of the same art: red, red under cream, grey, cream. -->
-		<use class="glyph-band__red" href="#glyph-art" style="--k: 0"></use>
-		<use class="glyph-band__red" href="#glyph-art" style="--k: 1"></use>
-		<use class="glyph-band__tint" href="#glyph-art" style="--k: 1"></use>
-		<use class="glyph-band__grey" href="#glyph-art" style="--k: 2"></use>
-		<use class="glyph-band__cream" href="#glyph-art" style="--k: 3"></use>
 	</svg>
 </div>
 
-<script>
-	import '../scripts/glyph-band';
-</script>
-
 <style>
-	@property --extrude {
-		syntax: '<number>';
-		inherits: true;
-		initial-value: 0;
-	}
-
-	@property --shear {
-		syntax: '<number>';
-		inherits: true;
-		initial-value: 0;
-	}
-
-	@property --stack {
-		syntax: '<number>';
-		inherits: true;
-		initial-value: 0;
-	}
-
 	.glyph-band {
 		/* Both rows show whole at every width. The band is never shorter than the art's
 		   height at full screen width, so the art always spans the screen edge to edge. */
 		--band-h: max(165px, calc(100vw / (var(--band-aspect))));
-		--band-duration: 2.4s;
 
 		position: relative;
 		block-size: var(--band-h);
@@ -133,20 +70,8 @@ const slices = Array.from({ length: 24 }, (_, i) => 24 - i);
 		pointer-events: none;
 	}
 
-	.glyph-band__layer:not(.glyph-band__layer--s1) {
-		opacity: 0;
-	}
-
-	/* Only the animated wrappers: a transform-origin would also skew the tiles' transform attributes.
-	   Origins are in glyph units; --mid-x is the horizontal centre of the band. */
-	.glyph-band__layer > :not(defs, .glyph-band__tile),
-	.glyph-band__art > * {
-		transform-box: view-box;
-		transform-origin: var(--mid-x) 74px;
-	}
-
-	/* 01: solid red on grey, and the hover flip */
-	.glyph-band__layer--s1 {
+	/* 01, the rest state: solid red on grey, and the hover flip */
+	.glyph-band__rest {
 		fill: var(--color-accent);
 		stroke: var(--color-accent);
 		stroke-width: 0;
@@ -163,18 +88,12 @@ const slices = Array.from({ length: 24 }, (_, i) => 24 - i);
 		}
 	}
 
-	/* 02: zoomed black on grey */
-	.glyph-band__layer--s2 .glyph-band__bg {
-		fill: var(--color-pattern-grey);
+	/* 03, the opening state: a cream hairline outline on the same red as Lab. */
+	.glyph-band__field {
+		display: none;
 	}
 
-	.glyph-band__layer--s2 .glyph-band__art {
-		fill: var(--color-pattern-black);
-	}
-
-	/* 03: cream hairline outline on red */
-	.glyph-band__layer--s3 .glyph-band__bg,
-	.glyph-band__knockout {
+	.glyph-band__red {
 		fill: var(--color-accent);
 	}
 
@@ -184,238 +103,64 @@ const slices = Array.from({ length: 24 }, (_, i) => 24 - i);
 		stroke-width: 2px;
 	}
 
-	/* 04: red extruded in perspective on black */
-	.glyph-band__layer--s4 .glyph-band__bg,
-	.glyph-band__layer--s5 .glyph-band__bg,
-	.glyph-band__layer--s6 .glyph-band__bg {
-		fill: var(--color-pattern-black);
-	}
-
-	.glyph-band__slice,
-	.glyph-band__face {
-		fill: var(--color-accent);
-		stroke: var(--color-pattern-black);
-		stroke-width: 1px;
-	}
-
-	/* Only row 5 is extruded, so the trails have black around them. The face slides
-	   down and right; slice i sits i/25 of the way from it towards a vanishing point
-	   up and to the left, shrinking as it goes. Layer-qualified to beat the default
-	   origin above. */
-	.glyph-band__layer--s4 .glyph-band__slice,
-	.glyph-band__layer--s4 .glyph-band__face {
-		--t: calc(var(--i, 0) / 25);
-		transform-origin: calc(var(--mid-x) - 130px) 28px;
-		transform: translate(calc(var(--extrude) * (1 - var(--t)) * 96px), calc(var(--extrude) * (1 - var(--t)) * 40px))
-			scale(calc(1 - var(--extrude) * var(--t) * 0.94));
-	}
-
-	/* 05 and 06: layered red, grey and cream on black */
-	.glyph-band__red {
-		fill: var(--color-accent);
-	}
-
-	.glyph-band__cream {
-		fill: var(--color-pattern-cream);
-	}
-
-	.glyph-band__grey {
-		fill: var(--color-pattern-grey);
-		opacity: 0.6;
-	}
-
-	.glyph-band__tint {
-		fill: var(--color-pattern-cream);
-		opacity: 0.5;
-	}
-
-	/* 05: red rows above, sheared cream below, stretched grey over both */
-	.glyph-band__layer--s5 .glyph-band__red {
-		clip-path: inset(0 0 calc(var(--shear) * 50%) 0);
-		transform: translateY(calc(var(--shear) * -10px));
-	}
-
-	.glyph-band__layer--s5 .glyph-band__cream {
-		clip-path: inset(calc(var(--shear) * 45%) 0 0 0);
-		transform: skewX(calc(var(--shear) * -28deg));
-	}
-
-	.glyph-band__layer--s5 .glyph-band__grey {
-		transform: scale(1, calc(1 + var(--shear) * 0.7));
-	}
-
-	/* 06: four stripes that slide apart vertically */
-	.glyph-band__layer--s6 use {
-		clip-path: inset(calc(var(--k) * 25%) 0 calc((3 - var(--k)) * 25%) 0);
-		transform: translateY(calc((var(--k) - 1.5) * var(--stack) * 6px));
-	}
-
-	/* Motion. Only runs once the script sets data-motion, and never with reduced motion. */
+	/* The scrub: 0 when the band sits whole in the viewport, 1 when its top reaches the
+	   sticky header. The red field (and its outlines) clips away from the bottom, so the red
+	   stays joined to Lab until it has gone. */
 	@media (prefers-reduced-motion: no-preference) {
-		.glyph-band[data-motion] .glyph-band__layer,
-		.glyph-band[data-motion] .glyph-band__art {
-			animation-duration: var(--band-duration);
-			animation-timing-function: linear;
-			animation-fill-mode: both;
-		}
+		@supports (animation-timeline: view()) {
+			.glyph-band {
+				view-timeline: --glyph-band block;
+				view-timeline-inset: var(--header-h) 0;
+				--band-timeline: --glyph-band;
+			}
 
-		.glyph-band[data-motion='scrub'] .glyph-band__layer,
-		.glyph-band[data-motion='scrub'] .glyph-band__art {
-			animation-play-state: paused;
-		}
+			.glyph-band__field {
+				display: block;
+				animation-name: glyph-band-drain;
+				animation-timing-function: linear;
+				animation-fill-mode: both;
+				/* Through a variable: the minifier would otherwise fold the timeline into the
+				   animation shorthand, which browsers reject. */
+				animation-timeline: var(--band-timeline);
+				animation-range: entry 100% exit 0%;
+			}
 
-		.glyph-band[data-motion] .glyph-band__layer--s2 {
-			animation-name: glyph-band-s2;
-		}
-
-		.glyph-band[data-motion] .glyph-band__layer--s2 .glyph-band__art {
-			animation-name: glyph-band-zoom-in;
-		}
-
-		.glyph-band[data-motion] .glyph-band__layer--s3 {
-			animation-name: glyph-band-s3;
-		}
-
-		.glyph-band[data-motion] .glyph-band__layer--s3 .glyph-band__art {
-			animation-name: glyph-band-zoom-out;
-		}
-
-		.glyph-band[data-motion] .glyph-band__layer--s4 {
-			animation-name: glyph-band-s4;
-		}
-
-		.glyph-band[data-motion] .glyph-band__layer--s5 {
-			animation-name: glyph-band-s5;
-		}
-
-		.glyph-band[data-motion] .glyph-band__layer--s6 {
-			animation-name: glyph-band-s6;
+			/* The top row's outlines meet the band's top edge and would draw a cream line
+			   along the join with Lab: a 2px strip of red covers it while the red shows. */
+			.glyph-band::before {
+				content: '';
+				position: absolute;
+				z-index: 1;
+				inset: 0 0 auto;
+				block-size: 2px;
+				background-color: var(--color-accent);
+				animation-name: glyph-band-edge;
+				animation-timing-function: linear;
+				animation-fill-mode: both;
+				/* Through a variable: the minifier would otherwise fold the timeline into the
+				   animation shorthand, which browsers reject. */
+				animation-timeline: var(--band-timeline);
+				animation-range: entry 100% exit 0%;
+			}
 		}
 	}
 
-	/* Timeline: 02 at 14%, 03 at 30%, 04 at 46%, 05 at 62%, 06 at 78%, back to 01 by 96%.
-	   Each layer covers the one before, so earlier layers can stay opaque until 06 is up. */
-	@keyframes glyph-band-s2 {
-		0%,
-		6% {
-			opacity: 0;
+	@keyframes glyph-band-drain {
+		from {
+			clip-path: inset(0 0 0 0);
 		}
-		10%,
-		80% {
-			opacity: 1;
-		}
-		80.1%,
-		100% {
-			opacity: 0;
+		to {
+			clip-path: inset(0 0 100% 0);
 		}
 	}
 
-	@keyframes glyph-band-zoom-in {
+	@keyframes glyph-band-edge {
 		0%,
-		6% {
-			transform: scale(1);
-			animation-timing-function: cubic-bezier(0.5, 0, 0.2, 1);
-		}
-		16%,
-		100% {
-			transform: scale(3.4);
-		}
-	}
-
-	@keyframes glyph-band-s3 {
-		0%,
-		22% {
-			opacity: 0;
-		}
-		26%,
-		80% {
+		99% {
 			opacity: 1;
 		}
-		80.1%,
 		100% {
 			opacity: 0;
-		}
-	}
-
-	@keyframes glyph-band-zoom-out {
-		0%,
-		22% {
-			transform: scale(3.4);
-			animation-timing-function: cubic-bezier(0.5, 0, 0.2, 1);
-		}
-		31%,
-		100% {
-			transform: scale(1);
-		}
-	}
-
-	@keyframes glyph-band-s4 {
-		0%,
-		38% {
-			opacity: 0;
-			--extrude: 0;
-		}
-		41% {
-			opacity: 1;
-			--extrude: 0;
-			animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1);
-		}
-		48%,
-		80% {
-			opacity: 1;
-			--extrude: 1;
-		}
-		80.1%,
-		100% {
-			opacity: 0;
-			--extrude: 1;
-		}
-	}
-
-	@keyframes glyph-band-s5 {
-		0%,
-		54% {
-			opacity: 0;
-			--shear: 0;
-		}
-		57% {
-			opacity: 1;
-			--shear: 0;
-			animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1);
-		}
-		64%,
-		80% {
-			opacity: 1;
-			--shear: 1;
-		}
-		80.1%,
-		100% {
-			opacity: 0;
-			--shear: 1;
-		}
-	}
-
-	@keyframes glyph-band-s6 {
-		0%,
-		70% {
-			opacity: 0;
-			--stack: 0;
-		}
-		73% {
-			opacity: 1;
-			--stack: 0;
-			animation-timing-function: cubic-bezier(0.3, 0, 0.2, 1);
-		}
-		78%,
-		86% {
-			opacity: 1;
-			--stack: 1;
-			animation-timing-function: ease-in-out;
-		}
-		96%,
-		100% {
-			opacity: 0;
-			--stack: 0;
 		}
 	}
 </style>

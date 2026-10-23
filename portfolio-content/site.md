@@ -44,7 +44,9 @@ nav:
   - Below 600px: one card per row, hairlines between.
   - 600px to 899px: two cards per row.
   - From 900px: six of the twelve columns each, two per row; names, lines and links line up across the row.
-### 4. Footer
+### 4. Glyph band
+- Full bleed, flush under the red Lab section: no gap and no hairline, so the red runs straight into it. It opens on state 03 (cream outline on the accent red, references/home-state-03.png). As it scrolls from fully in view until its top reaches the sticky header, the red drains away from the bottom up, outlines with it, leaving state 01 (solid red glyphs on grey, references/home-state-01.png), which hands over to the cream About. A 2px red strip hides the outlines along the join until the red has gone. CSS scroll-driven animation, no JS. With reduced motion, or without scroll-timeline support, it shows state 01 directly under the red. Hover still flips a settled tile to its outline.
+### 5. Footer
 - A hairline, then "Let's brew something together." with the contact links as 48px square outline buttons (red fill on hover and focus), then the credit line. From 900px the credit line sits in columns 7 to 12, level with the bottom of the contact squares. No footer nav and no Back to top on home: the sticky header carries the nav and the page is short.
 ### Breakpoints
 - Below 600px: everything stacks; work cards as rows; Lab cards one per row.
