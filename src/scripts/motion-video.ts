@@ -1,7 +1,6 @@
 // Motion pieces: play when the viewer allows motion, and always offer Pause/Play.
 // Under prefers-reduced-motion the poster stays until the viewer presses Play.
 // A video plays only while on screen, so nothing downloads until it is close.
-
 const allowsMotion = matchMedia('(prefers-reduced-motion: no-preference)');
 
 for (const root of document.querySelectorAll<HTMLElement>('[data-motion-video]')) {
@@ -28,6 +27,8 @@ for (const root of document.querySelectorAll<HTMLElement>('[data-motion-video]')
 		label();
 	};
 
+	// The poster picture covers the video until it first has frames to show.
+	video.addEventListener('playing', () => (root.dataset.playing = ''), { once: true });
 	video.addEventListener('play', label);
 	video.addEventListener('pause', label);
 	toggle.addEventListener('click', () => {

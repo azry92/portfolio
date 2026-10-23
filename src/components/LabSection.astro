@@ -1,0 +1,101 @@
+---
+// "02 / Lab" on home: a hairline, the numbered label as the h2, then the build clips
+// in frontmatter order. One column below 600px, two per row from 600px.
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import { getCollection } from 'astro:content';
+import SectionLabel from './SectionLabel.astro';
+import LabCard from './LabCard.astro';
+import { lab } from '../data/site';
+
+interface Props {
+	/** The section's position on the page, for its label. */
+	number: number;
+}
+
+const { number } = Astro.props;
+
+const entries = (await getCollection('lab')).sort((a, b) => a.data.order - b.data.order);
+for (const { id, data } of entries) {
+	if (!existsSync(join(process.cwd(), 'public/videos', data.video))) {
+		throw new Error(`portfolio-content/lab/${id}: public/videos/${data.video} is missing`);
+	}
+}
+---
+
+<section id="lab" class="lab section-rule grid-12" aria-labelledby="lab-heading">
+	<SectionLabel as="h2" id="lab-heading" number={number} label={lab.label} />
+	<ul class="lab__entries" role="list">
+		{
+			entries.map((entry) => (
+				<li>
+					<LabCard entry={entry} />
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	.lab {
+		row-gap: var(--space-24);
+		padding-block-start: var(--space-48);
+	}
+
+	.lab__entries {
+		padding: 0;
+		list-style: none;
+	}
+
+	/* Below 600px: one card per row, hairlines between them. */
+	.lab__entries > li + li {
+		margin-block-start: var(--space-32);
+		padding-block-start: var(--space-32);
+		border-block-start: var(--rule);
+	}
+
+	/* From 600px: two per row. */
+	@media (min-width: 600px) {
+		.lab {
+			row-gap: var(--space-32);
+			padding-block-start: var(--space-64);
+		}
+
+		.lab__entries {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: var(--space-12) var(--gutter);
+		}
+
+		.lab__entries > li + li {
+			margin-block-start: 0;
+			padding-block-start: 0;
+			border: 0;
+		}
+
+		/* The six parts of each card (clip, name, two lines, meta, link) share row tracks
+		   across the row, so names line up when one caption runs longer. */
+		.lab__entries > li,
+		.lab__entries > li > :global(.lab-card) {
+			display: grid;
+			grid-row: span 6;
+			grid-template-rows: subgrid;
+		}
+
+		/* The cards' own 12px runs through the list; padding sets the 64px between rows of cards. */
+		.lab__entries > li {
+			padding-block-end: calc(var(--space-64) - var(--space-12));
+		}
+	}
+
+	/* From 900px each card takes six of the twelve columns. */
+	@media (min-width: 900px) {
+		.lab__entries {
+			grid-template-columns: subgrid;
+		}
+
+		.lab__entries > li {
+			grid-column: span 6;
+		}
+	}
+</style>

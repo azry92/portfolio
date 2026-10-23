@@ -37,11 +37,18 @@ nav:
   - 600px to 899px: the three cards in one row.
   - From 900px: four of the twelve columns each.
 - Under the cards, Other Works (/other-works) and Fun (/fun) as text links with an arrow, one per row, each with a hairline above. From 900px they sit in columns 5 to 12.
-### 3. Footer
+### 3. Lab (id="lab")
+- A hairline, then the label "02 / Lab" as the h2 (SectionLabel, no separate heading). About after it becomes "03 / About"; the GlyphBand still divides Lab from About.
+- Four build clips from `portfolio-content/lab/`, in frontmatter `order`: Make, model and year finder; Product finder; Brand slider; This portfolio. Each card: the clip in a BrowserFrame at the clip's own ratio (about 2.15:1), a caption saying what it shows, the name, what it is, where the time went, a small muted meta line (build time · tools) and a text link with an arrow (the AT Auto Shoppe case study, or the GitHub repo).
+- Clips are muted and loop, load nothing until near the viewport and play only while in view. With reduced motion nothing plays: the poster shows with a Play button.
+  - Below 600px: one card per row, hairlines between.
+  - 600px to 899px: two cards per row.
+  - From 900px: six of the twelve columns each, two per row; names, lines and links line up across the row.
+### 4. Footer
 - A hairline, then "Let's brew something together." with the contact links as 48px square outline buttons (red fill on hover and focus), then the credit line. From 900px the credit line sits in columns 7 to 12, level with the bottom of the contact squares. No footer nav and no Back to top on home: the sticky header carries the nav and the page is short.
 ### Breakpoints
-- Below 600px: everything stacks; work cards as rows.
-- 600px to 899px: a 4-column grid; the hero's text runs down the left beside the panel; the three cards share a row.
+- Below 600px: everything stacks; work cards as rows; Lab cards one per row.
+- 600px to 899px: a 4-column grid; the hero's text runs down the left beside the panel; the three cards share a row; Lab cards two per row.
 - 900px and up: the 12-column grid. From 1200px the hero takes its three zones (labels 1 to 3, panel 4 to 8, intro 10 to 12). Home runs full width with no cap.
 ## About
 <!-- layout: portrait left, copy right, then experience list -->

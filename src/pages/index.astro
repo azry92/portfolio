@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeHero from '../components/HomeHero.astro';
 import WorkGrid from '../components/WorkGrid.astro';
+import LabSection from '../components/LabSection.astro';
 import GlyphBand from '../components/GlyphBand.astro';
 import AboutSection from '../components/AboutSection.astro';
 ---
@@ -10,13 +11,14 @@ import AboutSection from '../components/AboutSection.astro';
 	<HomeHero />
 	<div class="container container--full">
 		<WorkGrid />
+		<LabSection number={2} />
 	</div>
-	<!-- The animated band divides Selected work from About; About's own top padding sets the gap below it. -->
+	<!-- The animated band divides Lab from About; About's own top padding sets the gap below it. -->
 	<div class="home__band">
 		<GlyphBand />
 	</div>
 	<div class="container container--full">
-		<AboutSection number={2} />
+		<AboutSection number={3} />
 	</div>
 </BaseLayout>
 

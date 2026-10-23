@@ -103,6 +103,38 @@ const fun = defineCollection({
 		}),
 });
 
+// The Lab section on home: one folder per build clip, with its index.md and poster.
+// The clip itself is served as is from public/videos/; LabSection checks it exists.
+const lab = defineCollection({
+	loader: projectLoader('./portfolio-content/lab'),
+	schema: ({ image }) =>
+		z.object({
+			title: z.string(),
+			/** One line on what it is. */
+			what: z.string().min(1),
+			/** One line on where the build time went. */
+			time: z.string().min(1),
+			/** The build time, e.g. "1 week". */
+			duration: z.string().min(1),
+			tools: z.array(z.string()).min(1),
+			/** A file name in public/videos/. */
+			video: z.string().regex(/^[\w-]+\.mp4$/),
+			/** The clip's own display size; the frame and the poster crop take its ratio. */
+			video_size: z.object({ width: z.number().positive(), height: z.number().positive() }),
+			/** The video's accessible name. */
+			video_label: z.string().min(1),
+			/** What the clip shows, under the frame. */
+			caption: z.string().min(1),
+			/** A still at least as wide as the clip; cropped from the top to the clip's ratio. */
+			poster: image(),
+			link: z.object({
+				href: z.string().refine((href) => href.startsWith('/') || href.startsWith('https://')),
+				label: z.string().min(1),
+			}),
+			order: z.number().int(),
+		}),
+});
+
 // The About section on home: the bio is the Markdown body, the lists come from the frontmatter.
 const about = defineCollection({
 	loader: glob({ base: './portfolio-content/about', pattern: 'index.md' }),
@@ -145,4 +177,4 @@ const about = defineCollection({
 		}),
 });
 
-export const collections = { caseStudies, otherWorks, fun, about };
+export const collections = { caseStudies, otherWorks, fun, lab, about };

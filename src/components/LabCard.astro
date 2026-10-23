@@ -1,0 +1,69 @@
+---
+// One Lab entry: the clip in a browser frame with its caption, the name, what it is,
+// where the time went, a meta line (build time and tools) and a link out.
+import type { CollectionEntry } from 'astro:content';
+import MotionVideo from './MotionVideo.astro';
+
+interface Props {
+	entry: CollectionEntry<'lab'>;
+}
+
+const { title, what, time, duration, tools, video, video_size, video_label, caption, poster, link } = Astro.props.entry.data;
+const external = !link.href.startsWith('/');
+---
+
+<article class="lab-card">
+	<MotionVideo
+		src={`/videos/${video}`}
+		poster={poster}
+		size={video_size}
+		alt={video_label}
+		caption={caption}
+		frame="browser"
+		sizes="(min-width: 1800px) 750px, (min-width: 600px) 50vw, 100vw"
+	/>
+	<h3 class="lab-card__title">{title}</h3>
+	<p>{what}</p>
+	<p>{time}</p>
+	<p class="lab-card__meta">
+		<span class="visually-hidden">Build time: </span>{duration}<span aria-hidden="true"> · </span><span class="visually-hidden">. Tools: </span>{tools.join(', ')}
+	</p>
+	<a
+		class="link-arrow"
+		href={link.href}
+		target={external ? '_blank' : undefined}
+		rel={external ? 'noopener' : undefined}
+		aria-label={external ? `${link.label}, opens in a new tab` : undefined}
+		>{link.label} <span class="link-arrow__arrow" aria-hidden="true">→</span></a
+	>
+</article>
+
+<style>
+	.lab-card {
+		display: grid;
+		gap: var(--space-12);
+		align-content: start;
+	}
+
+	.lab-card :global(.motion-video) {
+		max-inline-size: none;
+		margin-block-end: var(--space-12);
+	}
+
+	.lab-card__title {
+		font-size: var(--text-24);
+	}
+
+	.lab-card > p {
+		max-inline-size: var(--measure);
+	}
+
+	.lab-card__meta {
+		color: var(--color-text-muted);
+		font-size: var(--text-14);
+	}
+
+	.lab-card .link-arrow {
+		justify-self: start;
+	}
+</style>

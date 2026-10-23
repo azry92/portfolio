@@ -67,6 +67,11 @@ export const work = {
 	],
 } as const;
 
+export const lab = {
+	/** SectionLabel numbers it and makes it the h2: "02 / Lab". */
+	label: 'Lab',
+} as const;
+
 export const intro = {
 	title: 'Product Designer, Web & E-commerce',
 	status: 'Open to roles, Kuala Lumpur',
