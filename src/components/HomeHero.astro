@@ -32,6 +32,11 @@ const [role, field] = intro.title.split(', ');
 		</div>
 		<div class="hero__panel" aria-hidden="true">
 			<svg class="hero__glyph" viewBox="0 0 40.54 34.3" preserveAspectRatio="xMidYMax meet" focusable="false">
+				<!-- Under the glyph, a copy with a thin stroke that covers the hairline where I meets A. -->
+				<g class="hero__glyph-seam">
+					<path d={glyph.I}></path>
+					<path d={glyph.A}></path>
+				</g>
 				<path class="hero__glyph-i" d={glyph.I} pathLength="1"></path>
 				<path class="hero__glyph-a" d={glyph.A} pathLength="1"></path>
 			</svg>
@@ -141,8 +146,15 @@ const [role, field] = intro.title.split(', ');
 		block-size: calc(92% - var(--glyph-top));
 	}
 
+	.hero__glyph-seam {
+		fill: var(--color-accent);
+		stroke: var(--color-accent);
+		stroke-width: 0.5;
+	}
+
 	/* Rest: solid red, the settled state of GlyphBand. The stroke waits, undrawn. */
-	.hero__glyph path {
+	.hero__glyph-i,
+	.hero__glyph-a {
 		fill: var(--color-accent);
 		stroke: var(--color-accent);
 		stroke-width: 0.5;
@@ -262,7 +274,7 @@ const [role, field] = intro.title.split(', ');
 	}
 
 	/* From 1200px, three zones: labels bottom left, the panel centre left, the intro in a
-	   narrow right column. The panel is as tall as the first screen allows, and the labels
+	   narrow right column. The panel is as tall as the first screen allows (4:5), and the labels
 	   and intro end level with its bottom. */
 	@media (min-width: 1200px) {
 		.hero__inner {
@@ -276,11 +288,13 @@ const [role, field] = intro.title.split(', ');
 			grid-column: 1 / span 3;
 		}
 
+		/* 4:5 here, so the panel fills columns 4 to 8 on a laptop screen. */
 		.hero__panel {
 			grid-column: 4 / span 5;
 			grid-row: 1 / -1;
 			justify-self: start;
-			inline-size: min(100%, (100svh - var(--header-h) - var(--space-24) - var(--space-32) - var(--panel-top)) * 0.75);
+			aspect-ratio: 4 / 5;
+			inline-size: min(100%, (100svh - var(--header-h) - var(--space-24) - var(--space-32) - var(--panel-top)) * 0.8);
 		}
 
 		/* Both rows: the name ends before column 10, so the intro can rise into the empty top right. */
@@ -314,7 +328,12 @@ const [role, field] = intro.title.split(', ');
 	/* While the pointer is over the hero the glyph turns from fill to outline: the fill
 	   fades and the stroke draws in, I then A. It runs back when the pointer leaves. */
 	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-		.hero__glyph path {
+		.hero__glyph-seam {
+			transition: opacity 400ms ease-out;
+		}
+
+		.hero__glyph-i,
+		.hero__glyph-a {
 			transition:
 				fill-opacity 400ms ease-out,
 				stroke-dashoffset 900ms cubic-bezier(0.65, 0, 0.35, 1);
@@ -324,7 +343,12 @@ const [role, field] = intro.title.split(', ');
 			transition-delay: 150ms;
 		}
 
-		.hero:hover .hero__glyph path {
+		.hero:hover .hero__glyph-seam {
+			opacity: 0;
+		}
+
+		.hero:hover .hero__glyph-i,
+		.hero:hover .hero__glyph-a {
 			fill-opacity: 0;
 			stroke-dashoffset: 0;
 		}
