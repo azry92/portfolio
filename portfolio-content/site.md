@@ -13,21 +13,23 @@ nav:
   - Contact: #contact
   - CV: /ismail-azry-cv.pdf
 ## Home layout
-<!-- layout: home page. Reference: portfolio-content/brand/glyph-ia.svg -->
+<!-- layout: home page. Reference: portfolio-content/references/hero-olsson.png (hero structure only), portfolio-content/brand/glyph-ia.svg -->
 ### 1. Hero (fills the first screen under the sticky header)
-- Full-width section, at least the viewport height minus the header (100svh). Three rows: labels at the top, the intro in the middle, the h1 along the bottom edge.
-- Labels (Inter 600, 14px, uppercase, wide tracking), stacked below 900px; from 900px the first in columns 1 to 6, the second from column 7:
-  - Left: "Product Designer, Web & E-commerce". On a phone it wraps after the comma, never inside "Web & E-commerce".
-  - Right: "Open to roles, Kuala Lumpur", with a small green dot (the status token) before it.
+- An editorial, asymmetric hero on the page cream: a very large name overlapping the top of a tall image panel, small muted labels bottom left, a narrow right column bottom right. Lots of empty ground, no texture.
+- Title, the h1 (first in the markup), in two parts:
+  - The name, "Ismail Azry", on two lines (ISMAIL / AZRY), Sora bold, uppercase through CSS (the source keeps normal case), `--text-name`: the largest text on the site, sized so ISMAIL fits at 360px (about 92px) and capped at 180px. The comma after the name stays for screen readers only.
+  - The claim, "designing stores, then building them.", as a smaller line under AZRY in the accent red: the headline's one red element.
+- Panel: a tall 3:4 block in pattern grey (#D9D9D9) holding the IA glyph (portfolio-content/brand/glyph-ia.svg, paths id="I" and id="A", inline SVG), solid accent red, the settled state of the glyph band, about 80% of the panel's width and sitting on its bottom. Decorative: aria-hidden, nothing focusable.
+  - Contrast: the name (black, 14.9:1) and the claim (red, 4.73:1) may cross the panel's grey but never the glyph (black on red is 3.15:1). The glyph starts 1.75em of the name's size below the top of the name, so it always clears AZRY.
+  - Hover (pointer over the hero, `(hover: hover)` and no reduced motion only): the fill fades and the outline draws in with stroke-dasharray, I first and A a beat later; it runs back when the pointer leaves. CSS only. Touch, no hover and reduced motion keep the solid glyph.
+  - Entrance, the only one: the panel opens upward from its bottom edge on load (clip-path, no JS, only without reduced motion). The h1 never animates.
+- Labels (Inter 600, 14px, uppercase, wide tracking, muted): "Product Designer, Web & E-commerce" (on a phone it wraps after the comma, never inside "Web & E-commerce"), then "Open to roles, Kuala Lumpur" with a small green dot (the status token) before it.
 - Intro: the about paragraph (Inter 400, 18px), then two calls to action, then the current line.
   - "See the work" (accent-red pill, the only pill on the site, links to #work) and "CV" (text link, downloads the PDF). Each has a decorative ↓ after the label, hidden from screen readers.
   - Current line (14px, muted): "Currently designing and building the AT Auto Shoppe store.", with "AT Auto Shoppe store" linking to its case study.
-  - Below 900px it sits full width under the labels; from 900px it takes the right half, beside empty ground.
-- Title, the h1, in two parts (Sora bold, the largest text on the site):
-  - "Ismail Azry," in black, 48px on a phone rising to 128px (--text-hero).
-  - "designing stores, then building them." in the accent red, 32px rising to 80px, balanced so it breaks after "stores,".
-- Glyph texture behind the hero: the IA glyph (portfolio-content/brand/glyph-ia.svg, paths id="I" and id="A") as faint outlines in the border colour, tiled with a brick offset in inline SVG. Static, decorative, aria-hidden. It is clear under the labels and fades out before the headline; from 900px it also fades out before the intro's right half, so no text sits on it.
-- The animated glyph band (load sequence, scroll scrub, hover flip) is not in the hero; it sits after Selected work as the divider before About.
+- Below 600px: name, claim, then a row with the labels bottom left beside the panel (the right half), which rises under the claim's last line; then the intro, with "See the work" as a full-width pill. The name and the role show on the first screen at 360x640.
+- 600px to 1199px: the name across the top; the claim, the intro and the labels run down the left (columns 1 to 2 of 4; 1 to 5 of 12 from 900px); the panel takes the right (columns 3 to 4; 7 to 11 from 900px) and only AZRY crosses its top.
+- From 1200px, three zones: labels in columns 1 to 3 at the bottom, the claim above them under AZRY; the panel in columns 4 to 8, starting under the middle of ISMAIL so both lines cross it, as tall as the first screen allows; the intro in columns 10 to 12, bottom-aligned with the panel. Column 9 stays empty.
 ### 2. Work (id="work")
 - A hairline across the content width, then the label "01 / Selected work" (SectionLabel) over the h2 "See the Work" (Sora, 32px rising to 48px).
 - Case study cards in frontmatter `order`: AT Auto Shoppe, PLANETSTEWARDS, Precious Wedding. Each comes from WorkCover: a square tile on the page cream with a 1px hairline border, the hero screenshot's frame rising from the bottom edge, no colour fill and no shadow.
@@ -39,8 +41,8 @@ nav:
 - A hairline, then "Let's brew something together." with the contact links as 48px square outline buttons (red fill on hover and focus), then the credit line. From 900px the credit line sits in columns 7 to 12, level with the bottom of the contact squares. No footer nav and no Back to top on home: the sticky header carries the nav and the page is short.
 ### Breakpoints
 - Below 600px: everything stacks; work cards as rows.
-- 600px to 899px: a 4-column grid; the hero stacks; the three cards share a row.
-- 900px and up: the 12-column grid. Hero labels split at column 7, the intro takes columns 7 to 12. Content is capped at the max content width from tokens.md; the hero texture runs full bleed.
+- 600px to 899px: a 4-column grid; the hero's text runs down the left beside the panel; the three cards share a row.
+- 900px and up: the 12-column grid. From 1200px the hero takes its three zones (labels 1 to 3, panel 4 to 8, intro 10 to 12). Home runs full width with no cap.
 ## About
 <!-- layout: portrait left, copy right, then experience list -->
 Product designer who designs and builds e-commerce storefronts end to end, from information architecture and product search to custom Shopify code. Interface Design graduate, formerly a medical student.

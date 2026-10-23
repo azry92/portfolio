@@ -37,8 +37,10 @@
 	--text-80: 5rem;
 	--text-96: 6rem;
 	--text-128: 8rem;
-	/* Display steps, each from 360px wide to 1440px. Contrast comes from scale, not colour. */
-	/* Hero: the home name and the About headline, 48px to 128px */
+	/* Display steps, from 360px wide. Contrast comes from scale, not colour. */
+	/* Name: the home h1's two-line name, the largest text on the site, about 92px at 360px to 180px from 700px (ISMAIL is 3.46em wide) */
+	--text-name: clamp(5.5rem, 26vw - 0.125rem, 11.25rem);
+	/* Hero: the About headline, 48px to 128px */
 	--text-hero: clamp(var(--text-48), 1.333rem + 7.41vw, var(--text-128));
 	/* Page h1: 32px to 80px (32px keeps "PLANETSTEWARDS:" on one line at 360px) */
 	--text-display: clamp(var(--text-32), 1rem + 4.44vw, var(--text-80));

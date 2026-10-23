@@ -1,11 +1,14 @@
 ---
-// Home hero: role and availability on top, the short about with the two calls to
-// action, then the name and claim as the page h1 across the bottom of the first screen.
-// The h1 comes first in the markup, so a screen reader hears the name before the about;
-// grid rows put it back at the bottom. It holds no links, so tab order is unchanged.
-import GlyphTexture from './GlyphTexture.astro';
+// Home hero: the name set very large over a tall IA glyph panel, the role and availability
+// small at the bottom left, the about and calls to action bottom right. The h1 comes first
+// in the markup, so a screen reader hears the name, then the role, then the about. The
+// panel is decorative and holds no links, so tab order runs header, then the intro.
+import { glyph } from '../lib/glyphPattern';
 import { intro, site } from '../data/site';
 
+// The name shows as two words; its trailing comma stays for screen readers only, so the
+// h1 still reads as one sentence with the claim.
+const [first, last] = intro.name.replace(/,$/, '').split(' ');
 // Keep "e-commerce" whole: browsers otherwise break inside.
 const aboutParts = intro.about.split(/(e-commerce)/);
 // On a phone the role wraps after its comma, not inside "Web & E-commerce".
@@ -13,17 +16,25 @@ const [role, field] = intro.title.split(', ');
 ---
 
 <section class="hero" aria-labelledby="home-title">
-	<GlyphTexture />
 	<div class="container container--full hero__inner grid-12">
 		<h1 id="home-title" class="hero__title">
-			<span class="hero__name">{intro.name}</span>
+			<span class="hero__name">
+				<span class="hero__word">{first}</span>
+				<span class="hero__word">{last}<span class="visually-hidden">,</span></span>
+			</span>
 			<span class="hero__claim">{intro.claim}</span>
 		</h1>
-		<div class="hero__top grid-12">
+		<div class="hero__labels">
 			<p class="hero__label">{role}, <span class="hero__nowrap">{field}</span></p>
-			<p class="hero__label hero__status">
+			<p class="hero__label">
 				<span class="hero__dot" aria-hidden="true"></span>{intro.status}
 			</p>
+		</div>
+		<div class="hero__panel" aria-hidden="true">
+			<svg class="hero__glyph" viewBox="0 0 40.54 34.3" preserveAspectRatio="xMidYMax meet" focusable="false">
+				<path class="hero__glyph-i" d={glyph.I} pathLength="1"></path>
+				<path class="hero__glyph-a" d={glyph.A} pathLength="1"></path>
+			</svg>
 		</div>
 		<div class="hero__intro">
 			<p class="hero__about">
@@ -41,34 +52,60 @@ const [role, field] = intro.title.split(', ');
 </section>
 
 <style>
-	/* Fills the first screen under the sticky header: labels at the top, the intro in
-	   the middle, the headline on the bottom edge. Everything sits on the page grid. */
-	.hero {
-		position: relative;
-		isolation: isolate;
-		display: flex;
-		min-block-size: calc(100svh - var(--header-h));
-		overflow: hidden;
-	}
-
+	/* Contrast decides the overlap: the name (black, 14.9:1) and the claim (red, 4.73:1) may
+	   cross the panel's grey, never the red glyph (black on red is 3.15:1). The glyph sits on
+	   the panel's bottom edge, clear of the h1 at every width. */
 	.hero__inner {
-		grid-template-rows: auto 1fr auto;
-		row-gap: var(--space-48);
+		/* How far below the top of the name the panel starts, in the name's em. Only AZRY
+		   crosses it below 1200px; from 1200px both lines do. */
+		--panel-top: 0.9em;
+
+		row-gap: var(--space-24);
 		padding-block: var(--space-24) var(--space-32);
 	}
 
-	.hero__top {
-		grid-row: 1;
+	/* The largest text on the site. The claim is the headline's one red element. */
+	.hero__title {
+		position: relative;
+		z-index: 1;
 		grid-column: 1 / -1;
-		grid-template-columns: subgrid;
-		row-gap: var(--space-8);
+		grid-row: 1;
+		font-family: var(--font-display);
+		font-weight: var(--weight-bold);
+	}
+
+	.hero__name,
+	.hero__word,
+	.hero__claim {
+		display: block;
+	}
+
+	.hero__name {
+		font-size: var(--text-name);
+		line-height: 0.85;
+		letter-spacing: -0.03em;
+		text-transform: uppercase;
+	}
+
+	.hero__claim {
+		margin-block-start: var(--space-16);
+		color: var(--color-accent);
+		font-size: clamp(var(--text-24), 1.2rem + 0.75vw, var(--text-32));
+		line-height: var(--leading-heading);
+		text-wrap: balance;
 	}
 
 	.hero__label {
+		color: var(--color-text-muted);
 		font-size: var(--text-14);
 		font-weight: var(--weight-semibold);
 		letter-spacing: 0.08em;
+		line-height: var(--leading-heading);
 		text-transform: uppercase;
+	}
+
+	.hero__label + .hero__label {
+		margin-block-start: var(--space-8);
 	}
 
 	.hero__dot {
@@ -80,18 +117,41 @@ const [role, field] = intro.title.split(', ');
 		background-color: var(--color-status);
 	}
 
-	.hero__intro {
-		grid-row: 2;
-		align-self: end;
-		max-inline-size: var(--measure);
+	.hero__nowrap {
+		white-space: nowrap;
+	}
+
+	/* The panel shares the name's font size, so its em offset tracks the name. */
+	.hero__panel {
+		position: relative;
+		aspect-ratio: 3 / 4;
+		background-color: var(--color-pattern-grey);
+		font-size: var(--text-name);
+	}
+
+	/* The glyph fills the panel below the name: AZRY's ink ends 1.61em under the top of the
+	   name, so the glyph's box starts 1.75em under it and sits on the bottom of that box. */
+	.hero__glyph {
+		--glyph-top: calc(1.75em - var(--panel-top));
+
+		position: absolute;
+		inset-block-start: var(--glyph-top);
+		inset-inline-start: 10%;
+		inline-size: 80%;
+		block-size: calc(92% - var(--glyph-top));
+	}
+
+	/* Rest: solid red, the settled state of GlyphBand. The stroke waits, undrawn. */
+	.hero__glyph path {
+		fill: var(--color-accent);
+		stroke: var(--color-accent);
+		stroke-width: 0.5;
+		stroke-dasharray: 1;
+		stroke-dashoffset: 1;
 	}
 
 	.hero__about {
 		font-size: var(--text-18);
-	}
-
-	.hero__nowrap {
-		white-space: nowrap;
 	}
 
 	.hero__actions {
@@ -113,57 +173,160 @@ const [role, field] = intro.title.split(', ');
 		font-size: var(--text-14);
 	}
 
-	/* The largest text on the site: name in black, the claim under it in the accent. */
-	.hero__title {
-		grid-row: 3;
-		font-family: var(--font-display);
-		font-weight: var(--weight-bold);
-		line-height: 0.95;
-		letter-spacing: -0.02em;
-	}
-
-	.hero__name,
-	.hero__claim {
-		display: block;
-	}
-
-	.hero__name {
-		font-size: var(--text-hero);
-	}
-
-	/* 32px at 360px wide to 80px at 1440px. */
-	.hero__claim {
-		margin-block-start: var(--space-8);
-		color: var(--color-accent);
-		font-size: clamp(var(--text-32), 1rem + 4.44vw, var(--text-80));
-		line-height: 1;
-		/* Breaks after "stores," at every width rather than wherever the line runs out. */
-		text-wrap: balance;
-	}
-
 	@media (hover: hover) {
 		.hero__cv:hover {
 			color: var(--color-accent);
 		}
 	}
 
-	/* From 900px the labels split the grid in half and the intro takes columns 7 to 12,
-	   so the status label and the intro share one left edge. */
-	@media (min-width: 900px) {
-		.hero__top > :first-child {
-			grid-column: 1 / span 6;
+	/* Below 600px: name and claim, then the labels bottom left beside the panel, which
+	   rises under the claim's last line. The intro follows with a full-width pill. */
+	@media (max-width: 599.98px) {
+		.hero__inner {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 
-		.hero__status {
-			grid-column: 7 / -1;
+		.hero__labels {
+			grid-column: 1;
+			grid-row: 2;
+			align-self: end;
+		}
+
+		/* Here only the claim's last line crosses the panel (red on grey, 4.73:1). */
+		.hero__panel {
+			grid-column: 2;
+			grid-row: 2;
+			margin-block-start: calc(var(--space-48) * -1);
+		}
+
+		.hero__glyph {
+			--glyph-top: var(--space-48);
 		}
 
 		.hero__intro {
-			grid-column: 7 / -1;
+			grid-column: 1 / -1;
+			grid-row: 3;
 		}
 
+		.hero__actions .button-primary {
+			justify-content: center;
+			inline-size: 100%;
+		}
+	}
+
+	/* From 600px the panel takes the right of the grid and the name crosses its top; the
+	   claim, the intro and the labels run down the left, bottom-aligned with the panel. */
+	@media (min-width: 600px) {
 		.hero__title {
+			display: grid;
+			grid-template-columns: subgrid;
+		}
+
+		.hero__name {
 			grid-column: 1 / -1;
+		}
+
+		.hero__claim {
+			grid-column: 1 / span 2;
+		}
+
+		.hero__panel {
+			grid-column: 3 / -1;
+			grid-row: 1 / span 3;
+			margin-block-start: var(--panel-top);
+		}
+
+		.hero__intro {
+			grid-column: 1 / span 2;
+			grid-row: 2;
+			align-self: end;
+		}
+
+		.hero__labels {
+			grid-column: 1 / span 2;
+			grid-row: 3;
+			align-self: end;
+		}
+	}
+
+	@media (min-width: 900px) {
+		.hero__claim,
+		.hero__intro,
+		.hero__labels {
+			grid-column: 1 / span 5;
+		}
+
+		.hero__panel {
+			grid-column: 7 / span 5;
+		}
+	}
+
+	/* From 1200px, three zones: labels bottom left, the panel centre left, the intro in a
+	   narrow right column. The panel is as tall as the first screen allows, and the labels
+	   and intro end level with its bottom. */
+	@media (min-width: 1200px) {
+		.hero__inner {
+			--panel-top: 0.4em;
+
+			grid-template-rows: auto 1fr;
+		}
+
+		.hero__claim,
+		.hero__labels {
+			grid-column: 1 / span 3;
+		}
+
+		.hero__panel {
+			grid-column: 4 / span 5;
+			grid-row: 1 / -1;
+			justify-self: start;
+			inline-size: min(100%, (100svh - var(--header-h) - var(--space-24) - var(--space-32) - var(--panel-top)) * 0.75);
+		}
+
+		/* Both rows: the name ends before column 10, so the intro can rise into the empty top right. */
+		.hero__intro {
+			grid-column: 10 / -1;
+			grid-row: 1 / -1;
+		}
+
+		.hero__labels {
+			grid-row: 2;
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		/* The one entrance: the panel opens upward from its bottom edge. The h1 paints at once. */
+		.hero__panel {
+			animation: hero-panel-reveal 900ms cubic-bezier(0.16, 1, 0.3, 1) 100ms both;
+		}
+
+		@keyframes hero-panel-reveal {
+			from {
+				clip-path: inset(100% 0 0 0);
+			}
+
+			to {
+				clip-path: inset(0);
+			}
+		}
+	}
+
+	/* While the pointer is over the hero the glyph turns from fill to outline: the fill
+	   fades and the stroke draws in, I then A. It runs back when the pointer leaves. */
+	@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+		.hero__glyph path {
+			transition:
+				fill-opacity 400ms ease-out,
+				stroke-dashoffset 900ms cubic-bezier(0.65, 0, 0.35, 1);
+		}
+
+		.hero__glyph-a {
+			transition-delay: 150ms;
+		}
+
+		.hero:hover .hero__glyph path {
+			fill-opacity: 0;
+			stroke-dashoffset: 0;
 		}
 	}
 </style>
