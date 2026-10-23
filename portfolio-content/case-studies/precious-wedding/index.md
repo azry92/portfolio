@@ -7,13 +7,13 @@ glance:
   did: "Built a reusable Wix kit, WhatsApp first."
   outcome: "82 RSVPs for Fair 4.0."
 role: "Marketing Executive (Web & Design)"
-card_line: "Wix fair landing pages"
+card_line: "Wix fair pages for a bridal studio"
 team: "With the marketing team"
 timeline: "May 2024 – Jul 2025"
 platform: "Wix"
 tools: ["Wix", "Adobe Illustrator"]
 live_url: "https://www.theprecious.com.my/"
-order: 3
+order: 2
 cover: ./images/page-hero-aesthetic.png
 cover_alt: "Precious Wedding fair landing page with full-bleed couple photography and a Chat with us button"
 og_focus: { y: 0.52 }
@@ -100,9 +100,9 @@ The fairs brought couples to Precious Wedding Emporium at IOI Mall Damansara (fo
 > Four campaigns from one set of sections.
 June 2024 – July 2025 · Wix Analytics; RSVP from Google Forms
 - **82** RSVP form responses, Precious Wedding Fair 4.0, April 2025
-- **55,728** site sessions
+- **55,728** site sessions, June 2024 – July 2025
 - **68%** of March 2025 sessions included the fair landing page (2,578 of 3,793)
-- **86%** of sessions on mobile
+- **86%** of sessions on mobile, June 2024 – July 2025
 ### What changed for the business
 - **One kit, many campaigns.** The same section kit carried the June 2024, October 2024 and April 2025 fairs and the January 2025 festive page. Each new page was a content swap, not a redesign.
 - **Emotion with clarity.** Editorial serif type and full-bleed couple photography carry the romance. One primary CTA per screen carries the action.

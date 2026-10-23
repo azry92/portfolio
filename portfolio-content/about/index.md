@@ -43,7 +43,7 @@ experience:
     dates: "Mar 2023 – Jun 2023"
     line: "Client visuals and event and campaign collateral for television productions."
 education:
-  - qualification: "Bachelors' Degree in Interface Design"
+  - qualification: "Bachelor’s degree in Interface Design"
     institution: "Multimedia University"
     years: "2019–2023"
   - qualification: "Medicine"

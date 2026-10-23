@@ -7,14 +7,14 @@ glance:
   did: "Co-designed the identity, site and motion piece."
   outcome: "1,679 visitors, 61% from abroad."
 role: "Product Designer"
-card_line: "Identity and website"
+card_line: "Identity and website for a Utrecht University project"
 client: "Utrecht University"
 team: "September Khu, Project Coordinator"
 timeline: "Apr 2024 – Jul 2024"
 platform: "Wix"
 tools: ["Wix", "Adobe Illustrator", "CapCut"]
 live_url: "https://www.planetstewards.eu/"
-order: 2
+order: 3
 accent: "#003399"
 cover: ./images/hero-case-study.png
 cover_alt: "PLANETSTEWARDS homepage on desktop, with the wordmark over a space scene of Earth, the Moon and Mars"

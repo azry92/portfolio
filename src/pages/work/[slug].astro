@@ -32,7 +32,7 @@ const [overview, ...sections] = parseCaseStudy(entry.id, entry.body ?? '');
 if (overview?.layout?.kind !== 'hero') {
 	throw new Error(`case-studies/${entry.id}/index.md: the first section needs the hero layout note`);
 }
-// The glance outcome links to the chapter with the stat cards (Results, or AT's "What's measured next").
+// The glance outcome links to the chapter with the stat cards (Results, or AT's "Measured since launch").
 const resultsId = sections.find((section) => section.layout?.kind === 'stats')?.id;
 
 // The project accent marks the section labels; red stays the site's one accent.

@@ -5,9 +5,9 @@ summary: "A Shopify store for a 4x4 parts dealer, built around vehicle-first sea
 glance:
   problem: "No way to search by vehicle."
   did: "Built a Shopify store around a vehicle finder."
-  outcome: "Replaced a RM 80/month app with a custom finder."
+  outcome: "1,200+ non-branded Google clicks since launch."
 role: "Product design + Shopify development"
-card_line: "Shopify webstore"
+card_line: "Shopify webstore for a 4×4 parts dealer"
 team: "Solo, with the sales team"
 timeline: "Feb 2026 – Present"
 platform: "Shopify"
@@ -129,18 +129,25 @@ I designed and built the store on Shopify: a Make, Model and Generation/Year fin
 > Theme under version control, AI code reviewed and debugged.
 The store runs on Shopify's Dawn 16 theme, extended with custom sections. Before changing the live store I pulled the theme locally with Shopify CLI and kept it under version control, so every edit can be reviewed and rolled back.
 The code was written with AI assistance. I specified the metaobject schema and the selection rules, then reviewed and debugged every section.
+
+The brand pages built on metaobjects now lead search: six of the ten pages with the most non-branded Google clicks are brand pages, led by RAYS Wheels with 73 clicks (Sept–Oct 2026, Google Search Console).
 ![Shopify CLI pulling the live theme into a local folder before any edits](./images/cli-theme-pull-success.png)
 *Live theme pulled locally before any change.*
 ![at-brand-related-builds.liquid open in VS Code, lines 1 to 47](./images/vscode-brand-related-builds-liquid.png)
 *Custom Liquid section linking brands to the builds that use them.*
-## What's measured next
+## Measured since launch
 <!-- layout: stat cards, first card largest -->
-> Counted today, before analytics.
+> Search reach and savings now; finder use and enquiries next.
+Sept–Oct 2026 · Google Search Console; non-branded as classified by Google
 - RM 80/month: paid YMM app replaced by a custom finder
+- 1,200+: clicks from non-branded Google searches since the September 2026 launch
+- 60,000+: search impressions, average position 7.6
 - 10+ makes: covered by the vehicle finder
 - 3 finders: parts, wheels, tyres
 - 5: sales and owner requests answered, 4 shipped
 
 Next: tracking finder use and WhatsApp enquiries to measure fit-led sales.
+
+Orders currently close over WhatsApp; online checkout opens once the payment gateway is finalised.
 ## Reflection
 Building the store myself showed how much the structure decisions drive everything downstream, from navigation to sales. Using AI to write code taught me to specify behaviour precisely and to review what I ship. Next, I would track how often customers use the finder and whether its compatibility results lead to purchases or WhatsApp enquiries.

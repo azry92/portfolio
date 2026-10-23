@@ -15,7 +15,7 @@ cover_alt: "Malaysia Bridal Fashion Week homepage with event description"
 ---
 ## Overview
 <!-- layout: hero, title and overview left, browser mockup right -->
-The first bridal fashion week in Malaysia, hosted by The Gown Atelier at Astana Hall, 25–27 July 2025. I designed and built the event website on Wix in two months: the schedule, registration flow, FAQ, sponsor wall and 23 designer pages, plus the email and social assets that drove guests to register.
+The first bridal fashion week in Malaysia, hosted by The Gown Atelier (Precious Wedding’s sister brand) at Astana Hall, 25–27 July 2025. I designed and built the event website on Wix in two months: the schedule, registration flow, FAQ, sponsor wall and 23 designer pages, plus the email and social assets that drove guests to register.
 ## One identity across every touchpoint
 <!-- layout: four images in a grid -->
 The MBFW wordmark, black-and-tan palette and smoke texture carried from the website to the Linktree, the registration cards and the 2026 sign-up page, so a guest arriving from Instagram, Xiaohongshu or email saw the same event.
@@ -52,7 +52,7 @@ Dates, hours and last entry sit in the first screen on mobile. The FAQ answers f
 The schedule card listed day one's programme hour by hour. When opening-day seats filled, the banner switched to "25 July: Full. 26–27 July: Walk-ins open", so late visitors were redirected rather than turned away.
 ![Registration banner reading 25 July: Full, 26–27 July: Walk-ins open](./images/page-walk-in-open-section.png)
 ![Hour-by-hour schedule card for day one](./images/rsvp-schedule-day-01.png)
-*Day one sold out; the banner sent late visitors to the walk-in days.*
+*Day one sold out, according to the organiser; the banner sent late visitors to the walk-in days.*
 ## 23 designer pages, one template
 <!-- layout: brand page grid, then search result screenshot -->
 Each designer got a page from the same template (name, collection imagery, profile), so adding a brand during the run-up was a content task rather than a design task. The site ranked first on Google for "bridal fashion week" in Malaysia (checked September 2026).

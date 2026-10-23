@@ -27,3 +27,5 @@ portfolio-content/references/
 portfolio-content/case-studies/at-auto-shoppe/videos/
 # Playwright CLI snapshots and logs
 .playwright-cli/
+# Portfolio review reports
+review/

@@ -51,4 +51,4 @@ Product designer who designs and builds e-commerce storefronts end to end, from 
 - location: Kuala Lumpur, Malaysia
 ## Footer
 - line: "Designed and built by Ismail Azry with Astro. © 2026"
-- links: Email, LinkedIn, CV, GitHub
+- links: Email, LinkedIn, CV, Source code
