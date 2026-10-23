@@ -1,11 +1,11 @@
 ---
 // "02 / Lab" on home: a full-bleed field of the accent red, then a cream hairline, the
-// numbered label as the h2 and the build clips in frontmatter order. One column below
+// numbered label as the h2, one intro line and the build clips in frontmatter order. One column below
 // 600px, two per row from 600px. Everything on the red is cream (5.75:1); black on the
 // accent would be 3.15:1.
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import SectionLabel from './SectionLabel.astro';
 import LabCard from './LabCard.astro';
 import { lab } from '../data/site';
@@ -22,12 +22,24 @@ for (const { id, data } of entries) {
 	if (!existsSync(join(process.cwd(), 'public/videos', data.video))) {
 		throw new Error(`portfolio-content/lab/${id}: public/videos/${data.video} is missing`);
 	}
+	// A link into a case study chapter must name a heading that exists; ids follow the
+	// heading text, so a renamed chapter would otherwise break the link silently.
+	const chapter = data.link.href.match(/^\/work\/([^/#]+)#(.+)$/);
+	if (chapter) {
+		const [, slug, anchor] = chapter;
+		const caseStudy = await getEntry('caseStudies', slug);
+		const { headings } = caseStudy ? await render(caseStudy) : { headings: [] };
+		if (!headings.some((heading) => heading.slug === anchor)) {
+			throw new Error(`portfolio-content/lab/${id}: ${data.link.href} has no matching heading`);
+		}
+	}
 }
 ---
 
 <section id="lab" class="lab" aria-labelledby="lab-heading">
 	<div class="container container--full lab__inner grid-12">
 		<SectionLabel as="h2" id="lab-heading" number={number} label={lab.label} />
+		<p class="lab__intro">{lab.intro}</p>
 		<ul class="lab__entries" role="list">
 			{
 				entries.map((entry) => (
@@ -72,6 +84,10 @@ for (const { id, data } of entries) {
 	/* Light frames on the red. */
 	.lab :global(.browser) {
 		border-color: var(--color-bg);
+	}
+
+	.lab__intro {
+		max-inline-size: var(--measure);
 	}
 
 	.lab__entries {

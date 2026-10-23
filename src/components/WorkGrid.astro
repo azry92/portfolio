@@ -1,5 +1,5 @@
 ---
-// "See the Work": a hairline, the numbered label and heading, the case study cards in
+// "01 / Selected work": a hairline, the numbered label as the h2, the case study cards in
 // frontmatter order, then Other Works and Fun as text-link rows.
 import { getCollection } from 'astro:content';
 import SectionLabel from './SectionLabel.astro';
@@ -11,10 +11,7 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 ---
 
 <section id="work" class="work section-rule grid-12" aria-labelledby="work-title">
-	<div class="work__header">
-		<SectionLabel number={1} label={work.label} />
-		<h2 id="work-title" class="work__heading">{work.heading}</h2>
-	</div>
+	<SectionLabel as="h2" id="work-title" number={1} label={work.label} />
 	<ul class="work__cases" role="list">
 		{
 			caseStudies.map((entry) => (
@@ -45,11 +42,6 @@ const caseStudies = (await getCollection('caseStudies')).sort((a, b) => a.data.o
 	.work {
 		row-gap: var(--space-24);
 		padding-block-start: var(--space-48);
-	}
-
-	.work__heading {
-		margin-block-start: var(--space-8);
-		font-size: var(--text-section);
 	}
 
 	/* Below 600px: one row per case study, hairlines between the rows. */

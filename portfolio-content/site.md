@@ -31,7 +31,7 @@ nav:
 - 600px to 1199px: the name across the top; the claim, the intro and the labels run down the left (columns 1 to 2 of 4; 1 to 5 of 12 from 900px); the panel takes the right (columns 3 to 4; 7 to 11 from 900px) and only AZRY crosses its top.
 - From 1200px, three zones: labels in columns 1 to 3 at the bottom, the claim above them under AZRY; the panel in columns 4 to 8, starting under the middle of ISMAIL so both lines cross it, as tall as the first screen allows; the intro in columns 10 to 12, bottom-aligned with the panel. Column 9 stays empty.
 ### 2. Work (id="work")
-- A hairline across the content width, then the label "01 / Selected work" (SectionLabel) over the h2 "See the Work" (Sora, 32px rising to 48px).
+- A hairline across the content width, then the label "01 / Selected work" (SectionLabel) as the h2.
 - Case study cards in frontmatter `order`: AT Auto Shoppe, PLANETSTEWARDS, Precious Wedding. Each comes from WorkCover: a square tile on the page cream with a 1px hairline border, the hero screenshot's frame rising from the bottom edge, no colour fill and no shadow.
   - Below 600px: one row per case study, cover about 40% on the left, name and card line on the right, hairlines between rows.
   - 600px to 899px: the three cards in one row.

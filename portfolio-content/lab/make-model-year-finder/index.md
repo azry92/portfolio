@@ -8,6 +8,6 @@ frame_label: "AT Auto Shoppe · Shopify"
 video_size: { width: 1280, height: 593 }
 video_label: "Screen recording: Ford, Ranger, Next Gen (2022–Current), then Search, landing on a 109-product collection with brand filters."
 poster: ./poster.png
-link: { href: /work/at-auto-shoppe, label: AT Auto Shoppe case study }
+link: { href: "/work/at-auto-shoppe#a-part-only-shows-if-it-fits-your-truck", label: AT Auto Shoppe case study }
 order: 1
 ---

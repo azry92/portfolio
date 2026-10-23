@@ -58,9 +58,8 @@ export const contact = {
 export const footerLine = 'Designed and built by Ismail Azry with Astro. © 2026';
 
 export const work = {
-	/** SectionLabel numbers it: "01 / Selected work". */
+	/** SectionLabel numbers it and makes it the h2: "01 / Selected work". */
 	label: 'Selected work',
-	heading: 'See the Work',
 	more: [
 		{ label: 'Other Works', href: '/other-works' },
 		{ label: 'Fun', href: '/fun' },
@@ -70,6 +69,8 @@ export const work = {
 export const lab = {
 	/** SectionLabel numbers it and makes it the h2: "02 / Lab". */
 	label: 'Lab',
+	/** One line under the label. */
+	intro: 'Things I built, how long they took, and where the time went.',
 } as const;
 
 export const intro = {

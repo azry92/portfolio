@@ -8,6 +8,6 @@ frame_label: "AT Auto Shoppe · Shopify"
 video_size: { width: 1281, height: 592 }
 video_label: "Screen recording: full-screen brand slides for OPTION4WD, REALTRUCK and PIAA, each with a category, a one-line pitch and a Shop now pill, and a Skip To End link."
 poster: ./poster.png
-link: { href: /work/at-auto-shoppe, label: AT Auto Shoppe case study }
+link: { href: "/work/at-auto-shoppe#every-change-reviewed-before-it-reaches-the-live-store", label: AT Auto Shoppe case study }
 order: 3
 ---

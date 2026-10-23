@@ -5,7 +5,7 @@ subtitle: "An academic space-governance project that needed people in its pictur
 glance:
   problem: "The imagery showed no human activity."
   did: "Co-designed the identity, site and motion piece."
-  outcome: "1,679 visitors, 61% from abroad."
+  outcome: "1,679 visitors; 61% of sessions from abroad."
 role: "Product Designer"
 card_line: "Identity and website for a Utrecht University project"
 client: "Utrecht University"

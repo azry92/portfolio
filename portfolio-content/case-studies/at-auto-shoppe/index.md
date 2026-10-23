@@ -128,7 +128,7 @@ I designed and built the store on Shopify: a Make, Model and Generation/Year fin
 <!-- layout: copy left, terminal screenshot and code screenshot right -->
 > Theme under version control, AI code reviewed and debugged.
 The store runs on Shopify's Dawn 16 theme, extended with custom sections. Before changing the live store I pulled the theme locally with Shopify CLI and kept it under version control, so every edit can be reviewed and rolled back.
-The code was written with AI assistance. I specified the metaobject schema and the selection rules, then reviewed and debugged every section.
+The code was written with Codex. I specified the metaobject schema and the selection rules, then reviewed and debugged every section.
 
 The brand pages built on metaobjects now lead search: six of the ten pages with the most non-branded Google clicks are brand pages, led by RAYS Wheels with 73 clicks (Sept–Oct 2026, Google Search Console).
 ![Shopify CLI pulling the live theme into a local folder before any edits](./images/cli-theme-pull-success.png)

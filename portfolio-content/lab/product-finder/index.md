@@ -8,6 +8,6 @@ frame_label: "AT Auto Shoppe · Shopify"
 video_size: { width: 1280, height: 594 }
 video_label: "Screen recording: make, model and generation, then a product category from an image grid, then results with category pills and a brand filter that narrows to the compatible products."
 poster: ./poster.png
-link: { href: /work/at-auto-shoppe, label: AT Auto Shoppe case study }
+link: { href: "/work/at-auto-shoppe#five-steps-from-truck-to-part", label: AT Auto Shoppe case study }
 order: 2
 ---
