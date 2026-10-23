@@ -1,6 +1,7 @@
 ---
-// One Lab entry: the clip in a browser frame with its caption, the name, what it is,
-// where the time went, a meta line (build time and tools) and a link out.
+// One Lab entry: the clip in a labelled browser frame, the name, the build time as a
+// number and unit, one line of copy, the tools as text pills and a link out.
+// What the clip shows is the video's accessible name, so the card has no caption.
 import type { CollectionEntry } from 'astro:content';
 import MotionVideo from './MotionVideo.astro';
 
@@ -8,7 +9,8 @@ interface Props {
 	entry: CollectionEntry<'lab'>;
 }
 
-const { title, what, time, duration, tools, video, video_size, video_label, caption, poster, link } = Astro.props.entry.data;
+const { title, line, duration, tools, video, frame_label, video_size, video_label, poster, link } = Astro.props.entry.data;
+const unit = duration.amount === 1 ? duration.unit : `${duration.unit}s`;
 const external = !link.href.startsWith('/');
 ---
 
@@ -18,16 +20,19 @@ const external = !link.href.startsWith('/');
 		poster={poster}
 		size={video_size}
 		alt={video_label}
-		caption={caption}
 		frame="browser"
+		frameLabel={frame_label}
 		sizes="(min-width: 1800px) 750px, (min-width: 600px) 50vw, 100vw"
 	/>
 	<h3 class="lab-card__title">{title}</h3>
-	<p>{what}</p>
-	<p>{time}</p>
-	<p class="lab-card__meta">
-		<span class="visually-hidden">Build time: </span>{duration}<span aria-hidden="true"> · </span><span class="visually-hidden">. Tools: </span>{tools.join(', ')}
+	<p class="lab-card__time">
+		<span class="visually-hidden">Build time: </span><span class="lab-card__amount">{duration.amount}</span>{' '}
+		<span class="lab-card__unit">{unit}</span>
 	</p>
+	<p class="lab-card__line">{line}</p>
+	<ul class="lab-card__tools" role="list" aria-label="Tools">
+		{tools.map((tool) => <li>{tool}</li>)}
+	</ul>
 	<a
 		class="link-arrow"
 		href={link.href}
@@ -52,15 +57,48 @@ const external = !link.href.startsWith('/');
 
 	.lab-card__title {
 		font-size: var(--text-24);
+		font-weight: var(--weight-semibold);
 	}
 
-	.lab-card > p {
+	.lab-card__time {
+		display: flex;
+		gap: var(--space-8);
+		align-items: baseline;
+	}
+
+	.lab-card__amount {
+		font-family: var(--font-display);
+		font-size: var(--text-32);
+		font-weight: var(--weight-bold);
+		line-height: 1;
+	}
+
+	.lab-card__unit {
+		font-size: var(--text-14);
+		font-weight: var(--weight-semibold);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	.lab-card__line {
 		max-inline-size: var(--measure);
 	}
 
-	.lab-card__meta {
-		color: var(--color-text-muted);
+	/* Text pills, not controls: a 1px outline in the text colour. */
+	.lab-card__tools {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-8);
+		padding: 0;
+		list-style: none;
+	}
+
+	.lab-card__tools li {
+		padding: var(--space-4) var(--space-12);
+		border: var(--border-width) solid currentColor;
+		border-radius: var(--radius-pill);
 		font-size: var(--text-14);
+		line-height: var(--leading-heading);
 	}
 
 	.lab-card .link-arrow {

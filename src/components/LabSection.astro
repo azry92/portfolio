@@ -73,8 +73,8 @@ for (const { id, data } of entries) {
 			border: 0;
 		}
 
-		/* The six parts of each card (clip, name, two lines, meta, link) share row tracks
-		   across the row, so names line up when one caption runs longer. */
+		/* The six parts of each card (clip, name, build time, line, tools, link) share row tracks
+		   across the row, so they line up when one line or tool row runs longer. */
 		.lab__entries > li,
 		.lab__entries > li > :global(.lab-card) {
 			display: grid;

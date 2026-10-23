@@ -11,7 +11,9 @@ for (const root of document.querySelectorAll<HTMLElement>('[data-motion-video]')
 	let onScreen = false;
 
 	const label = () => {
-		toggle.textContent = video.paused && !(wanted && onScreen) ? 'Play' : 'Pause';
+		const playing = !(video.paused && !(wanted && onScreen));
+		toggle.dataset.state = playing ? 'playing' : 'paused';
+		toggle.setAttribute('aria-label', playing ? 'Pause clip' : 'Play clip');
 	};
 
 	// A refused play() (e.g. data saver) leaves the poster and a Play button.

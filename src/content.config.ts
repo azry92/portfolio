@@ -110,21 +110,19 @@ const lab = defineCollection({
 	schema: ({ image }) =>
 		z.object({
 			title: z.string(),
-			/** One line on what it is. */
-			what: z.string().min(1),
-			/** One line on where the build time went. */
-			time: z.string().min(1),
-			/** The build time, e.g. "1 week". */
-			duration: z.string().min(1),
+			/** The card's one line: what it is, and where the time went. */
+			line: z.string().min(1),
+			/** The build time. The unit is singular; the card adds the plural ("2 weeks"). */
+			duration: z.object({ amount: z.number().positive(), unit: z.enum(['day', 'week', 'month']) }),
 			tools: z.array(z.string()).min(1),
 			/** A file name in public/videos/. */
 			video: z.string().regex(/^[\w-]+\.mp4$/),
+			/** Short text in the frame's top bar: site · platform. */
+			frame_label: z.string().min(1),
 			/** The clip's own display size; the frame and the poster crop take its ratio. */
 			video_size: z.object({ width: z.number().positive(), height: z.number().positive() }),
-			/** The video's accessible name. */
+			/** The video's accessible name: what the clip shows. */
 			video_label: z.string().min(1),
-			/** What the clip shows, under the frame. */
-			caption: z.string().min(1),
 			/** A still at least as wide as the clip; cropped from the top to the clip's ratio. */
 			poster: image(),
 			link: z.object({

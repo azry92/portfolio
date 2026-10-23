@@ -1,5 +1,6 @@
 ---
-// Minimal browser window: a thin bar with three dots, no URL text.
+// Minimal browser window: a thin bar with three dots, no URL text. Lab alone passes a
+// short `label` (site · platform) for the bar; it is decorative, like the dots.
 // Pass a screenshot (`src` + `alt`) or slot in a <video>.
 import { Picture } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
@@ -12,6 +13,8 @@ interface Props {
 	widths?: number[];
 	sizes?: string;
 	loading?: 'lazy' | 'eager';
+	/** Short text in the bar after the dots, e.g. "AT Auto Shoppe · Shopify". Lab only. */
+	label?: string;
 	/** For a frame that holds the page's largest image, e.g. a hero. */
 	fetchpriority?: 'high' | 'low' | 'auto';
 	class?: string;
@@ -24,6 +27,7 @@ const {
 	widths = [640, 960, 1280, 1920],
 	sizes = '(min-width: 1800px) 1600px, 100vw',
 	loading = 'lazy',
+	label,
 	fetchpriority,
 	class: className,
 } = Astro.props;
@@ -33,9 +37,10 @@ const hasSlot = Astro.slots.has('default');
 
 <div class:list={['browser', className]} style={aspect ? `--browser-aspect: ${aspect}` : undefined}>
 	<div class="browser__bar" aria-hidden="true">
-		<span></span>
-		<span></span>
-		<span></span>
+		<span class="browser__dot"></span>
+		<span class="browser__dot"></span>
+		<span class="browser__dot"></span>
+		{label && <span class="browser__label">{label}</span>}
 	</div>
 	<div class:list={['browser__content', { 'browser__content--cropped': aspect }]}>
 		{
@@ -76,11 +81,23 @@ const hasSlot = Astro.slots.has('default');
 		background-color: var(--color-bg);
 	}
 
-	.browser__bar span {
+	.browser__dot {
+		flex: none;
 		inline-size: 8px;
 		block-size: 8px;
 		border-radius: 50%;
 		background-color: color-mix(in srgb, var(--color-text-muted) 35%, transparent);
+	}
+
+	.browser__label {
+		overflow: hidden;
+		min-inline-size: 0;
+		margin-inline-start: var(--space-8);
+		color: var(--color-text-muted);
+		font-size: var(--text-12);
+		line-height: 1;
+		text-overflow: ellipsis;
+		white-space: nowrap;
 	}
 
 	.browser__content :global(img),

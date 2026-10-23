@@ -2,7 +2,7 @@
 // A short, muted, looping motion piece, shown at no more than its own width and
 // aligned to the start of the column like every other figure.
 // It starts only when the viewer allows motion; otherwise the poster stays.
-// The Pause/Play button appears once the script runs.
+// The round Play/Pause button appears once the script runs.
 // The poster is a lazy <Picture> over the video, not the poster attribute, which
 // would download at page load; it hides once the video plays.
 import { Picture } from 'astro:assets';
@@ -18,26 +18,36 @@ interface Props {
 	size?: { width: number; height: number };
 	/** Wrap the video in a BrowserFrame, for desktop recordings. */
 	frame?: 'browser';
+	/** The BrowserFrame's bar label (Lab only). */
+	frameLabel?: string;
 	/** What the clip shows, as a visible figcaption. */
 	caption?: string;
 	sizes?: string;
 }
 
-const { src, poster, alt, size, frame, caption, sizes = '(min-width: 1800px) 1600px, 100vw' } = Astro.props;
+const { src, poster, alt, size, frame, frameLabel, caption, sizes = '(min-width: 1800px) 1600px, 100vw' } = Astro.props;
 const width = poster.width;
 const height = size ? Math.round((poster.width * size.height) / size.width) : poster.height;
 const Frame = frame === 'browser' ? BrowserFrame : Fragment;
+const frameProps = frame === 'browser' ? { label: frameLabel } : {};
 const widths = [480, 800, 1200, 1800, poster.width].filter((w, i, all) => w <= poster.width && all.indexOf(w) === i);
 ---
 
 <figure class="motion-video" data-motion-video style={`--video-width: ${width}px`}>
-	<Frame>
+	<Frame {...frameProps}>
 		<div class="motion-video__media">
 			<video src={src} width={width} height={height} aria-label={alt} muted loop playsinline preload="none"></video>
 			<div class="motion-video__poster">
 				<Picture src={poster} alt="" width={width} height={height} widths={widths} sizes={sizes} formats={['avif', 'webp']} fit="cover" position="top" loading="lazy" />
 			</div>
-			<button class="button-square motion-video__toggle" type="button" data-motion-video-toggle hidden>Play</button>
+			<button class="motion-video__toggle" type="button" data-motion-video-toggle aria-label="Play clip" hidden>
+				<svg class="motion-video__icon motion-video__icon--play" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+					<path d="M5 3.25v9.5L12.75 8z"></path>
+				</svg>
+				<svg class="motion-video__icon motion-video__icon--pause" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+					<path d="M4.25 3.25h2.75v9.5H4.25zM9 3.25h2.75v9.5H9z"></path>
+				</svg>
+			</button>
 		</div>
 	</Frame>
 	{caption && <figcaption class="motion-video__caption">{caption}</figcaption>}
@@ -83,23 +93,64 @@ const widths = [480, 800, 1200, 1800, poster.width].filter((w, i, all) => w <= p
 		visibility: hidden;
 	}
 
-	/* A .button-square on the video: it needs a fill to read over any frame. */
+	/* A small round icon pill in the frame's bottom-right corner: cream fill, black glyph
+	   and border (18.1:1), inverted on hover and focus. 40px to see, 44px to hit. */
 	.motion-video__toggle {
 		position: absolute;
-		inset-block-end: var(--space-12);
-		inset-inline-end: var(--space-12);
-		min-inline-size: 4.5rem;
-		min-block-size: 2.75rem;
-		padding: var(--space-8) var(--space-16);
-		font-size: var(--text-14);
+		inset-block-end: var(--space-8);
+		inset-inline-end: var(--space-8);
+		display: grid;
+		place-items: center;
+		inline-size: 2.5rem;
+		block-size: 2.5rem;
+		padding: 0;
+		border: var(--border-width) solid var(--color-text);
+		border-radius: var(--radius-pill);
+		background-color: var(--color-bg);
+		color: var(--color-text);
+		cursor: pointer;
 	}
 
-	.motion-video__toggle:not(:hover, :focus-visible) {
-		background-color: var(--color-surface);
+	.motion-video__toggle::before {
+		content: '';
+		position: absolute;
+		inset: -2px;
+		border-radius: inherit;
 	}
 
-	/* .button-square sets display, which would beat the hidden attribute. */
+	.motion-video__toggle:focus-visible {
+		background-color: var(--color-surface-inverse);
+		color: var(--color-text-inverse);
+	}
+
+	@media (hover: hover) {
+		.motion-video__toggle:hover {
+			background-color: var(--color-surface-inverse);
+			color: var(--color-text-inverse);
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.motion-video__toggle {
+			transition:
+				background-color 150ms ease-out,
+				color 150ms ease-out;
+		}
+	}
+
 	.motion-video__toggle[hidden] {
+		display: none;
+	}
+
+	.motion-video__icon {
+		inline-size: 1rem;
+		block-size: 1rem;
+		fill: currentColor;
+	}
+
+	/* The script sets data-state; the glyph shows what a press will do. */
+	.motion-video__toggle:not([data-state='playing']) .motion-video__icon--pause,
+	.motion-video__toggle[data-state='playing'] .motion-video__icon--play {
 		display: none;
 	}
 

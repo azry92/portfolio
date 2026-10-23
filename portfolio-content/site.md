@@ -39,8 +39,8 @@ nav:
 - Under the cards, Other Works (/other-works) and Fun (/fun) as text links with an arrow, one per row, each with a hairline above. From 900px they sit in columns 5 to 12.
 ### 3. Lab (id="lab")
 - A hairline, then the label "02 / Lab" as the h2 (SectionLabel, no separate heading). About after it becomes "03 / About"; the GlyphBand still divides Lab from About.
-- Four build clips from `portfolio-content/lab/`, in frontmatter `order`: Make, model and year finder; Product finder; Brand slider; This portfolio. Each card: the clip in a BrowserFrame at the clip's own ratio (about 2.15:1), a caption saying what it shows, the name, what it is, where the time went, a small muted meta line (build time · tools) and a text link with an arrow (the AT Auto Shoppe case study, or the GitHub repo).
-- Clips are muted and loop, load nothing until near the viewport and play only while in view. With reduced motion nothing plays: the poster shows with a Play button.
+- Four build clips from `portfolio-content/lab/`, in frontmatter `order`: Make, model and year finder; Product finder; Brand slider; This portfolio. Each card, adapted from references/lab-card.png (its anatomy, not its theme): the clip in a BrowserFrame at the clip's own ratio (about 2.15:1) with a short label in the bar ("AT Auto Shoppe · Shopify", "ismailazry.com · Astro"); the name; the build time as a large number and a small uppercase unit ("2 WEEKS"); one line of copy; the tools as outline pills; and a text link with an arrow (the AT Auto Shoppe case study, or the GitHub repo). What the clip shows is the video's accessible name, not a visible caption.
+- Clips are muted and loop, load nothing until near the viewport and play only while in view. With reduced motion nothing plays: the poster shows with a Play button. The Play/Pause control is a small round icon pill in the frame's bottom-right corner.
   - Below 600px: one card per row, hairlines between.
   - 600px to 899px: two cards per row.
   - From 900px: six of the twelve columns each, two per row; names, lines and links line up across the row.
